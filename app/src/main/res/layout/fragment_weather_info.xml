@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_weather_info"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="16dp"
+    tools:context=".ui.weather.WeatherInfoFragment">
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupWeatherDescriptionViews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tvCityName, tvDate, tvWeatherDescription, tvTemperature,
+        tvWindSpeed, tvWindDesc, tvPressure, tvPressureDesc, tvHumidity, tvHumidityDesc"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierMainInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="tvCityName, tvDate, tvWeatherDescription, tvTemperature" />
+
+    <TextView
+        android:id="@+id/tvCityName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Moscow" />
+
+    <!--todo fix view location-->
+    <ImageView
+        android:id="@+id/ivIsCityFavorite"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_city_not_favorite"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCityName"
+        app:layout_constraintDimensionRatio="W, 1:1"
+        app:layout_constraintStart_toEndOf="@+id/barrierMainInfo"
+        app:layout_constraintTop_toTopOf="@+id/tvCityName" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCityName"
+        tools:text="16th July" />
+
+    <TextView
+        android:id="@+id/tvWeatherDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDate"
+        tools:text="Partly cloud" />
+
+    <TextView
+        android:id="@+id/tvTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvWeatherDescription"
+        tools:text="+15 F" />
+
+    <TextView
+        android:id="@+id/tvWindSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvDate"
+        app:layout_constraintStart_toStartOf="@+id/barrierMainInfo" />
+
+    <TextView
+        android:id="@+id/tvWindDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" - wind speed"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvDate"
+        app:layout_constraintStart_toEndOf="@+id/tvWindSpeed" />
+
+    <TextView
+        android:id="@+id/tvPressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvWeatherDescription"
+        app:layout_constraintStart_toStartOf="@+id/barrierMainInfo" />
+
+    <TextView
+        android:id="@+id/tvPressureDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" - pressure"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvWeatherDescription"
+        app:layout_constraintStart_toEndOf="@+id/tvPressure" />
+
+    <TextView
+        android:id="@+id/tvHumidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvTemperature"
+        app:layout_constraintStart_toStartOf="@+id/barrierMainInfo" />
+
+    <TextView
+        android:id="@+id/tvHumidityDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" - humidity"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvTemperature"
+        app:layout_constraintStart_toEndOf="@+id/tvHumidity" />
+
+    <ProgressBar
+        android:id="@+id/pbWeatherLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
