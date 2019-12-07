@@ -10,9 +10,13 @@ import retrofit2.http.Query
 interface OpenWeatherMapService {
 
     @GET("weather")
-    fun getCurrentWeather(@Query("q") query: String): Deferred<CurrentWeatherResponse>
+    fun getCurrentWeather(
+            @Query("q") query: String,
+            @Query("units") units: String = "metric"): Deferred<CurrentWeatherResponse>
 
     @GET("forecast")
-    fun getForecast(@Query("q") query: String): Deferred<ForecastResponse>
+    fun getForecast(
+            @Query("q") query: String,
+            @Query("units") units: String = "metric"): Deferred<ForecastResponse>
 
 }

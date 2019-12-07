@@ -1,16 +1,11 @@
 package com.example.weather_app.data
 
-import android.util.Log
 import com.example.weather_app.data.db.WeatherDatabase
 import com.example.weather_app.data.entity.FavoriteCity
 import com.example.weather_app.data.network.OpenWeatherMapService
 import com.example.weather_app.data.network.PixabayService
 import com.example.weather_app.data.response.open_weather_map.current_weather.CurrentWeatherResponse
 import com.example.weather_app.data.response.open_weather_map.forecast.ForecastResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlin.coroutines.EmptyCoroutineContext
 
 class WeatherRepository(
     private val openWeatherMapService: OpenWeatherMapService,
@@ -19,16 +14,16 @@ class WeatherRepository(
 ) {
 
     init {
-        CoroutineScope(EmptyCoroutineContext).launch(Dispatchers.IO) {
-            try {
-                Log.d(
-                    "Logos",
-                    pixabayService.getPhotos("warsaw").await().hits.firstOrNull().toString()
-                )
-            } catch (e: Exception) {
-                Log.e("Logos", "error", e)
-            }
-        }
+//        CoroutineScope(EmptyCoroutineContext).launch(Dispatchers.IO) {
+//            try {
+//                Log.d(
+//                    "Logos",
+//                    pixabayService.getPhotos("warsaw").await().hits.firstOrNull().toString()
+//                )
+//            } catch (e: Exception) {
+//                Log.e("Logos", "error", e)
+//            }
+//        }
     }
 
     val favoriteCities by lazy { weatherDatabase.favoriteCitiesDao.getFavoriteCitiesAsync() }

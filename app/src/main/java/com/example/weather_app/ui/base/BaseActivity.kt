@@ -14,10 +14,13 @@ abstract class BaseActivity : AppCompatActivity() {
         setContentView(getLayoutId())
         afterCreate(savedInstanceState)
         initViews()
+        addObservers()
     }
 
     abstract fun afterCreate(savedInstanceState: Bundle?)
 
     abstract fun initViews()
+
+    abstract fun addObservers()
 
 }

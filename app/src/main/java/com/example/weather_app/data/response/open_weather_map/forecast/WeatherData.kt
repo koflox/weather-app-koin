@@ -7,21 +7,23 @@ import com.example.weather_app.data.response.open_weather_map.common.Weather
 import com.example.weather_app.data.response.open_weather_map.common.Wind
 import com.google.gson.annotations.SerializedName
 
-data class X(
-    @SerializedName("dt")
+data class WeatherData(
+        @SerializedName("dt")
     val dt: Int,
-    @SerializedName("main")
+        @SerializedName("main")
     val main: Main,
-    @SerializedName("weather")
+        @SerializedName("weather")
     val weather: List<Weather>,
-    @SerializedName("clouds")
+        @SerializedName("clouds")
     val clouds: Clouds,
-    @SerializedName("wind")
+        @SerializedName("wind")
     val wind: Wind,
-    @SerializedName("sys")
+        @SerializedName("sys")
     val sys: Sys,
-    @SerializedName("dt_txt")
+        @SerializedName("dt_txt")
     val dtTxt: String,
-    @SerializedName("rain")
-    val rain: Rain
+        @SerializedName("rain")
+        val rain: Rain?,
+        @SerializedName("snow")
+        val snow: Snow?
 )

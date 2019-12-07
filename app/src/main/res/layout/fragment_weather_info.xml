@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:padding="16dp"
-    tools:context=".ui.weather.WeatherInfoFragment">
+    tools:context=".ui.current_weather.WeatherInfoFragment">
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/groupWeatherDescriptionViews"

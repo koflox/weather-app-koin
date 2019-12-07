@@ -1,6 +1,8 @@
 package com.example.weather_app.data.response.open_weather_map.current_weather
 
 
+import com.example.weather_app.data.displayed.DetailsWeatherData
+import com.example.weather_app.data.displayed.MainWeatherData
 import com.example.weather_app.data.response.open_weather_map.common.*
 import com.google.gson.annotations.SerializedName
 
@@ -31,4 +33,26 @@ data class CurrentWeatherResponse(
     val name: String,
     @SerializedName("cod")
     val cod: Int
+)
+
+fun CurrentWeatherResponse.toMainWeatherData() = MainWeatherData(
+        //todo add unit sign
+        temp = main.temp.toString(),
+        tempMin = main.tempMin.toString(),
+        tempMax = main.tempMax.toString(),
+        //todo add icon resources
+        weatherIconRes = 0,
+        weatherDescription = weather.firstOrNull()?.main ?: ""
+)
+
+fun CurrentWeatherResponse.toDetailsWeatherData() = DetailsWeatherData(
+        //todo calculate it
+        tempFeelsLike = "",
+        //todo add unit sign
+        wind = wind.speed.toString(),
+        humidity = main.humidity.toString(),
+        pressure = main.pressure.toString(),
+        //todo try to calculate or show N/A (now available)
+        visibility = "",
+        dewPoint = ""
 )

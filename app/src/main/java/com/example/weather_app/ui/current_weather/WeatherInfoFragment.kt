@@ -1,4 +1,4 @@
-package com.example.weather_app.ui.weather
+package com.example.weather_app.ui.current_weather
 
 import android.os.Bundle
 import android.util.Log
@@ -12,7 +12,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class WeatherInfoFragment : BaseFragment() {
 
-    private val viewModel by sharedViewModel<WeatherViewModel>()
+    private val viewModel by sharedViewModel<CurrentWeatherViewModel>()
 
     override fun getLayoutId() = R.layout.fragment_weather_info
 

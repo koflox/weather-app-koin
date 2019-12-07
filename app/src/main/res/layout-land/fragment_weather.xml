@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.weather.WeatherFragment">
+    tools:context=".ui.current_weather.CurrentWeatherFragment">
 
     <fragment
         android:id="@+id/fragmentMap"
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/fragmentWeatherInfo"
-        android:name="com.example.weather_app.ui.weather.WeatherInfoFragment"
+        android:name="com.example.weather_app.ui.current_weather.WeatherInfoFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

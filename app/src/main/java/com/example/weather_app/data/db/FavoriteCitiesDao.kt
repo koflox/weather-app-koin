@@ -24,4 +24,5 @@ interface FavoriteCitiesDao {
 
     @Delete
     fun delete(city: FavoriteCity)
+
 }

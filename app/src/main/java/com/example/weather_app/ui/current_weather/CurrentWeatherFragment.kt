@@ -1,4 +1,4 @@
-package com.example.weather_app.ui.weather
+package com.example.weather_app.ui.current_weather
 
 import android.os.Bundle
 import android.view.Menu
@@ -17,9 +17,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class WeatherFragment : BaseFragment(), OnMapReadyCallback {
+class CurrentWeatherFragment : BaseFragment(), OnMapReadyCallback {
 
-    private val viewModel by sharedViewModel<WeatherViewModel>()
+    private val viewModel by sharedViewModel<CurrentWeatherViewModel>()
 //    private val weatherInfoSharedViewModel by sharedViewModel<WeatherSharedViewModel>()
 
     private var googleMap: GoogleMap? = null
@@ -80,7 +80,7 @@ class WeatherFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap?.run {
-            this@WeatherFragment.googleMap = this
+            this@CurrentWeatherFragment.googleMap = this
             setOnMapClickListener { coordinates ->
                 //                viewModel.getWeatherByCoordinates(coordinates)
             }

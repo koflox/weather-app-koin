@@ -13,6 +13,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val networkModule = module {
+    single { createLoggingInterceptor() }
+
     val apiKeyParamPixabay = "key"
     val apiKeyParamOpenWeatherMap = "appid"
 
@@ -22,44 +24,42 @@ val networkModule = module {
     val httpClientPixabay = "httpClientPixabay"
     val httpClientOpenWeatherMap = "httpClientOpenWeatherMap"
 
-    single { createLoggingInterceptor() }
-
     single(named(authInterceptorPixabay)) {
         createAuthInterceptor(
-            apiKeyParamPixabay,
-            BuildConfig.API_KEY_PIXABAY
+                apiKeyParamPixabay,
+                BuildConfig.API_KEY_PIXABAY
         )
     }
     single(named(authInterceptorOpenWeatherMap)) {
         createAuthInterceptor(
-            apiKeyParamOpenWeatherMap,
-            BuildConfig.API_KEY_OPEN_WEATHER_MAP
+                apiKeyParamOpenWeatherMap,
+                BuildConfig.API_KEY_OPEN_WEATHER_MAP
         )
     }
 
     single(named(httpClientPixabay)) {
         createOkHttpClient(
-            get(),
-            get(named(authInterceptorPixabay))
+                get(),
+                get(named(authInterceptorPixabay))
         )
     }
     single(named(httpClientOpenWeatherMap)) {
         createOkHttpClient(
-            get(),
-            get(named(authInterceptorOpenWeatherMap))
+                get(),
+                get(named(authInterceptorOpenWeatherMap))
         )
     }
 
     single {
         createWebService<PixabayService>(
-            get(named(httpClientPixabay)),
-            BuildConfig.BASE_URL_PIXABAY
+                get(named(httpClientPixabay)),
+                BuildConfig.BASE_URL_PIXABAY
         )
     }
     single {
         createWebService<OpenWeatherMapService>(
-            get(named(httpClientOpenWeatherMap)),
-            BuildConfig.BASE_URL_OPEN_WEATHER_MAP
+                get(named(httpClientOpenWeatherMap)),
+                BuildConfig.BASE_URL_OPEN_WEATHER_MAP
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.example.weather_app.ui.weather
+package com.example.weather_app.ui.current_weather
 
 import android.app.Application
 import android.os.Handler
@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Suppress("PrivatePropertyName")
-class WeatherViewModel(
+class CurrentWeatherViewModel(
     app: Application,
     private val weatherRepository: WeatherRepository
 ) : BaseViewModel(app) {
@@ -37,10 +37,10 @@ class WeatherViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             loading.postValue(true)
             try {
-                val currentWeatherResponse = weatherRepository.getWeather(searchQuery)
-                Log.d("Logos", "currentWeatherResponse:\n$currentWeatherResponse")
                 val forecastResponse = weatherRepository.getForecast(searchQuery)
                 Log.d("Logos", "forecastResponse:\n$forecastResponse")
+                val currentWeatherResponse = weatherRepository.getWeather(searchQuery)
+                Log.d("Logos", "currentWeatherResponse:\n$currentWeatherResponse")
 //                val isFavoriteCity = weatherRepository.isCityAdded(response.location.name, response.location.lat, response.location.lng)
 //                weatherInfo.postValue(
 //                        DisplayableWeatherInfo(

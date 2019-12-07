@@ -5,8 +5,8 @@ import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-const val PIXABAY_MIN_ITEMS_PER_PAGE = 3
-const val PIXABAY_MAX_ITEMS_PER_PAGE = 200
+private const val PIXABAY_MIN_ITEMS_PER_PAGE = 3
+private const val PIXABAY_MAX_ITEMS_PER_PAGE = 200
 
 @Suppress("DeferredIsResult")
 interface PixabayService {
