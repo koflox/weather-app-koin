@@ -20,16 +20,16 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField 'String', 'APIXU_API_KEY', '"67d2d0f1f0824475901140346193006"'
-            buildConfigField 'String', 'APIXU_API_URL', '"https://api.apixu.com/v1/"'
-            buildConfigField 'String', 'PIXABAY_API_KEY', '"12790704-ea95191bf344688f4d355fce8"'
-            buildConfigField 'String', 'PIXABAY_API_URL', '"https://pixabay.com/api/"'
+            buildConfigField 'String', 'API_KEY_OPEN_WEATHER_MAP', '"17b11ea333a65bd3b531a142a88a5400"'
+            buildConfigField 'String', 'BASE_URL_OPEN_WEATHER_MAP', '"https://api.openweathermap.org/data/2.5/"'
+            buildConfigField 'String', 'API_KEY_PIXABAY', '"12790704-ea95191bf344688f4d355fce8"'
+            buildConfigField 'String', 'BASE_URL_PIXABAY', '"https://pixabay.com/api/"'
         }
         release {
-            buildConfigField 'String', 'APIXU_API_KEY', '"67d2d0f1f0824475901140346193006"'
-            buildConfigField 'String', 'APIXU_API_URL', '"https://api.apixu.com/v1/"'
-            buildConfigField 'String', 'PIXABAY_API_KEY', '"12790704-ea95191bf344688f4d355fce8"'
-            buildConfigField 'String', 'PIXABAY_API_URL', '"https://pixabay.com/api/"'
+//            buildConfigField 'String', 'APIXU_API_KEY', '"67d2d0f1f0824475901140346193006"'
+//            buildConfigField 'String', 'APIXU_API_URL', '"https://api.apixu.com/v1/"'
+//            buildConfigField 'String', 'API_KEY_PIXABAY', '"12790704-ea95191bf344688f4d355fce8"'
+//            buildConfigField 'String', 'BASE_URL_PIXABAY', '"https://pixabay.com/api/"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

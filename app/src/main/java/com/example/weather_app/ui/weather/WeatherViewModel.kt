@@ -25,24 +25,27 @@ class WeatherViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             loading.postValue(true)
             try {
-                val response = weatherRepository.getWeather(query)
-                val isFavoriteCity = weatherRepository.isCityAdded(response.location.name, response.location.lat, response.location.lng)
-                weatherInfo.postValue(
-                        DisplayableWeatherInfo(
-                                response.location.name,
-                                response.location.region,
-                                response.location.country,
-                                response.location.lat,
-                                response.location.lng,
-                                response.currentWeather.lastUpdated,
-                                response.currentWeather.condition.text,
-                                response.currentWeather.tempC.toString(),
-                                response.currentWeather.windKph.toString(),
-                                response.currentWeather.pressureIn.toString(),
-                                response.currentWeather.humidity.toString(),
-                                isFavoriteCity
-                        )
-                )
+                val currentWeatherResponse = weatherRepository.getWeather(query)
+                Log.d("Logos", "currentWeatherResponse:\n$currentWeatherResponse")
+                val forecastResponse = weatherRepository.getForecast(query)
+                Log.d("Logos", "forecastResponse:\n$forecastResponse")
+//                val isFavoriteCity = weatherRepository.isCityAdded(response.location.name, response.location.lat, response.location.lng)
+//                weatherInfo.postValue(
+//                        DisplayableWeatherInfo(
+//                                response.location.name,
+//                                response.location.region,
+//                                response.location.country,
+//                                response.location.lat,
+//                                response.location.lng,
+//                                response.currentWeather.lastUpdated,
+//                                response.currentWeather.condition.text,
+//                                response.currentWeather.tempC.toString(),
+//                                response.currentWeather.windKph.toString(),
+//                                response.currentWeather.pressureIn.toString(),
+//                                response.currentWeather.humidity.toString(),
+//                                isFavoriteCity
+//                        )
+//                )
             } catch (e: Exception) {
                 Log.e("Logos", "city was not found", e)
             } finally {

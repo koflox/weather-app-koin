@@ -1,8 +1,8 @@
 package com.example.weather_app.di
 
 import com.example.weather_app.BuildConfig
-import com.example.weather_app.data.network.ApixuService
 import com.example.weather_app.data.network.AuthInterceptor
+import com.example.weather_app.data.network.OpenWeatherMapService
 import com.example.weather_app.data.network.PixabayService
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
@@ -13,16 +13,55 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val networkModule = module {
+    val apiKeyParamPixabay = "key"
+    val apiKeyParamOpenWeatherMap = "appid"
+
+    val authInterceptorPixabay = "authInterceptorPixabay"
+    val authInterceptorOpenWeatherMap = "authInterceptorOpenWeatherMap"
+
+    val httpClientPixabay = "httpClientPixabay"
+    val httpClientOpenWeatherMap = "httpClientOpenWeatherMap"
+
     single { createLoggingInterceptor() }
 
-    single(named("apixuAuthInterceptor")) { createAuthInterceptor(BuildConfig.APIXU_API_KEY) }
-    single(named("pixabayAuthInterceptor")) { createAuthInterceptor(BuildConfig.PIXABAY_API_KEY) }
+    single(named(authInterceptorPixabay)) {
+        createAuthInterceptor(
+            apiKeyParamPixabay,
+            BuildConfig.API_KEY_PIXABAY
+        )
+    }
+    single(named(authInterceptorOpenWeatherMap)) {
+        createAuthInterceptor(
+            apiKeyParamOpenWeatherMap,
+            BuildConfig.API_KEY_OPEN_WEATHER_MAP
+        )
+    }
 
-    single(named("apixuHttpClient")) { createOkHttpClient(get(), get(named("apixuAuthInterceptor"))) }
-    single(named("pixabayHttpClient")) { createOkHttpClient(get(), get(named("pixabayAuthInterceptor"))) }
+    single(named(httpClientPixabay)) {
+        createOkHttpClient(
+            get(),
+            get(named(authInterceptorPixabay))
+        )
+    }
+    single(named(httpClientOpenWeatherMap)) {
+        createOkHttpClient(
+            get(),
+            get(named(authInterceptorOpenWeatherMap))
+        )
+    }
 
-    single { createWebService<ApixuService>(get(named("apixuHttpClient")), BuildConfig.APIXU_API_URL) }
-    single { createWebService<PixabayService>(get(named("pixabayHttpClient")), BuildConfig.PIXABAY_API_URL) }
+    single {
+        createWebService<PixabayService>(
+            get(named(httpClientPixabay)),
+            BuildConfig.BASE_URL_PIXABAY
+        )
+    }
+    single {
+        createWebService<OpenWeatherMapService>(
+            get(named(httpClientOpenWeatherMap)),
+            BuildConfig.BASE_URL_OPEN_WEATHER_MAP
+        )
+    }
 }
 
 private fun createOkHttpClient(
@@ -37,8 +76,8 @@ private fun createLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInte
     level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
 }
 
-private fun createAuthInterceptor(apiKey: String): AuthInterceptor =
-    AuthInterceptor(apiKey)
+private fun createAuthInterceptor(apiKeyParam: String, apiKeyValue: String) =
+    AuthInterceptor(apiKeyParam, apiKeyValue)
 
 private inline fun <reified T> createWebService(okHttpClient: OkHttpClient, url: String): T {
     val retrofit = Retrofit.Builder()
