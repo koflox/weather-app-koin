@@ -3,9 +3,11 @@ package com.example.weather_app.ui.current_weather
 import android.app.Application
 import android.os.Handler
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.data.WeatherRepository
+import com.example.weather_app.data.displayed.*
 import com.example.weather_app.data.entity.DisplayableWeatherInfo
 import com.example.weather_app.extensions.toFavoriteCity
 import com.example.weather_app.ui.base.BaseViewModel
@@ -14,9 +16,13 @@ import kotlinx.coroutines.launch
 
 @Suppress("PrivatePropertyName")
 class CurrentWeatherViewModel(
-    app: Application,
-    private val weatherRepository: WeatherRepository
+        app: Application,
+        private val weatherRepository: WeatherRepository
 ) : BaseViewModel(app) {
+
+    val _weatherData = MutableLiveData<List<WeatherData>>()
+    val weatherData: LiveData<List<WeatherData>>
+        get() = _weatherData
 
     private val searchHandler = Handler()
     private val searchRunnable = Runnable {
@@ -41,23 +47,18 @@ class CurrentWeatherViewModel(
                 Log.d("Logos", "forecastResponse:\n$forecastResponse")
                 val currentWeatherResponse = weatherRepository.getWeather(searchQuery)
                 Log.d("Logos", "currentWeatherResponse:\n$currentWeatherResponse")
-//                val isFavoriteCity = weatherRepository.isCityAdded(response.location.name, response.location.lat, response.location.lng)
-//                weatherInfo.postValue(
-//                        DisplayableWeatherInfo(
-//                                response.location.name,
-//                                response.location.region,
-//                                response.location.country,
-//                                response.location.lat,
-//                                response.location.lng,
-//                                response.currentWeather.lastUpdated,
-//                                response.currentWeather.condition.text,
-//                                response.currentWeather.tempC.toString(),
-//                                response.currentWeather.windKph.toString(),
-//                                response.currentWeather.pressureIn.toString(),
-//                                response.currentWeather.humidity.toString(),
-//                                isFavoriteCity
-//                        )
-//                )
+
+                _weatherData.postValue(listOf(
+                        MainWeatherData("", "", "", 0, ""),
+                        MainWeatherData("", "", "", 0, ""),
+                        HourlyWeatherData(listOf()),
+                        DetailsWeatherData("", "", "", "", "", ""),
+                        DetailsWeatherData("", "", "", "", "", ""),
+                        PrecipitationWeatherData(listOf()),
+                        PrecipitationWeatherData(listOf()),
+                        PrecipitationWeatherData(listOf()),
+                        ForecastWeatherData(listOf())
+                ))
             } catch (e: Exception) {
                 Log.e("Logos", "city was not found", e)
             } finally {
@@ -85,7 +86,7 @@ class CurrentWeatherViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             weatherInfo.value?.let { info ->
                 val isCityAdded =
-                    weatherRepository.isCityAdded("", info.lat, info.lng) //todo review logic
+                        weatherRepository.isCityAdded("", info.lat, info.lng) //todo review logic
                 with(info.toFavoriteCity()) {
                     if (isCityAdded) {
                         weatherRepository.deleteFavoriteCity(this)

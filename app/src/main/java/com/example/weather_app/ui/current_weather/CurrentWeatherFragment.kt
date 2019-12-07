@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
 import com.example.weather_app.extensions.nonNull
 import com.example.weather_app.extensions.showToast
@@ -12,9 +13,9 @@ import com.example.weather_app.ui.base.BaseFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.fragment_weather.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CurrentWeatherFragment : BaseFragment(), OnMapReadyCallback {
@@ -23,6 +24,7 @@ class CurrentWeatherFragment : BaseFragment(), OnMapReadyCallback {
 //    private val weatherInfoSharedViewModel by sharedViewModel<WeatherSharedViewModel>()
 
     private var googleMap: GoogleMap? = null
+    private val weatherAdapter = WeatherAdapter()
 
     override fun getLayoutId() = R.layout.fragment_weather
 
@@ -33,8 +35,14 @@ class CurrentWeatherFragment : BaseFragment(), OnMapReadyCallback {
     override fun initViews() {
         setHasOptionsMenu(true)
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.fragmentMap) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+        rvWeatherData.apply {
+            adapter = weatherAdapter
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+        }
+
+//        val mapFragment = childFragmentManager.findFragmentById(R.id.fragmentMap) as SupportMapFragment
+//        mapFragment.getMapAsync(this)
     }
 
     override fun addObservers() {
@@ -56,6 +64,9 @@ class CurrentWeatherFragment : BaseFragment(), OnMapReadyCallback {
                 context?.showToast(msg)
             })
         }
+        viewModel.weatherData.observe(this, Observer { weatherData ->
+            weatherAdapter.setData(weatherData)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
