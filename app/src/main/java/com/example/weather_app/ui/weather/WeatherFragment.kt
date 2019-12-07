@@ -9,7 +9,6 @@ import com.example.weather_app.R
 import com.example.weather_app.extensions.nonNull
 import com.example.weather_app.extensions.showToast
 import com.example.weather_app.ui.base.BaseFragment
-import com.example.weather_app.ui.base.shared.WeatherSharedViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -17,7 +16,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WeatherFragment : BaseFragment(), OnMapReadyCallback {
 
@@ -67,12 +65,13 @@ class WeatherFragment : BaseFragment(), OnMapReadyCallback {
             queryHint = getString(R.string.search)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    query?.run { viewModel.getWeather(this) }
+//                    query?.run { viewModel.getWeather(this) }
                     //todo hide keyboard
-                    return true
+                    return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
+                    newText?.run { viewModel.onQueryTextChange(this) }
                     return true
                 }
             })
@@ -83,7 +82,7 @@ class WeatherFragment : BaseFragment(), OnMapReadyCallback {
         googleMap?.run {
             this@WeatherFragment.googleMap = this
             setOnMapClickListener { coordinates ->
-                viewModel.getWeatherByCoordinates(coordinates)
+                //                viewModel.getWeatherByCoordinates(coordinates)
             }
         }
         viewModel.setMapIsReady()
