@@ -1,11 +1,11 @@
 package com.example.weather_app.ui.current_weather
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.*
+import com.example.weather_app.extensions.toView
 
 class WeatherAdapter : RecyclerView.Adapter<BaseWeatherViewHolder>() {
 
@@ -26,23 +26,23 @@ class WeatherAdapter : RecyclerView.Adapter<BaseWeatherViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseWeatherViewHolder = when (viewType) {
         WeatherData.MAIN -> {
             val layoutId = R.layout.item_weather_data_main
-            MainWeatherDataVH(layoutId.toView(parent))
+            MainWeatherDataVH(toView(layoutId, parent))
         }
         WeatherData.HOURLY -> {
             val layoutId = R.layout.item_weather_data_hourly
-            HourlyWeatherDataVH(layoutId.toView(parent))
+            HourlyWeatherDataVH(toView(layoutId, parent))
         }
         WeatherData.DETAILS -> {
             val layoutId = R.layout.item_weather_data_details
-            DetailsWeatherDataVH(layoutId.toView(parent))
+            DetailsWeatherDataVH(toView(layoutId, parent))
         }
         WeatherData.PRECIPITATION -> {
             val layoutId = R.layout.item_weather_data_precipitation
-            PrecipitationWeatherDataVH(layoutId.toView(parent))
+            PrecipitationWeatherDataVH(toView(layoutId, parent))
         }
         WeatherData.FORECAST -> {
             val layoutId = R.layout.item_weather_data_forecast
-            ForecastWeatherDataVH(layoutId.toView(parent))
+            ForecastWeatherDataVH(toView(layoutId, parent))
         }
         else -> throw IllegalArgumentException("Unsupported weather data type!")
     }
@@ -52,8 +52,6 @@ class WeatherAdapter : RecyclerView.Adapter<BaseWeatherViewHolder>() {
     override fun onBindViewHolder(holderWeather: BaseWeatherViewHolder, position: Int) {
         holderWeather.bind(data[position])
     }
-
-    private fun Int.toView(parent: ViewGroup) = LayoutInflater.from(parent.context).inflate(this, parent, false)
 
 }
 

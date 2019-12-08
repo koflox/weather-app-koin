@@ -20,7 +20,7 @@ class CurrentWeatherViewModel(
         private val weatherRepository: WeatherRepository
 ) : BaseViewModel(app) {
 
-    val _weatherData = MutableLiveData<List<WeatherData>>()
+    private val _weatherData = MutableLiveData<List<WeatherData>>()
     val weatherData: LiveData<List<WeatherData>>
         get() = _weatherData
 
