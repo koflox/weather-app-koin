@@ -1,5 +1,10 @@
 package com.example.weather_app.util
 
+import android.graphics.Typeface
+import android.os.Build
+import android.text.TextPaint
+import android.text.style.MetricAffectingSpan
+import android.text.style.TypefaceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,3 +32,20 @@ fun ImageView.loadFromResource(@DrawableRes resId: Int) = Glide.with(context)
 
 fun toView(@LayoutRes resId: Int, parent: ViewGroup): View = LayoutInflater.from(parent.context)
         .inflate(resId, parent, false)
+
+fun getTypefaceSpan(typeface: Typeface): MetricAffectingSpan {
+    return when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> TypefaceSpan(typeface)
+        else -> CompatTypefaceSpan(typeface)
+    }
+}
+
+class CompatTypefaceSpan(private val typeface: Typeface) : MetricAffectingSpan() {
+    override fun updateDrawState(paint: TextPaint) {
+        paint.typeface = typeface
+    }
+
+    override fun updateMeasureState(paint: TextPaint) {
+        paint.typeface = typeface
+    }
+}

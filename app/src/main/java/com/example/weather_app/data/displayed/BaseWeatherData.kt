@@ -1,5 +1,7 @@
 package com.example.weather_app.data.displayed
 
+import com.example.weather_app.data.response.open_weather_map.current_weather.DetailsWeatherDataItem
+
 sealed class WeatherData {
 
     companion object {
@@ -38,7 +40,7 @@ data class HourlyWeatherData(
 }
 
 data class DetailsWeatherData(
-        val values: List<Pair<Int, String>>
+        val values: List<DetailsWeatherDataItem>
 ) : WeatherData() {
 
     override fun getDataType() = DETAILS

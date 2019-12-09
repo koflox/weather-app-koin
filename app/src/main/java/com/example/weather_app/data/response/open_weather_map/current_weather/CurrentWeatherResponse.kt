@@ -1,6 +1,7 @@
 package com.example.weather_app.data.response.open_weather_map.current_weather
 
 
+import androidx.annotation.DrawableRes
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.DetailsWeatherData
 import com.example.weather_app.data.displayed.MainWeatherData
@@ -52,14 +53,22 @@ fun CurrentWeatherResponse.toMainWeatherData() = MainWeatherData(
         weatherDescription = weather.firstOrNull()?.main ?: ""
 )
 
+//todo place to right package
+data class DetailsWeatherDataItem(
+        @DrawableRes val resourceId: Int,
+        val desc: String,
+        val value: String,
+        val unit: String = ""
+)
+
 fun CurrentWeatherResponse.toDetailsWeatherData(): DetailsWeatherData {
-    val values = mutableListOf<Pair<Int, String>>().apply {
-        add(Pair(R.drawable.ic_thermometer, "Feels like\nN/A")) //todo calculate it
-        add(Pair(R.drawable.ic_wind, "Wind\n${wind.speed.toInt()} m/s"))
-        add(Pair(R.drawable.ic_humidity, "Humidity\n${main.humidity} %"))
-        add(Pair(R.drawable.ic_barometer, "Pressure\n${main.pressure} hPa"))
-        add(Pair(0, "Visibility\nN/A"))
-        add(Pair(0, "Dew point\nN/A"))
+    val values = mutableListOf<DetailsWeatherDataItem>().apply {
+        add(DetailsWeatherDataItem(R.drawable.ic_thermometer, "Feels like", "N/A")) //todo calculate it
+        add(DetailsWeatherDataItem(R.drawable.ic_wind, "Wind", wind.speed.toInt().toString(), "m/s"))
+        add(DetailsWeatherDataItem(R.drawable.ic_humidity, "Humidity", main.humidity.toString(), "%"))
+        add(DetailsWeatherDataItem(R.drawable.ic_barometer, "Pressure", main.pressure.toString(), "hPa"))
+        add(DetailsWeatherDataItem(0, "Visibility", "N/A"))
+        add(DetailsWeatherDataItem(0, "Dew point", "N/A"))
     }
     return DetailsWeatherData(values)
 }

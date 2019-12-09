@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
 import com.example.weather_app.ui.base.BaseFragment
-import com.example.weather_app.util.nonNull
+import com.example.weather_app.util.notNull
 import com.example.weather_app.util.showToast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -48,7 +48,7 @@ class CurrentWeatherFragment : BaseFragment(), OnMapReadyCallback {
     override fun addObservers() {
         viewModel.run {
             weatherInfo.observe(viewLifecycleOwner, Observer {
-                nonNull(googleMap, it) { map, currentWeather ->
+                notNull(googleMap, it) { map, currentWeather ->
                     map.run {
                         val location = LatLng(currentWeather.lat, currentWeather.lng)
                         addMarker(MarkerOptions().position(location).title(currentWeather.cityName))

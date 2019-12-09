@@ -1,17 +1,20 @@
 package com.example.weather_app.ui.current_weather
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
+import com.example.weather_app.data.response.open_weather_map.current_weather.DetailsWeatherDataItem
+import com.example.weather_app.util.toSpannableString
 import com.example.weather_app.util.toView
 import kotlinx.android.synthetic.main.item_weather_data_details_item.view.*
 
 class DetailsWeatherDataAdapter : RecyclerView.Adapter<DetailsWeatherDataItemVH>() {
 
-    private val data = mutableListOf<Pair<Int, String>>()
+    private val data = mutableListOf<DetailsWeatherDataItem>()
 
-    fun setData(data: List<Pair<Int, String>>) {
+    fun setData(data: List<DetailsWeatherDataItem>) {
         this.data.run {
             clear()
             addAll(data)
@@ -33,11 +36,20 @@ class DetailsWeatherDataAdapter : RecyclerView.Adapter<DetailsWeatherDataItemVH>
 
 class DetailsWeatherDataItemVH(private val v: View) : RecyclerView.ViewHolder(v) {
 
-    fun bind(item: Pair<Int, String>) {
+    fun bind(item: DetailsWeatherDataItem) {
         v.run {
-            if (item.first != 0) //todo remove "if" statement after adding missing icons
-                ivDetailIcon.setImageResource(item.first)
-            tvDescription.text = item.second
+            if (item.resourceId != 0) //todo remove "if" statement after adding missing icons
+                ivDetailIcon.setImageResource(item.resourceId)
+
+            val value = "${item.value} ${item.unit}"
+            val text = "${item.desc}\n$value"
+            tvDescription.text = text.toSpannableString(
+                    color = Color.rgb(245, 240, 240),
+                    sizeProportion = 1.15F,
+                    universalStart = text.length - value.length,
+                    universalEnd = text.length,
+                    useUniversalRange = true
+            )
         }
     }
 
