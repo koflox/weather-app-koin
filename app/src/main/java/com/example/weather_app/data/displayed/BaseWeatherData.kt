@@ -20,6 +20,8 @@ data class MainWeatherData(
         val temp: Int,
         val tempMin: Int,
         val tempMax: Int,
+        val tempUnitMain: String,
+        val tempUnitExtra: String = "",
         val weatherIconRes: Int,
         val weatherDescription: String,
         val dayName: String = "",

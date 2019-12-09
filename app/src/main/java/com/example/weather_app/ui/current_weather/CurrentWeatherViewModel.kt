@@ -97,7 +97,7 @@ class CurrentWeatherViewModel(
 
 
                 _weatherData.postValue(listOf(
-                        currentWeatherResponse.toMainWeatherData(),
+                        currentWeatherResponse.toMainWeatherData(TIME_PATTERN_MAIN_WEATHER_DATA),
                         hourlyWeatherData,
                         currentWeatherResponse.toDetailsWeatherData(),
                         precipitationWeatherData,

@@ -2,6 +2,7 @@ package com.example.weather_app.ui.current_weather
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
@@ -52,7 +53,12 @@ class MainWeatherDataVH(private val parent: View, private val v: View) : BaseWea
 
     override fun bind(data: WeatherData) {
         val mainWeatherData = data as MainWeatherData
-        v.minimumHeight = parent.measuredHeight / 4 * 3 - (parent.measuredHeight * 0.1).toInt()
+
+        val desiredHeight = parent.measuredHeight / 10 * 7
+        when (v) {
+            is ConstraintLayout -> v.minHeight = desiredHeight
+            else -> v.minimumHeight = desiredHeight
+        }
     }
 
 }
@@ -61,7 +67,7 @@ class HourlyWeatherDataVH(private val parent: View, private val v: View) : BaseW
 
     override fun bind(data: WeatherData) {
         val hourlyWeatherData = data as HourlyWeatherData
-        v.minimumHeight = parent.measuredHeight / 4
+        v.minimumHeight = parent.measuredHeight / 10 * 2
     }
 
 }

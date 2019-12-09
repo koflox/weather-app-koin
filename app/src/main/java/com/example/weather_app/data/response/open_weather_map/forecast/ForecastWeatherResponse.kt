@@ -95,6 +95,7 @@ fun ForecastWeatherResponse.toForecastWeatherData(): ForecastWeatherData {
                         temp = (tempMax + tempMin) / 2,
                         tempMax = tempMax,
                         tempMin = tempMin,
+                        tempUnitMain = "°C",
                         weatherIconRes = 0,
 //                        weatherIconRes = conditions.maxBy { it.value }?.key?.toInt() ?: 0, //todo
                         dayName = "", //todo

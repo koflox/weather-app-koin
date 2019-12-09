@@ -1,6 +1,7 @@
 package com.example.weather_app.data.response.open_weather_map.current_weather
 
 
+import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.DetailsWeatherData
@@ -8,7 +9,9 @@ import com.example.weather_app.data.displayed.MainWeatherData
 import com.example.weather_app.data.response.open_weather_map.common.*
 import com.example.weather_app.data.response.open_weather_map.forecast.Rain
 import com.example.weather_app.data.response.open_weather_map.forecast.Snow
+import com.example.weather_app.util.formatToLocalTime
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class CurrentWeatherResponse(
         @SerializedName("coord")
@@ -43,15 +46,21 @@ data class CurrentWeatherResponse(
         val snow: Snow?
 )
 
-fun CurrentWeatherResponse.toMainWeatherData() = MainWeatherData(
-        //todo add unit sign
-        temp = main.temp.toInt(),
-        tempMin = main.tempMin.toInt(),
-        tempMax = main.tempMax.toInt(),
-        //todo add icon resources
-        weatherIconRes = 0,
-        weatherDescription = weather.firstOrNull()?.main ?: ""
-)
+@SuppressLint("DefaultLocale")
+fun CurrentWeatherResponse.toMainWeatherData(timePattern: String): MainWeatherData {
+    val weather = weather.firstOrNull()
+    return MainWeatherData(
+            main.temp.toInt(),
+            main.tempMin.toInt(),
+            main.tempMax.toInt(),
+            "°",
+            "°C",
+            weather?.id ?: R.drawable.ic_na,
+            weather?.main ?: "",
+            dt.formatToLocalTime(timePattern, timezone)
+                    .toLowerCase(Locale.getDefault())
+                    .capitalize())
+}
 
 //todo place to right package
 data class DetailsWeatherDataItem(

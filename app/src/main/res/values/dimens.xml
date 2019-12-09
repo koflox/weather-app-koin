@@ -3,4 +3,6 @@
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="common_grid_spacing">8dp</dimen>
+    <dimen name="indent_small">8dp</dimen>
+    <dimen name="indent_medium">24dp</dimen>
 </resources>
