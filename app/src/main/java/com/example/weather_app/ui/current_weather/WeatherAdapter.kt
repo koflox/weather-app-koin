@@ -24,26 +24,11 @@ class WeatherAdapter : RecyclerView.Adapter<BaseWeatherViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseWeatherViewHolder = when (viewType) {
-        WeatherData.MAIN -> MainWeatherDataVH(toView(R.layout.item_weather_data_main, parent))
-        WeatherData.HOURLY -> HourlyWeatherDataVH(toView(R.layout.item_weather_data_hourly, parent))
-        WeatherData.DETAILS -> DetailsWeatherDataVH(
-            toView(
-                R.layout.item_weather_data_details,
-                parent
-            )
-        )
-        WeatherData.PRECIPITATION -> PrecipitationWeatherDataVH(
-            toView(
-                R.layout.item_weather_data_precipitation,
-                parent
-            )
-        )
-        WeatherData.FORECAST -> ForecastWeatherDataVH(
-            toView(
-                R.layout.item_weather_data_forecast,
-                parent
-            )
-        )
+        WeatherData.MAIN -> MainWeatherDataVH(parent, toView(R.layout.item_weather_data_main, parent))
+        WeatherData.HOURLY -> HourlyWeatherDataVH(parent, toView(R.layout.item_weather_data_hourly, parent))
+        WeatherData.DETAILS -> DetailsWeatherDataVH(toView(R.layout.item_weather_data_details, parent))
+        WeatherData.PRECIPITATION -> PrecipitationWeatherDataVH(toView(R.layout.item_weather_data_precipitation, parent))
+        WeatherData.FORECAST -> ForecastWeatherDataVH(toView(R.layout.item_weather_data_forecast, parent))
         else -> throw IllegalArgumentException("Unsupported weather data type!")
     }
 
@@ -61,18 +46,20 @@ abstract class BaseWeatherViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
 }
 
-class MainWeatherDataVH(v: View) : BaseWeatherViewHolder(v) {
+class MainWeatherDataVH(private val parent: View, private val v: View) : BaseWeatherViewHolder(v) {
 
     override fun bind(data: WeatherData) {
         val mainWeatherData = data as MainWeatherData
+        v.minimumHeight = parent.measuredHeight / 4 * 3
     }
 
 }
 
-class HourlyWeatherDataVH(v: View) : BaseWeatherViewHolder(v) {
+class HourlyWeatherDataVH(private val parent: View, private val v: View) : BaseWeatherViewHolder(v) {
 
     override fun bind(data: WeatherData) {
         val hourlyWeatherData = data as HourlyWeatherData
+        v.minimumHeight = parent.measuredHeight / 4
     }
 
 }
