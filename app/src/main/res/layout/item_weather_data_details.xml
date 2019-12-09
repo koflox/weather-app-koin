@@ -8,4 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="details" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDetailsWeatherData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp" />
+
 </LinearLayout>

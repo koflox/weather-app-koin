@@ -2,12 +2,14 @@ package com.example.weather_app.ui.current_weather
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.*
 import com.example.weather_app.util.toView
+import kotlinx.android.synthetic.main.item_weather_data_details.view.*
 
-class WeatherAdapter : RecyclerView.Adapter<BaseWeatherViewHolder>() {
+class WeatherAdapter : RecyclerView.Adapter<BaseWeatherDataVH>() {
 
     private val data = mutableListOf<WeatherData>()
 
@@ -23,7 +25,7 @@ class WeatherAdapter : RecyclerView.Adapter<BaseWeatherViewHolder>() {
         return data[position].getDataType()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseWeatherViewHolder = when (viewType) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseWeatherDataVH = when (viewType) {
         WeatherData.MAIN -> MainWeatherDataVH(parent, toView(R.layout.item_weather_data_main, parent))
         WeatherData.HOURLY -> HourlyWeatherDataVH(parent, toView(R.layout.item_weather_data_hourly, parent))
         WeatherData.DETAILS -> DetailsWeatherDataVH(toView(R.layout.item_weather_data_details, parent))
@@ -34,28 +36,28 @@ class WeatherAdapter : RecyclerView.Adapter<BaseWeatherViewHolder>() {
 
     override fun getItemCount() = data.size
 
-    override fun onBindViewHolder(holderWeather: BaseWeatherViewHolder, position: Int) {
+    override fun onBindViewHolder(holderWeather: BaseWeatherDataVH, position: Int) {
         holderWeather.bind(data[position])
     }
 
 }
 
-abstract class BaseWeatherViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+abstract class BaseWeatherDataVH(v: View) : RecyclerView.ViewHolder(v) {
 
     abstract fun bind(data: WeatherData)
 
 }
 
-class MainWeatherDataVH(private val parent: View, private val v: View) : BaseWeatherViewHolder(v) {
+class MainWeatherDataVH(private val parent: View, private val v: View) : BaseWeatherDataVH(v) {
 
     override fun bind(data: WeatherData) {
         val mainWeatherData = data as MainWeatherData
-        v.minimumHeight = parent.measuredHeight / 4 * 3
+        v.minimumHeight = parent.measuredHeight / 4 * 3 - (parent.measuredHeight * 0.1).toInt()
     }
 
 }
 
-class HourlyWeatherDataVH(private val parent: View, private val v: View) : BaseWeatherViewHolder(v) {
+class HourlyWeatherDataVH(private val parent: View, private val v: View) : BaseWeatherDataVH(v) {
 
     override fun bind(data: WeatherData) {
         val hourlyWeatherData = data as HourlyWeatherData
@@ -64,15 +66,25 @@ class HourlyWeatherDataVH(private val parent: View, private val v: View) : BaseW
 
 }
 
-class DetailsWeatherDataVH(v: View) : BaseWeatherViewHolder(v) {
+class DetailsWeatherDataVH(private val v: View) : BaseWeatherDataVH(v) {
 
     override fun bind(data: WeatherData) {
         val detailsWeatherData = data as DetailsWeatherData
+        v.rvDetailsWeatherData.apply {
+            val spacing = context.resources.getDimensionPixelSize(R.dimen.common_grid_spacing)
+            val spanCount = context.resources.getInteger(R.integer.span_count_details_weather_data)
+
+            addItemDecoration(ItemDecorator(spacing, spanCount))
+            layoutManager = GridLayoutManager(context, spanCount)
+            adapter = DetailsWeatherDataAdapter().apply {
+                setData(detailsWeatherData.values)
+            }
+        }
     }
 
 }
 
-class PrecipitationWeatherDataVH(v: View) : BaseWeatherViewHolder(v) {
+class PrecipitationWeatherDataVH(v: View) : BaseWeatherDataVH(v) {
 
     override fun bind(data: WeatherData) {
         val precipitationData = data as PrecipitationWeatherData
@@ -80,7 +92,7 @@ class PrecipitationWeatherDataVH(v: View) : BaseWeatherViewHolder(v) {
 
 }
 
-class ForecastWeatherDataVH(v: View) : BaseWeatherViewHolder(v) {
+class ForecastWeatherDataVH(v: View) : BaseWeatherDataVH(v) {
 
     override fun bind(data: WeatherData) {
         val forecastData = data as ForecastWeatherData
