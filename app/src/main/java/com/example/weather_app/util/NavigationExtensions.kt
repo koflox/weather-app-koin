@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.weather_app.extensions
+package com.example.weather_app.util
 
 import android.content.Intent
 import android.util.SparseArray

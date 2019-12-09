@@ -1,6 +1,7 @@
-package com.example.weather_app.extensions
+package com.example.weather_app.util
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
@@ -24,5 +25,5 @@ fun ImageView.loadFromResource(@DrawableRes resId: Int) = Glide.with(context)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(this)
 
-fun toView(@LayoutRes resId: Int, parent: ViewGroup) = LayoutInflater.from(parent.context)
+fun toView(@LayoutRes resId: Int, parent: ViewGroup): View = LayoutInflater.from(parent.context)
         .inflate(resId, parent, false)

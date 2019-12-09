@@ -4,6 +4,8 @@ package com.example.weather_app.data.response.open_weather_map.current_weather
 import com.example.weather_app.data.displayed.DetailsWeatherData
 import com.example.weather_app.data.displayed.MainWeatherData
 import com.example.weather_app.data.response.open_weather_map.common.*
+import com.example.weather_app.data.response.open_weather_map.forecast.Rain
+import com.example.weather_app.data.response.open_weather_map.forecast.Snow
 import com.google.gson.annotations.SerializedName
 
 data class CurrentWeatherResponse(
@@ -32,14 +34,18 @@ data class CurrentWeatherResponse(
     @SerializedName("name")
     val name: String,
     @SerializedName("cod")
-    val cod: Int
+    val cod: Int,
+    @SerializedName("rain")
+    val rain: Rain?,
+    @SerializedName("snow")
+    val snow: Snow?
 )
 
 fun CurrentWeatherResponse.toMainWeatherData() = MainWeatherData(
         //todo add unit sign
-        temp = main.temp.toString(),
-        tempMin = main.tempMin.toString(),
-        tempMax = main.tempMax.toString(),
+    temp = main.temp.toInt(),
+    tempMin = main.tempMin.toInt(),
+    tempMax = main.tempMax.toInt(),
         //todo add icon resources
         weatherIconRes = 0,
         weatherDescription = weather.firstOrNull()?.main ?: ""
@@ -47,12 +53,12 @@ fun CurrentWeatherResponse.toMainWeatherData() = MainWeatherData(
 
 fun CurrentWeatherResponse.toDetailsWeatherData() = DetailsWeatherData(
         //todo calculate it
-        tempFeelsLike = "",
+    tempFeelsLike = "N/A",
         //todo add unit sign
         wind = wind.speed.toString(),
         humidity = main.humidity.toString(),
         pressure = main.pressure.toString(),
         //todo try to calculate or show N/A (now available)
-        visibility = "",
-        dewPoint = ""
+    visibility = "N/A",
+    dewPoint = "N/A"
 )

@@ -1,5 +1,6 @@
 package com.example.weather_app.ui.current_weather
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Handler
 import android.util.Log
@@ -7,18 +8,34 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.data.WeatherRepository
-import com.example.weather_app.data.displayed.*
+import com.example.weather_app.data.displayed.WeatherData
 import com.example.weather_app.data.entity.DisplayableWeatherInfo
-import com.example.weather_app.extensions.toFavoriteCity
+import com.example.weather_app.data.response.open_weather_map.current_weather.toDetailsWeatherData
+import com.example.weather_app.data.response.open_weather_map.current_weather.toMainWeatherData
+import com.example.weather_app.data.response.open_weather_map.forecast.toForecastWeatherData
+import com.example.weather_app.data.response.open_weather_map.forecast.toHourlyWeatherData
+import com.example.weather_app.data.response.open_weather_map.forecast.toPrecipitationWeatherData
 import com.example.weather_app.ui.base.BaseViewModel
+import com.example.weather_app.util.formatToLocalTime
+import com.example.weather_app.util.toFavoriteCity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
-@Suppress("PrivatePropertyName")
 class CurrentWeatherViewModel(
         app: Application,
         private val weatherRepository: WeatherRepository
 ) : BaseViewModel(app) {
+
+    companion object {
+        private const val TIME_PATTERN_HOURLY_WEATHER_DATA = "ha"
+        private const val TIME_PATTERN_PRECIPITATION_WEATHER_DATA = "ha"
+        private const val TIME_PATTERN_MAIN_WEATHER_DATA = "EEE, h:mm a"
+
+        private const val SEGMENT_COUNT_HOURLY_WEATHER_DATA = 8
+        private const val SEGMENT_COUNT_PRECIPITATION_WEATHER_DATA = 8
+        private const val SEGMENT_COUNT_FORECAST_WEATHER_DATA = 5
+    }
 
     private val _weatherData = MutableLiveData<List<WeatherData>>()
     val weatherData: LiveData<List<WeatherData>>
@@ -35,10 +52,16 @@ class CurrentWeatherViewModel(
     val message = MutableLiveData<String>() //todo change to single event live data
     private val mapIsReady = MutableLiveData<Boolean>()
 
+    init {
+        searchQuery = "warsaw"
+        getCurrentWeather()
+    }
+
     override fun onCleared() {
         searchHandler.removeCallbacks(searchRunnable)
     }
 
+    @SuppressLint("DefaultLocale")
     private fun getCurrentWeather() {
         viewModelScope.launch(Dispatchers.IO) {
             loading.postValue(true)
@@ -48,20 +71,40 @@ class CurrentWeatherViewModel(
                 val currentWeatherResponse = weatherRepository.getWeather(searchQuery)
                 Log.d("Logos", "currentWeatherResponse:\n$currentWeatherResponse")
 
+
+                currentWeatherResponse.dt
+                        .formatToLocalTime(TIME_PATTERN_MAIN_WEATHER_DATA, currentWeatherResponse.timezone)
+                        .toLowerCase(Locale.getDefault())
+                        .capitalize()
+
+                val currentHourWeatherData = Pair("NOW", currentWeatherResponse.main.temp.toInt())
+                val hourlyWeatherData = forecastResponse.toHourlyWeatherData(
+                        TIME_PATTERN_HOURLY_WEATHER_DATA,
+                        SEGMENT_COUNT_HOURLY_WEATHER_DATA,
+                        currentHourWeatherData)
+
+
+                val precipitationValue = when {
+                    currentWeatherResponse.rain != null -> currentWeatherResponse.rain.h.toInt()
+                    currentWeatherResponse.snow != null -> currentWeatherResponse.snow.h.toInt()
+                    else -> 0
+                }
+                val currentPrecipitationWeatherData = Pair("NOW", precipitationValue)
+                val precipitationWeatherData = forecastResponse.toPrecipitationWeatherData(
+                        TIME_PATTERN_PRECIPITATION_WEATHER_DATA,
+                        SEGMENT_COUNT_PRECIPITATION_WEATHER_DATA,
+                        currentPrecipitationWeatherData)
+
+
                 _weatherData.postValue(listOf(
-                        MainWeatherData("", "", "", 0, ""),
-                        MainWeatherData("", "", "", 0, ""),
-                        HourlyWeatherData(listOf()),
-                        DetailsWeatherData("", "", "", "", "", ""),
-                        DetailsWeatherData("", "", "", "", "", ""),
-                        PrecipitationWeatherData(listOf()),
-                        PrecipitationWeatherData(listOf()),
-                        PrecipitationWeatherData(listOf()),
-                        ForecastWeatherData(listOf())
+                        currentWeatherResponse.toMainWeatherData(),
+                        hourlyWeatherData,
+                        currentWeatherResponse.toDetailsWeatherData(),
+                        precipitationWeatherData,
+                        forecastResponse.toForecastWeatherData()
                 ))
             } catch (e: Exception) {
                 Log.e("Logos", "city was not found", e)
-            } finally {
             }
             loading.postValue(false)
         }

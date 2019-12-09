@@ -15,13 +15,13 @@ sealed class WeatherData {
 }
 
 data class MainWeatherData(
-        val temp: String,
-        val tempMin: String,
-        val tempMax: String,
-        val weatherIconRes: Int,
-        val weatherDescription: String,
-        val dayName: String = "",
-        val chanceOfPrecipitation: String = ""
+    val temp: Int,
+    val tempMin: Int,
+    val tempMax: Int,
+    val weatherIconRes: Int,
+    val weatherDescription: String,
+    val dayName: String = "",
+    val chanceOfPrecipitation: String = ""
 ) : WeatherData() {
 
     override fun getDataType() = MAIN
@@ -30,7 +30,7 @@ data class MainWeatherData(
 
 data class HourlyWeatherData(
         // time : temp
-        val values: List<Pair<String, String>>
+    val values: List<Pair<String, Int>>
 ) : WeatherData() {
 
     override fun getDataType() = HOURLY
@@ -51,8 +51,8 @@ data class DetailsWeatherData(
 }
 
 data class PrecipitationWeatherData(
-        // time : chance of precipitation
-        val values: List<Pair<String, String>>
+    // time : amount of precipitation in mm for last 3 hours
+    val values: List<Pair<String, Int>>
 ) : WeatherData() {
 
     override fun getDataType() = PRECIPITATION

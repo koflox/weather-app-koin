@@ -1,4 +1,4 @@
-package com.example.weather_app.extensions
+package com.example.weather_app.util
 
 import android.content.Context
 import android.widget.Toast

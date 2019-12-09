@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.*
-import com.example.weather_app.extensions.toView
+import com.example.weather_app.util.toView
 
 class WeatherAdapter : RecyclerView.Adapter<BaseWeatherViewHolder>() {
 
@@ -24,26 +24,26 @@ class WeatherAdapter : RecyclerView.Adapter<BaseWeatherViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseWeatherViewHolder = when (viewType) {
-        WeatherData.MAIN -> {
-            val layoutId = R.layout.item_weather_data_main
-            MainWeatherDataVH(toView(layoutId, parent))
-        }
-        WeatherData.HOURLY -> {
-            val layoutId = R.layout.item_weather_data_hourly
-            HourlyWeatherDataVH(toView(layoutId, parent))
-        }
-        WeatherData.DETAILS -> {
-            val layoutId = R.layout.item_weather_data_details
-            DetailsWeatherDataVH(toView(layoutId, parent))
-        }
-        WeatherData.PRECIPITATION -> {
-            val layoutId = R.layout.item_weather_data_precipitation
-            PrecipitationWeatherDataVH(toView(layoutId, parent))
-        }
-        WeatherData.FORECAST -> {
-            val layoutId = R.layout.item_weather_data_forecast
-            ForecastWeatherDataVH(toView(layoutId, parent))
-        }
+        WeatherData.MAIN -> MainWeatherDataVH(toView(R.layout.item_weather_data_main, parent))
+        WeatherData.HOURLY -> HourlyWeatherDataVH(toView(R.layout.item_weather_data_hourly, parent))
+        WeatherData.DETAILS -> DetailsWeatherDataVH(
+            toView(
+                R.layout.item_weather_data_details,
+                parent
+            )
+        )
+        WeatherData.PRECIPITATION -> PrecipitationWeatherDataVH(
+            toView(
+                R.layout.item_weather_data_precipitation,
+                parent
+            )
+        )
+        WeatherData.FORECAST -> ForecastWeatherDataVH(
+            toView(
+                R.layout.item_weather_data_forecast,
+                parent
+            )
+        )
         else -> throw IllegalArgumentException("Unsupported weather data type!")
     }
 

@@ -1,4 +1,4 @@
-package com.example.weather_app.extensions
+package com.example.weather_app.util
 
 import com.example.weather_app.data.entity.DisplayableWeatherInfo
 import com.example.weather_app.data.entity.FavoriteCity

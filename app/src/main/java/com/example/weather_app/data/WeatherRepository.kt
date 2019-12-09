@@ -5,7 +5,7 @@ import com.example.weather_app.data.entity.FavoriteCity
 import com.example.weather_app.data.network.OpenWeatherMapService
 import com.example.weather_app.data.network.PixabayService
 import com.example.weather_app.data.response.open_weather_map.current_weather.CurrentWeatherResponse
-import com.example.weather_app.data.response.open_weather_map.forecast.ForecastResponse
+import com.example.weather_app.data.response.open_weather_map.forecast.ForecastWeatherResponse
 
 class WeatherRepository(
     private val openWeatherMapService: OpenWeatherMapService,
@@ -36,7 +36,7 @@ class WeatherRepository(
         return openWeatherMapService.getCurrentWeather(query).await()
     }
 
-    suspend fun getForecast(query: String): ForecastResponse {
+    suspend fun getForecast(query: String): ForecastWeatherResponse {
         return openWeatherMapService.getForecast(query).await()
     }
 

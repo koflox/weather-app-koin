@@ -7,9 +7,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
-import com.example.weather_app.extensions.nonNull
-import com.example.weather_app.extensions.showToast
 import com.example.weather_app.ui.base.BaseFragment
+import com.example.weather_app.util.nonNull
+import com.example.weather_app.util.showToast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
