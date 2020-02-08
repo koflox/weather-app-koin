@@ -1,9 +1,9 @@
 package com.example.weather_app.di
 
 import com.example.weather_app.BuildConfig
-import com.example.weather_app.data.network.AuthInterceptor
-import com.example.weather_app.data.network.OpenWeatherMapService
-import com.example.weather_app.data.network.PixabayService
+import com.example.weather_app.data.source.remote.AuthInterceptor
+import com.example.weather_app.data.source.remote.OpenWeatherMapService
+import com.example.weather_app.data.source.remote.PixabayService
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -1,4 +1,4 @@
-package com.example.weather_app.data.network
+package com.example.weather_app.data.source.remote
 
 import com.example.weather_app.data.response.photos.PhotoListResponse
 import kotlinx.coroutines.Deferred

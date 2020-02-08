@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
 import com.example.weather_app.ui.base.BaseFragment
+import com.example.weather_app.util.EventObserver
 import com.example.weather_app.util.notNull
 import com.example.weather_app.util.showToast
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -58,9 +59,9 @@ class CurrentWeatherFragment : BaseFragment(), OnMapReadyCallback {
                 }
             })
             loading.observe(viewLifecycleOwner, Observer { isLoading ->
-//                weatherInfoSharedViewModel.loading.value = isLoading
+                //                weatherInfoSharedViewModel.loading.value = isLoading
             })
-            message.observe(viewLifecycleOwner, Observer { msg ->
+            message.observe(viewLifecycleOwner, EventObserver { msg ->
                 context?.showToast(msg)
             })
         }

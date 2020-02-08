@@ -25,14 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.35" />
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineBottomOfTemp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.80" />
+        app:layout_constraintGuide_percent="0.75" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTemp"
@@ -41,8 +41,9 @@
         android:fontFamily="sans-serif-light"
         android:gravity="center"
         android:text="25"
-        app:autoSizeMaxTextSize="260sp"
-        app:autoSizeMinTextSize="20sp"
+        app:autoSizeMaxTextSize="180sp"
+        app:autoSizeMinTextSize="40sp"
+        app:autoSizeStepGranularity="2sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="@+id/guidelineBottomOfTemp"
         app:layout_constraintEnd_toEndOf="@+id/guidelineEndOfTemp"

@@ -1,4 +1,4 @@
-package com.example.weather_app.data.network
+package com.example.weather_app.data.source.remote
 
 import com.example.weather_app.data.response.open_weather_map.current_weather.CurrentWeatherResponse
 import com.example.weather_app.data.response.open_weather_map.forecast.ForecastWeatherResponse
@@ -11,13 +11,14 @@ interface OpenWeatherMapService {
 
     @GET("weather")
     fun getCurrentWeather(
-            @Query("q") query: String,
-            @Query("units") units: String = "metric"): Deferred<CurrentWeatherResponse>
+        @Query("q") query: String,
+        @Query("units") units: String
+    ): Deferred<CurrentWeatherResponse>
 
     @GET("forecast")
     fun getForecast(
         @Query("q") query: String,
-        @Query("units") units: String = "metric"
+        @Query("units") units: String
     ): Deferred<ForecastWeatherResponse>
 
 }
