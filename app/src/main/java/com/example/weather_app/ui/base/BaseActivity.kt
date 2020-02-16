@@ -12,15 +12,12 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
-        afterCreate(savedInstanceState)
         initViews()
         addObservers()
     }
 
-    abstract fun afterCreate(savedInstanceState: Bundle?)
-
     abstract fun initViews()
 
-    abstract fun addObservers()
+    open fun addObservers() {}
 
 }

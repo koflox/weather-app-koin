@@ -12,4 +12,5 @@
     <string name="action_delete_title">Delete</string>
     <string name="action_delete">Delete</string>
     <string name="action_add">Add</string>
+    <string name="menu_item_title_search">Search</string>
 </resources>

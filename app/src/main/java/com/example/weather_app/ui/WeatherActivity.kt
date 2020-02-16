@@ -1,51 +1,56 @@
 package com.example.weather_app.ui
 
-import android.os.Bundle
+import android.view.View
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.weather_app.R
 import com.example.weather_app.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class WeatherActivity : BaseActivity() {
 
-//    private var currentNavController: LiveData<NavController>? = null
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
-    override fun getLayoutId() = R.layout.activity_main
-
-    override fun afterCreate(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-//            setupBottomNavigationBar()
+    private val drawerListener = object : DrawerLayout.SimpleDrawerListener() {
+        override fun onDrawerOpened(drawerView: View) {
+            // todo hide keyboard
+            // todo https://proandroiddev.com/how-to-detect-if-the-android-keyboard-is-open-269b255a90f5
         }
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
-//        setupBottomNavigationBar()
-    }
+    override fun getLayoutId() = R.layout.activity_main
 
     override fun initViews() {
         setSupportActionBar(toolbar)
+
+        val topLevelDestinations = setOf(R.id.searchFragment, R.id.favoritesCitiesFragment, R.id.settingsFragment)
+        navController = findNavController(R.id.fragmentHost)
+        appBarConfiguration = AppBarConfiguration.Builder(topLevelDestinations)
+            .setDrawerLayout(drawerLayout)
+            .build()
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navigationView.setupWithNavController(navController)
     }
 
-//    private fun setupBottomNavigationBar() {
-//        val navGraphIds = listOf(R.navigation.weather, R.navigation.favorites, R.navigation.settings)
-//        val controller = bottomNavMain.setupWithNavController(
-//                navGraphIds = navGraphIds,
-//                fragmentManager = supportFragmentManager,
-//                containerId = R.id.nav_host_container,
-//                intent = intent
-//        )
-//        controller.observe(this, Observer { navController ->
-//            setupActionBarWithNavController(navController)
-//        })
-//        currentNavController = controller
-//    }
-
-    override fun addObservers() {
-
+    override fun onStart() {
+        super.onStart()
+        drawerLayout.addDrawerListener(drawerListener)
     }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        return currentNavController?.value?.navigateUp() ?: false
-//    }
+    override fun onStop() {
+        super.onStop()
+        drawerLayout.removeDrawerListener(drawerListener)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
+    }
 
 }

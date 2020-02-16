@@ -17,7 +17,6 @@ class SearchFragment : BaseFragment() {
 
     override fun initViews() {
         setHasOptionsMenu(true)
-
     }
 
     override fun addObservers() {

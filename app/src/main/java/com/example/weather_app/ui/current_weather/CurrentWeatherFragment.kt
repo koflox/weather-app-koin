@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,7 +32,7 @@ class CurrentWeatherFragment : BaseFragment() {
 
     override fun initViews() {
         setHasOptionsMenu(true)
-
+        (activity as? AppCompatActivity)?.supportActionBar?.title = args.placeToSearch
         rvWeatherData.apply {
             adapter = weatherAdapter
             layoutManager = LinearLayoutManager(context)
