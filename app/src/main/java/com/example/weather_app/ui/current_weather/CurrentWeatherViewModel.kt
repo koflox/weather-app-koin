@@ -1,8 +1,6 @@
 package com.example.weather_app.ui.current_weather
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.weather_app.data.Result
 import com.example.weather_app.data.displayed.WeatherData
 import com.example.weather_app.data.entity.DisplayableWeatherInfo
+import com.example.weather_app.data.entity.FavoriteCity
 import com.example.weather_app.data.response.open_weather_map.current_weather.CurrentWeatherResponse
 import com.example.weather_app.data.response.open_weather_map.current_weather.toDetailsWeatherData
 import com.example.weather_app.data.response.open_weather_map.current_weather.toMainWeatherData
@@ -20,11 +19,9 @@ import com.example.weather_app.data.response.open_weather_map.forecast.toPrecipi
 import com.example.weather_app.data.source.AppDataRepository
 import com.example.weather_app.ui.base.BaseViewModel
 import com.example.weather_app.util.Event
-import com.example.weather_app.util.formatToLocalTime
 import com.example.weather_app.util.toFavoriteCity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 class CurrentWeatherViewModel(
     app: Application,
@@ -39,34 +36,24 @@ class CurrentWeatherViewModel(
         private const val SEGMENT_COUNT_HOURLY_WEATHER_DATA = 8
         private const val SEGMENT_COUNT_PRECIPITATION_WEATHER_DATA = 8
         private const val SEGMENT_COUNT_FORECAST_WEATHER_DATA = 5
+
+        private const val SEARCH_DELAY = 450L
     }
+
+    private lateinit var cityFromSearch: FavoriteCity
 
     private val _weatherData = MutableLiveData<List<WeatherData>>()
-    val weatherData: LiveData<List<WeatherData>>
-        get() = _weatherData
+    private val _weatherInfo = MutableLiveData<DisplayableWeatherInfo>()
+    private val _message = MutableLiveData<Event<String>>()
+    private val _isCityAddedToFavorite = MutableLiveData<Event<Boolean>>()
 
-    private val searchHandler = Handler()
-    private val searchRunnable = Runnable {
-        getCurrentWeather()
-    }
-    private val SEARCH_DELAY = 450L
-    private lateinit var searchQuery: String
+    val weatherData: LiveData<List<WeatherData>> = _weatherData
+    val weatherInfo: LiveData<DisplayableWeatherInfo> = _weatherInfo
+    val message: LiveData<Event<String>> = _message
+    val isCityAddedToFavorite: LiveData<Event<Boolean>> = _isCityAddedToFavorite
 
-    val weatherInfo = MutableLiveData<DisplayableWeatherInfo>()
-    val message = MutableLiveData<Event<String>>() //todo change to single event live data
-    private val mapIsReady = MutableLiveData<Boolean>()
 
-    init {
-        searchQuery = "warsaw"
-        getCurrentWeather()
-    }
-
-    override fun onCleared() {
-        searchHandler.removeCallbacks(searchRunnable)
-    }
-
-    @SuppressLint("DefaultLocale")
-    private fun getCurrentWeather() {
+    fun getCurrentWeather(searchQuery: String) {
         viewModelScope.launch(Dispatchers.IO) {
             loading.postValue(true)
 
@@ -78,14 +65,18 @@ class CurrentWeatherViewModel(
             when {
                 forecastResponse is Result.Success &&
                         currentWeatherResponse is Result.Success -> {
+                    //todo delete this check
+                    require(currentWeatherResponse.data.id == forecastResponse.data.city.id) {
+                        "City ids differ: ${currentWeatherResponse.data.id} != ${forecastResponse.data.city.id} "
+                    }
                     displayWeather(currentWeatherResponse.data, forecastResponse.data)
+
+                    cityFromSearch = currentWeatherResponse.data.toFavoriteCity().also {
+                        checkFavoriteCity(it)
+                    }
                 }
                 forecastResponse is Result.Error -> _error.postValue(Event(forecastResponse.exception))
-                currentWeatherResponse is Result.Error -> _error.postValue(
-                    Event(
-                        currentWeatherResponse.exception
-                    )
-                )
+                currentWeatherResponse is Result.Error -> _error.postValue(Event(currentWeatherResponse.exception))
             }
 
             loading.postValue(false)
@@ -96,13 +87,13 @@ class CurrentWeatherViewModel(
         currentWeather: CurrentWeatherResponse,
         forecast: ForecastWeatherResponse
     ) {
-        currentWeather.dt
-            .formatToLocalTime(
-                TIME_PATTERN_MAIN_WEATHER_DATA,
-                currentWeather.timezone
-            )
-            .toLowerCase(Locale.getDefault())
-            .capitalize()
+//        currentWeather.dt
+//            .formatToLocalTime(
+//                TIME_PATTERN_MAIN_WEATHER_DATA,
+//                currentWeather.timezone
+//            )
+//            .toLowerCase(Locale.getDefault())
+//            .capitalize()
         val currentHourWeatherData =
             Pair("NOW", currentWeather.main.temp.toInt())
         val hourlyWeatherData = forecast.toHourlyWeatherData(
@@ -132,38 +123,21 @@ class CurrentWeatherViewModel(
         )
     }
 
-    fun setMapIsReady() {
-        mapIsReady.value = true
-        weatherInfo.value = weatherInfo.value //todo force update
-    }
-
-    fun checkFavoriteCity() {
+    private fun checkFavoriteCity(favoriteCity: FavoriteCity) {
         viewModelScope.launch(Dispatchers.IO) {
-            weatherInfo.value?.let { info ->
-                val isCityAdded =
-                    dataRepository.isCityAdded("", info.lat, info.lng) //todo review logic
-                with(info.toFavoriteCity()) {
-                    if (isCityAdded) {
-                        dataRepository.delete(this)
-                        info.isFavoriteCity = false
-                        weatherInfo.postValue(info)
-                    } else {
-                        dataRepository.delete(this)
-                        info.isFavoriteCity = true
-                        weatherInfo.postValue(info)
-                    }
-                }
-            }
+            val isCityAdded = dataRepository.isCityAdded(favoriteCity.id)
+            _isCityAddedToFavorite.postValue(Event(isCityAdded))
         }
     }
 
-    fun onQueryTextChange(query: String) {
-        searchQuery = query.also { q ->
-            searchHandler.run {
-                removeCallbacks(searchRunnable)
-                if (q.isNotEmpty())
-                    postDelayed(searchRunnable, SEARCH_DELAY)
+    fun onAddDeleteOptionClick() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val isCityAdded = dataRepository.isCityAdded(cityFromSearch.id)
+            when {
+                isCityAdded -> dataRepository.delete(cityFromSearch)
+                else -> dataRepository.insert(cityFromSearch)
             }
+            _isCityAddedToFavorite.postValue(Event(!isCityAdded))
         }
     }
 

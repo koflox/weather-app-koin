@@ -1,6 +1,5 @@
 package com.example.weather_app.ui.favorites
 
-import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
@@ -36,10 +35,6 @@ class FavoritesCitiesFragment : BaseFragment(), PopupMenu.OnMenuItemClickListene
 
     override fun getLayoutId() = R.layout.fragment_favorite_cities
 
-    override fun afterViewCreated(savedInstanceState: Bundle?) {
-
-    }
-
     override fun initViews() {
         rvFavoriteCities.apply {
             val spanCount = resources.getInteger(R.integer.favorite_cities_span_count)
@@ -50,7 +45,7 @@ class FavoritesCitiesFragment : BaseFragment(), PopupMenu.OnMenuItemClickListene
         }
     }
 
-    override fun addObservers() {
+    override fun addViewObservers() {
         viewModel.run {
             favoriteCities.observe(viewLifecycleOwner, Observer {
                 favoriteCitiesAdapter.setData(it)

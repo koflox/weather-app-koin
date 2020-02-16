@@ -10,4 +10,6 @@
     <string name="action_forecast_title">Forecast</string>
     <string name="action_history_title">History</string>
     <string name="action_delete_title">Delete</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_add">Add</string>
 </resources>

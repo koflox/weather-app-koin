@@ -10,7 +10,6 @@ data class FavoriteCity(
     @PrimaryKey
     val id: Int,
     val cityName: String,
-    val region: String,
     val country: String,
     val latitude: Double,
     val longitude: Double,

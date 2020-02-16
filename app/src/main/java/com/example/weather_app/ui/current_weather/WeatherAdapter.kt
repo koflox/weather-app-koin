@@ -32,7 +32,7 @@ class WeatherAdapter : RecyclerView.Adapter<BaseWeatherDataVH>() {
         WeatherData.DETAILS -> DetailsWeatherDataVH(toView(R.layout.item_weather_data_details, parent))
         WeatherData.PRECIPITATION -> PrecipitationWeatherDataVH(toView(R.layout.item_weather_data_precipitation, parent))
         WeatherData.FORECAST -> ForecastWeatherDataVH(toView(R.layout.item_weather_data_forecast, parent))
-        else -> throw IllegalArgumentException("Unsupported weather data type!")
+        else -> throw IllegalArgumentException("Unsupported weather data type: $viewType")
     }
 
     override fun getItemCount() = data.size

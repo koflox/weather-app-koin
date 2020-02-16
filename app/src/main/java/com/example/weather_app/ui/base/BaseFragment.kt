@@ -12,21 +12,25 @@ abstract class BaseFragment : Fragment() {
     @LayoutRes
     abstract fun getLayoutId(): Int
 
+    abstract fun initViews()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        addObservers()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(getLayoutId(), container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        afterViewCreated(savedInstanceState)
         initViews()
-        addObservers()
+        addViewObservers()
     }
 
-    abstract fun afterViewCreated(savedInstanceState: Bundle?)
+    open fun addObservers() {}
 
-    abstract fun initViews()
-
-    abstract fun addObservers()
+    open fun addViewObservers() {}
 
 }
