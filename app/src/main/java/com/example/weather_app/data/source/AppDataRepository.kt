@@ -40,13 +40,11 @@ class AppDataRepository(
     }
 
     override suspend fun getFavoriteCity(
-        latitude: Double,
-        longitude: Double
+        cityId: Int
     ): Result<FavoriteCity> {
-        return localDataSource.getFavoriteCity(latitude, longitude)
+        return localDataSource.getFavoriteCity(cityId)
     }
 
-    //todo refactor FavoriteCity object to use integer/long id as primary key
     override suspend fun insert(city: FavoriteCity) {
         city.run {
             try {
@@ -72,17 +70,8 @@ class AppDataRepository(
     }
 
     override suspend fun isCityAdded(
-        cityName: String,
-        latitude: Double,
-        longitude: Double
-    ): Boolean {
-        val favoriteCities = localDataSource.getFavoriteCities() as? Result.Success ?: return false
-        return favoriteCities.data.find {
-            cityName == it.cityName
-                    && latitude in it.latitude - 0.05..it.latitude + 0.05
-                    && longitude in it.longitude - 0.05..it.longitude + 0.05
-        } != null
-    }
+        cityId: Int
+    ): Boolean = localDataSource.getFavoriteCity(cityId) is Result.Success
 
 }
 

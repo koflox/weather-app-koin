@@ -46,10 +46,8 @@ class LocalDataSource(
             }
         }
 
-    override suspend fun getFavoriteCity(
-        latitude: Double, longitude: Double
-    ): Result<FavoriteCity> = withContext(ioDispatcher) {
-        val city = favoriteCitiesDao.getFavoriteCity(latitude, longitude)
+    override suspend fun getFavoriteCity(cityId: Int): Result<FavoriteCity> = withContext(ioDispatcher) {
+        val city = favoriteCitiesDao.getFavoriteCity(cityId)
         return@withContext when {
             city != null -> Result.Success(city)
             else -> Result.Error(NullPointerException())

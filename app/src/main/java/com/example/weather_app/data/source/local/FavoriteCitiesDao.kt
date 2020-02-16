@@ -13,8 +13,8 @@ interface FavoriteCitiesDao {
     @Query("SELECT * FROM favoriteCities")
     suspend fun getFavoriteCities(): List<FavoriteCity>
 
-    @Query("SELECT * FROM favoriteCities WHERE latitude = :latitude AND longitude = :longitude")
-    suspend fun getFavoriteCity(latitude: Double, longitude: Double): FavoriteCity?
+    @Query("SELECT * FROM favoriteCities WHERE id = :cityId")
+    suspend fun getFavoriteCity(cityId: Int): FavoriteCity?
 
     @Insert
     suspend fun insert(city: FavoriteCity)

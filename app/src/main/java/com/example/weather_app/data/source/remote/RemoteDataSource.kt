@@ -46,10 +46,7 @@ class RemoteDataSource(
         TODO("no-op")
     }
 
-    override suspend fun getFavoriteCity(
-        latitude: Double,
-        longitude: Double
-    ): Result<FavoriteCity> {
+    override suspend fun getFavoriteCity(cityId: Int): Result<FavoriteCity> {
         TODO("no-op")
     }
 

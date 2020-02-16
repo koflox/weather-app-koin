@@ -17,7 +17,7 @@ interface DataSource {
 
     suspend fun getFavoriteCities(): Result<List<FavoriteCity>>
 
-    suspend fun getFavoriteCity(latitude: Double, longitude: Double): Result<FavoriteCity>
+    suspend fun getFavoriteCity(cityId: Int): Result<FavoriteCity>
 
     suspend fun insert(city: FavoriteCity)
 

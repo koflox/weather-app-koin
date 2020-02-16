@@ -16,7 +16,7 @@ interface DataRepository {
 
     suspend fun getFavoriteCities(): Result<List<FavoriteCity>>
 
-    suspend fun getFavoriteCity(latitude: Double, longitude: Double): Result<FavoriteCity>
+    suspend fun getFavoriteCity(cityId: Int): Result<FavoriteCity>
 
     suspend fun insert(city: FavoriteCity)
 
@@ -26,6 +26,6 @@ interface DataRepository {
 
     suspend fun deleteFavoriteCities()
 
-    suspend fun isCityAdded(cityName: String, latitude: Double, longitude: Double): Boolean
+    suspend fun isCityAdded(cityId: Int): Boolean
 
 }
