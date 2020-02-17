@@ -20,8 +20,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                android:elevation="4dp" />
+                app:collapseIcon="@drawable/ic_arrow_back"
+                app:theme="@style/ToolBarStyle" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <fragment

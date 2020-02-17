@@ -33,6 +33,7 @@ class SearchFragment : BaseFragment() {
         inflater.inflate(R.menu.menu_weather, menu)
         val searchView = menu.findItem(R.id.actionWeatherSearch)?.actionView as? SearchView
         searchView?.apply {
+            setIconifiedByDefault(false)
             queryHint = getString(R.string.search)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
