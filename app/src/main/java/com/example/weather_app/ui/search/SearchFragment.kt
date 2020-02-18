@@ -26,9 +26,6 @@ class SearchFragment : BaseFragment() {
         })
     }
 
-    override fun addViewObservers() {
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_weather, menu)
         val searchView = menu.findItem(R.id.actionWeatherSearch)?.actionView as? SearchView

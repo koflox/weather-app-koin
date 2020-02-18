@@ -14,35 +14,35 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 data class CurrentWeatherResponse(
-        @SerializedName("coord")
+    @SerializedName("coord")
         val coord: Coord,
-        @SerializedName("weather")
+    @SerializedName("weather")
         val weather: List<Weather>,
-        @SerializedName("base")
+    @SerializedName("base")
         val base: String,
-        @SerializedName("main")
+    @SerializedName("main")
         val main: Main,
-        @SerializedName("visibility")
+    @SerializedName("visibility")
         val visibility: Int,
-        @SerializedName("wind")
+    @SerializedName("wind")
         val wind: Wind,
-        @SerializedName("clouds")
+    @SerializedName("clouds")
         val clouds: Clouds,
-        @SerializedName("dt")
+    @SerializedName("dt")
         val dt: Int,
-        @SerializedName("sys")
+    @SerializedName("sys")
         val sys: Sys,
-        @SerializedName("timezone")
+    @SerializedName("timezone")
         val timezone: Int,
-        @SerializedName("id")
+    @SerializedName("id")
         val id: Int,
-        @SerializedName("name")
-        val name: String,
-        @SerializedName("cod")
+    @SerializedName("name")
+    val cityName: String,
+    @SerializedName("cod")
         val cod: Int,
-        @SerializedName("rain")
+    @SerializedName("rain")
         val rain: Rain?,
-        @SerializedName("snow")
+    @SerializedName("snow")
         val snow: Snow?
 )
 

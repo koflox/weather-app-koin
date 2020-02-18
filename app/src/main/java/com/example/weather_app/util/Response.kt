@@ -5,7 +5,7 @@ import com.example.weather_app.data.response.open_weather_map.current_weather.Cu
 
 fun CurrentWeatherResponse.toFavoriteCity() = FavoriteCity(
     id,
-    name,
+    cityName,
     sys.country,
     coord.lat,
     coord.lon,

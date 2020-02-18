@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="margin_small">8dp</dimen>
-    <dimen name="margin_medium">16dp</dimen>
     <dimen name="common_grid_spacing">8dp</dimen>
     <dimen name="indent_small">8dp</dimen>
-    <dimen name="indent_medium">24dp</dimen>
+    <dimen name="indent_medium">16dp</dimen>
     <dimen name="header_height">192dp</dimen>
     <dimen name="header_padding">16dp</dimen>
+    <dimen name="text_size_medium">20sp</dimen>
 </resources>

@@ -21,6 +21,11 @@
     android:gravity="bottom"
     android:padding="@dimen/header_padding">
 
-    <!--todo add placeholder-->
+    <TextView
+        style="@style/PlaceHolderTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/placeholder_text_navigation_header" />
+
 
 </FrameLayout>

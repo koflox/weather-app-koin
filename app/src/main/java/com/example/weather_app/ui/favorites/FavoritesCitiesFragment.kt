@@ -38,7 +38,7 @@ class FavoritesCitiesFragment : BaseFragment(), PopupMenu.OnMenuItemClickListene
     override fun initViews() {
         rvFavoriteCities.apply {
             val spanCount = resources.getInteger(R.integer.favorite_cities_span_count)
-            val itemsMargin = resources.getDimensionPixelSize(R.dimen.margin_medium)
+            val itemsMargin = resources.getDimensionPixelSize(R.dimen.indent_medium)
             layoutManager = GridLayoutManager(context, spanCount)
             adapter = favoriteCitiesAdapter
             addItemDecoration(GridSpacingItemDecoration(spanCount, itemsMargin))

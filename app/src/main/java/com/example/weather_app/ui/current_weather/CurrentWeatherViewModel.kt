@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.data.Result
 import com.example.weather_app.data.displayed.WeatherData
-import com.example.weather_app.data.entity.DisplayableWeatherInfo
 import com.example.weather_app.data.entity.FavoriteCity
 import com.example.weather_app.data.response.open_weather_map.current_weather.CurrentWeatherResponse
 import com.example.weather_app.data.response.open_weather_map.current_weather.toDetailsWeatherData
@@ -43,15 +42,14 @@ class CurrentWeatherViewModel(
     private lateinit var cityFromSearch: FavoriteCity
 
     private val _weatherData = MutableLiveData<List<WeatherData>>()
-    private val _weatherInfo = MutableLiveData<DisplayableWeatherInfo>()
+    private val _displayedCityName = MutableLiveData<String>()
     private val _message = MutableLiveData<Event<String>>()
     private val _isCityAddedToFavorite = MutableLiveData<Event<Boolean>>()
 
     val weatherData: LiveData<List<WeatherData>> = _weatherData
-    val weatherInfo: LiveData<DisplayableWeatherInfo> = _weatherInfo
+    val displayedCityName: LiveData<String> = _displayedCityName
     val message: LiveData<Event<String>> = _message
     val isCityAddedToFavorite: LiveData<Event<Boolean>> = _isCityAddedToFavorite
-
 
     fun getCurrentWeather(searchQuery: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -70,6 +68,7 @@ class CurrentWeatherViewModel(
                         "City ids differ: ${currentWeatherResponse.data.id} != ${forecastResponse.data.city.id} "
                     }
                     displayWeather(currentWeatherResponse.data, forecastResponse.data)
+                    _displayedCityName.postValue(currentWeatherResponse.data.cityName)
 
                     cityFromSearch = currentWeatherResponse.data.toFavoriteCity().also {
                         checkFavoriteCity(it)
