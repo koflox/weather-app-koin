@@ -55,9 +55,9 @@ class CurrentWeatherViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             loading.postValue(true)
 
-            val forecastResponse = dataRepository.getForecast(searchQuery, "metrics")
+            val forecastResponse = dataRepository.getForecast(searchQuery, "metric")
             Log.d("Logos", "forecastResponse:\n$forecastResponse")
-            val currentWeatherResponse = dataRepository.getCurrentWeather(searchQuery, "metrics")
+            val currentWeatherResponse = dataRepository.getCurrentWeather(searchQuery, "metric")
             Log.d("Logos", "currentWeatherResponse:\n$currentWeatherResponse")
 
             when {
@@ -100,6 +100,7 @@ class CurrentWeatherViewModel(
             SEGMENT_COUNT_HOURLY_WEATHER_DATA,
             currentHourWeatherData
         )
+        Log.d("Logoss", hourlyWeatherData.toString())
         val precipitationValue = when {
             currentWeather.rain != null -> currentWeather.rain.h.toInt()
             currentWeather.snow != null -> currentWeather.snow.h.toInt()

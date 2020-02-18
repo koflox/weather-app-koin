@@ -9,6 +9,7 @@ import com.example.weather_app.R
 import com.example.weather_app.data.displayed.*
 import com.example.weather_app.util.toView
 import kotlinx.android.synthetic.main.item_weather_data_details.view.*
+import kotlinx.android.synthetic.main.item_weather_data_hourly.view.*
 
 class WeatherAdapter : RecyclerView.Adapter<BaseWeatherDataVH>() {
 
@@ -68,6 +69,7 @@ class HourlyWeatherDataVH(private val parent: View, private val v: View) : BaseW
     override fun bind(data: WeatherData) {
         val hourlyWeatherData = data as HourlyWeatherData
         v.minimumHeight = parent.measuredHeight / 10 * 2
+        v.graphicViewHourlyData.setData(hourlyWeatherData.values)
     }
 
 }
