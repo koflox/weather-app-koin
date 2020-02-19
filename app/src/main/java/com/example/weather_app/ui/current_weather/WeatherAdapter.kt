@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.*
+import com.example.weather_app.ui.view.GraphicView
 import com.example.weather_app.util.toView
 import kotlinx.android.synthetic.main.item_weather_data_details.view.*
 import kotlinx.android.synthetic.main.item_weather_data_hourly.view.*
+import kotlinx.android.synthetic.main.item_weather_data_precipitation.view.*
 
 class WeatherAdapter : RecyclerView.Adapter<BaseWeatherDataVH>() {
 
@@ -31,7 +33,10 @@ class WeatherAdapter : RecyclerView.Adapter<BaseWeatherDataVH>() {
         WeatherData.MAIN -> MainWeatherDataVH(parent, toView(R.layout.item_weather_data_main, parent))
         WeatherData.HOURLY -> HourlyWeatherDataVH(parent, toView(R.layout.item_weather_data_hourly, parent))
         WeatherData.DETAILS -> DetailsWeatherDataVH(toView(R.layout.item_weather_data_details, parent))
-        WeatherData.PRECIPITATION -> PrecipitationWeatherDataVH(toView(R.layout.item_weather_data_precipitation, parent))
+        WeatherData.PRECIPITATION -> PrecipitationWeatherDataVH(
+            parent,
+            toView(R.layout.item_weather_data_precipitation, parent)
+        )
         WeatherData.FORECAST -> ForecastWeatherDataVH(toView(R.layout.item_weather_data_forecast, parent))
         else -> throw IllegalArgumentException("Unsupported weather data type: $viewType")
     }
@@ -69,6 +74,7 @@ class HourlyWeatherDataVH(private val parent: View, private val v: View) : BaseW
     override fun bind(data: WeatherData) {
         val hourlyWeatherData = data as HourlyWeatherData
         v.minimumHeight = parent.measuredHeight / 10 * 2
+        v.graphicViewHourlyData.dataType = GraphicView.DataType.HOURLY_TEMP
         v.graphicViewHourlyData.setData(hourlyWeatherData.values)
     }
 
@@ -92,10 +98,13 @@ class DetailsWeatherDataVH(private val v: View) : BaseWeatherDataVH(v) {
 
 }
 
-class PrecipitationWeatherDataVH(v: View) : BaseWeatherDataVH(v) {
+class PrecipitationWeatherDataVH(private val parent: View, private val v: View) : BaseWeatherDataVH(v) {
 
     override fun bind(data: WeatherData) {
         val precipitationData = data as PrecipitationWeatherData
+        v.minimumHeight = parent.measuredHeight / 10 * 2
+        v.graphicViewPrecipitationData.dataType = GraphicView.DataType.PRECIPITATION
+        v.graphicViewPrecipitationData.setData(precipitationData.values)
     }
 
 }

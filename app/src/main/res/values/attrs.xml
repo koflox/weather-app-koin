@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GraphicView">
+        <attr name="colorGraphic" format="color" />
+        <attr name="colorData" format="color" />
+    </declare-styleable>
+</resources>

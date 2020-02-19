@@ -5,8 +5,6 @@
     <string name="menu_item_title_weather">Weather</string>
     <string name="search">Search</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_forecast_title">Forecast</string>
     <string name="action_history_title">History</string>
     <string name="action_delete_title">Delete</string>
@@ -15,5 +13,8 @@
     <string name="menu_item_title_search">Search</string>
     <string name="placeholder_text_navigation_header">This is navigation header placeholder</string>
     <string name="placeholder_text_search">City suggestions will be displayed here</string>
-    <string name="text_loading">Loading...</string>
+    <string name="text_loading">Loading…</string>
+
+    <string name="precipitation_unit_mm">%1$d mm</string>
+    <string name="text_time_now">NOW</string>
 </resources>

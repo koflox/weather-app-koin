@@ -34,7 +34,7 @@ data class MainWeatherData(
 
 data class HourlyWeatherData(
         // time : temp
-        val values: List<Pair<String, Int>>
+    val values: List<DisplayedWeatherItem>
 ) : WeatherData() {
 
     override fun getDataType() = HOURLY
@@ -51,7 +51,7 @@ data class DetailsWeatherData(
 
 data class PrecipitationWeatherData(
         // time : amount of precipitation in mm for last 3 hours
-        val values: List<Pair<String, Int>>
+    val values: List<DisplayedWeatherItem>
 ) : WeatherData() {
 
     override fun getDataType() = PRECIPITATION

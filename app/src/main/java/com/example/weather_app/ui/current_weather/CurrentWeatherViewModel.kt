@@ -5,7 +5,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.weather_app.R
 import com.example.weather_app.data.Result
+import com.example.weather_app.data.displayed.DisplayedWeatherItem
 import com.example.weather_app.data.displayed.WeatherData
 import com.example.weather_app.data.entity.FavoriteCity
 import com.example.weather_app.data.response.open_weather_map.current_weather.CurrentWeatherResponse
@@ -23,7 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CurrentWeatherViewModel(
-    app: Application,
+    private val app: Application,
     private val dataRepository: AppDataRepository
 ) : BaseViewModel(app) {
 
@@ -94,24 +96,25 @@ class CurrentWeatherViewModel(
 //            .toLowerCase(Locale.getDefault())
 //            .capitalize()
         val currentHourWeatherData =
-            Pair("NOW", currentWeather.main.temp.toInt())
+            DisplayedWeatherItem(app.getString(R.string.text_time_now), currentWeather.main.temp.toInt())
         val hourlyWeatherData = forecast.toHourlyWeatherData(
             TIME_PATTERN_HOURLY_WEATHER_DATA,
             SEGMENT_COUNT_HOURLY_WEATHER_DATA,
             currentHourWeatherData
         )
-        Log.d("Logoss", hourlyWeatherData.toString())
         val precipitationValue = when {
             currentWeather.rain != null -> currentWeather.rain.h.toInt()
             currentWeather.snow != null -> currentWeather.snow.h.toInt()
             else -> 0
         }
-        val currentPrecipitationWeatherData = Pair("NOW", precipitationValue)
+        val currentPrecipitationWeatherData = DisplayedWeatherItem(app.getString(R.string.text_time_now), precipitationValue)
         val precipitationWeatherData = forecast.toPrecipitationWeatherData(
             TIME_PATTERN_PRECIPITATION_WEATHER_DATA,
             SEGMENT_COUNT_PRECIPITATION_WEATHER_DATA,
             currentPrecipitationWeatherData
         )
+        Log.d("Logoss", hourlyWeatherData.toString())
+        Log.d("Logoss", precipitationWeatherData.toString())
         _weatherData.postValue(
             listOf(
                 currentWeather.toMainWeatherData(TIME_PATTERN_MAIN_WEATHER_DATA),

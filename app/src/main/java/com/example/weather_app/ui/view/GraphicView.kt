@@ -4,7 +4,10 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.ColorRes
 import com.example.weather_app.R
+import com.example.weather_app.data.displayed.DisplayedWeatherItem
+import java.util.*
 
 class GraphicView @JvmOverloads constructor(
     context: Context,
@@ -12,36 +15,74 @@ class GraphicView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
+    enum class DataType {
+        HOURLY_TEMP,
+        PRECIPITATION,
+        NONE
+    }
+
+    var textSize: Float = context.resources.getDimensionPixelSize(R.dimen.text_size_small).toFloat()
+        set(value) {
+            field = value
+            textBottomPadding = value / 4
+        }
+    var dataType: DataType = DataType.NONE
+    @ColorRes
+    var colorGraphic: Int = android.R.color.black
+        set(value) {
+            field = value
+            paintGraphic.color = value
+        }
+    @ColorRes
+    var colorData: Int = android.R.color.black
+        set(value) {
+            field = value
+            paintData.color = value
+        }
+
     private var stepVertical: Float = 15F
     private var stepHorizontal: Float = 100F
-    private var textSize: Float = context.resources
-        .getDimensionPixelSize(R.dimen.text_size_small_plus)
-        .toFloat()
+    private var textBottomPadding = textSize / 4
 
     private var initialPadding: Float = 20F
 
-    private val data = mutableListOf<Pair<String, Int>>()
+    private val data = mutableListOf<DisplayedWeatherItem>()
 
     private val paintGraphic = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         color = Color.BLACK
         strokeWidth = 4F
     }
-    private val paintText = Paint().apply {
+    private val paintData = Paint().apply {
         style = Paint.Style.FILL
         color = Color.BLACK
         textSize = this@GraphicView.textSize
     }
     private val graphicPath = Path()
+    private var graphicPathCurrentX: Float = 0F
+    private var graphicPathCurrentY: Float = 0F
+    private val tempTextBoundingRect: Rect = Rect()
+
+    init {
+        attrs?.let {
+            val attributes = context.obtainStyledAttributes(it, R.styleable.GraphicView, 0, 0)
+            try {
+                colorData = attributes.getColor(R.styleable.GraphicView_colorData, Color.BLACK)
+                colorGraphic = attributes.getColor(R.styleable.GraphicView_colorGraphic, Color.BLACK)
+            } finally {
+                attributes.recycle()
+            }
+        }
+    }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.run {
-            drawGraphic(canvas)
+            drawGraphic(this)
         }
     }
 
-    fun setData(data: List<Pair<String, Int>>) {
+    fun setData(data: List<DisplayedWeatherItem>) {
         this.data.apply {
             clear()
             addAll(data)
@@ -49,67 +90,92 @@ class GraphicView @JvmOverloads constructor(
         invalidate()
     }
 
+    @Suppress("IntroduceWhenSubject")
     private fun drawGraphic(canvas: Canvas) {
         graphicPath.reset()
 
         //init step of vertical/horizontal segments for graphic
-        val max = data.maxBy { it.second }?.second ?: 0
-        val min = data.minBy { it.second }?.second ?: 0
-        val rows = max - min
-        stepVertical = (height.toFloat() - initialPadding * 2 - textSize * 2) / rows
+        if (data.isEmpty() || dataType == DataType.NONE) return
+        val max = data.maxBy(DisplayedWeatherItem::value)?.value ?: return
+        val min = data.minBy(DisplayedWeatherItem::value)?.value ?: return
+        val rows = when {
+            max == min -> 1
+            else -> max - min
+        }
+        val initialHeight = height.toFloat() - initialPadding * 2 - textSize * 2
+        stepVertical = when (rows) {
+            1 -> initialHeight
+            else -> initialHeight / rows
+        }
         stepHorizontal = width.toFloat() / data.size
 
         //init path reference point
-        var currentX = 0F
-        val firstItemHeight = max * stepVertical - data.first().second * stepVertical
-        var currentY = initialPadding + textSize + firstItemHeight
+        val firstItemHeight = when (rows) {
+            1 -> when (dataType) {
+                DataType.HOURLY_TEMP -> 0F
+                DataType.PRECIPITATION -> stepVertical
+                DataType.NONE -> return
+            }
+            else -> max * stepVertical - data.first().value * stepVertical
+        }
+        graphicPathCurrentY = initialPadding + textSize + firstItemHeight
+        graphicPathCurrentX = 0F
 
-        //draw temp fo first item
-        val textBottomPadding = textSize / 4
-        val rect = Rect()
-        var text = data.first().second.toString()
-        paintText.getTextBounds(text, 0, text.length, rect)
-        var x = stepHorizontal / 2F - rect.width() / 2F - rect.left
-        var y = textSize / 2F - rect.height() / 2F - rect.bottom
-        canvas.drawText(text, currentX + x, currentY - y - textBottomPadding, paintText)
+        //draw time/temp for the first item
+        val firstItem = data.first()
+        drawTextInCenter(
+            canvas, formatText(firstItem.value),
+            graphicPathCurrentX, graphicPathCurrentY, textBottomPadding
+        )
+        drawTextInCenter(
+            canvas, firstItem.time,
+            graphicPathCurrentX, height.toFloat(), textBottomPadding
+        )
 
-        //draw time fo first item
-        text = data.first().first
-        paintText.getTextBounds(text, 0, text.length, rect)
-        x = stepHorizontal / 2F - rect.width() / 2F - rect.left
-        y = textSize / 2F - rect.height() / 2F - rect.bottom
-        canvas.drawText(text, currentX + x, height - y - textBottomPadding, paintText)
-
-        graphicPath.moveTo(currentX, currentY)
-        data.forEachIndexed { index, pair ->
+        graphicPath.moveTo(graphicPathCurrentX, graphicPathCurrentY)
+        data.forEachIndexed { index, weatherItem ->
             try {
                 //draw horizontal line
-                currentX += stepHorizontal
-                graphicPath.lineTo(currentX, currentY)
+                graphicPathCurrentX += stepHorizontal
+                graphicPath.lineTo(graphicPathCurrentX, graphicPathCurrentY)
 
                 //draw vertical line
-                val segmentHeightDiff = (pair.second - data[index + 1].second) * stepVertical
-                currentY += segmentHeightDiff
-                graphicPath.lineTo(currentX, currentY)
+                val segmentHeightDiff = (weatherItem.value - data[index + 1].value) * stepVertical
+                graphicPathCurrentY += segmentHeightDiff
+                graphicPath.lineTo(graphicPathCurrentX, graphicPathCurrentY)
 
-                //draw temp
-                val rect = Rect()
-                var text = data[index + 1].second.toString()
-                paintText.getTextBounds(text, 0, text.length, rect)
-                var x = stepHorizontal / 2F - rect.width() / 2F - rect.left
-                var y = textSize / 2F - rect.height() / 2F
-                canvas.drawText(text, currentX + x, currentY - y - textBottomPadding, paintText)
-
-                //draw time
-                text = data[index + 1].first
-                paintText.getTextBounds(text, 0, text.length, rect)
-                x = stepHorizontal / 2F - rect.width() / 2F - rect.left
-                y = textSize / 2F - rect.height() / 2F
-                canvas.drawText(text, currentX + x, height - y - textBottomPadding, paintText)
+                //draw time/temp for next item
+                drawTextInCenter(
+                    canvas, formatText(data[index + 1].value), graphicPathCurrentX, graphicPathCurrentY,
+                    textBottomPadding
+                )
+                drawTextInCenter(
+                    canvas, data[index + 1].time,
+                    graphicPathCurrentX, height.toFloat(), textBottomPadding
+                )
             } catch (e: Exception) {
             }
         }
         canvas.drawPath(graphicPath, paintGraphic)
+    }
+
+    private fun drawTextInCenter(
+        canvas: Canvas, text: String,
+        xStart: Float, yBottom: Float, bottomExtraPadding: Float = 0F
+    ) {
+        paintData.getTextBounds(text.toUpperCase(Locale.getDefault()), 0, text.length, tempTextBoundingRect)
+        val x = stepHorizontal / 2F - tempTextBoundingRect.width() / 2F - tempTextBoundingRect.left
+        val y = textSize / 2F - tempTextBoundingRect.height() / 2F
+        canvas.drawText(text, xStart + x, yBottom - y - bottomExtraPadding, paintData)
+    }
+
+    private fun formatText(value: Int): String = when (dataType) {
+        DataType.HOURLY_TEMP -> when {
+            value > 0 -> "+$value"
+            else -> value.toString()
+        }
+        DataType.PRECIPITATION -> context.getString(R.string.precipitation_unit_mm, value)
+        DataType.NONE -> ""
     }
 
 }

@@ -2,10 +2,7 @@ package com.example.weather_app.data.response.open_weather_map.forecast
 
 
 import android.util.Log
-import com.example.weather_app.data.displayed.ForecastWeatherData
-import com.example.weather_app.data.displayed.HourlyWeatherData
-import com.example.weather_app.data.displayed.MainWeatherData
-import com.example.weather_app.data.displayed.PrecipitationWeatherData
+import com.example.weather_app.data.displayed.*
 import com.example.weather_app.util.formatToLocalTime
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -23,9 +20,10 @@ data class ForecastWeatherResponse(
 )
 
 fun ForecastWeatherResponse.toHourlyWeatherData(timePattern: String, desiredSegmentCount: Int,
-                                                vararg extra: Pair<String, Int>): HourlyWeatherData {
+                                                vararg extra: DisplayedWeatherItem
+): HourlyWeatherData {
     val segmentCount = min(desiredSegmentCount, list.size)
-    val values = mutableListOf<Pair<String, Int>>().apply {
+    val values = mutableListOf<DisplayedWeatherItem>().apply {
         extra.forEach {
             add(it)
         }
@@ -35,16 +33,17 @@ fun ForecastWeatherResponse.toHourlyWeatherData(timePattern: String, desiredSegm
                     .formatToLocalTime(timePattern, city.timezone)
                     .toLowerCase(Locale.getDefault())
             val temperature = weatherData.main.temp.toInt()
-            add(Pair(time, temperature))
+            add(DisplayedWeatherItem(time, temperature))
         }
     }
     return HourlyWeatherData(values)
 }
 
 fun ForecastWeatherResponse.toPrecipitationWeatherData(timePattern: String, desiredSegmentCount: Int,
-                                                       vararg extra: Pair<String, Int>): PrecipitationWeatherData {
+                                                       vararg extra: DisplayedWeatherItem
+): PrecipitationWeatherData {
     val segmentCount = min(desiredSegmentCount, list.size)
-    val values = mutableListOf<Pair<String, Int>>().apply {
+    val values = mutableListOf<DisplayedWeatherItem>().apply {
         extra.forEach {
             add(it)
         }
@@ -58,7 +57,7 @@ fun ForecastWeatherResponse.toPrecipitationWeatherData(timePattern: String, desi
                 weatherData.snow != null -> weatherData.snow.h.toInt()
                 else -> 0
             }
-            add(Pair(time, precipitationValue))
+            add(DisplayedWeatherItem(time, precipitationValue))
         }
     }
     return PrecipitationWeatherData(values)
