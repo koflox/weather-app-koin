@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="common_grid_spacing">8dp</dimen>
+    <dimen name="indent_atom">2dp</dimen>
+    <dimen name="indent_atom_plus">4dp</dimen>
     <dimen name="indent_small">8dp</dimen>
     <dimen name="indent_medium">16dp</dimen>
     <dimen name="header_height">192dp</dimen>

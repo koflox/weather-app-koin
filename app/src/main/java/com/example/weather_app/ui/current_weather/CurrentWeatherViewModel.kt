@@ -33,6 +33,7 @@ class CurrentWeatherViewModel(
         private const val TIME_PATTERN_HOURLY_WEATHER_DATA = "ha"
         private const val TIME_PATTERN_PRECIPITATION_WEATHER_DATA = "ha"
         private const val TIME_PATTERN_MAIN_WEATHER_DATA = "EEE, h:mm a"
+        private const val TIME_PATTERN_FORECAST_DATA = "EEE"
 
         private const val SEGMENT_COUNT_HOURLY_WEATHER_DATA = 8
         private const val SEGMENT_COUNT_PRECIPITATION_WEATHER_DATA = 8
@@ -113,15 +114,14 @@ class CurrentWeatherViewModel(
             SEGMENT_COUNT_PRECIPITATION_WEATHER_DATA,
             currentPrecipitationWeatherData
         )
-        Log.d("Logoss", hourlyWeatherData.toString())
-        Log.d("Logoss", precipitationWeatherData.toString())
+        Log.d("Logoss", forecast.toForecastWeatherData(TIME_PATTERN_FORECAST_DATA).toString())
         _weatherData.postValue(
             listOf(
                 currentWeather.toMainWeatherData(TIME_PATTERN_MAIN_WEATHER_DATA),
                 hourlyWeatherData,
                 currentWeather.toDetailsWeatherData(),
                 precipitationWeatherData,
-                forecast.toForecastWeatherData()
+                forecast.toForecastWeatherData(TIME_PATTERN_FORECAST_DATA)
             )
         )
     }

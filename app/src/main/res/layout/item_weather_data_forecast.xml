@@ -4,8 +4,9 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvForecastsWeatherData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="forecast" />
+        android:padding="@dimen/indent_medium" />
 </LinearLayout>

@@ -9,6 +9,10 @@ import retrofit2.http.Query
 @Suppress("DeferredIsResult")
 interface OpenWeatherMapService {
 
+    companion object {
+        const val ICON_EXTENSION = "png"
+    }
+
     @GET("weather")
     fun getCurrentWeather(
         @Query("q") query: String,

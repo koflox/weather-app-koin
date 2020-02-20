@@ -1,26 +1,30 @@
 package com.example.weather_app.data.response.open_weather_map.forecast
 
 
+import android.annotation.SuppressLint
 import android.util.Log
 import com.example.weather_app.data.displayed.*
+import com.example.weather_app.data.response.open_weather_map.common.owmIconNameToUrl
+import com.example.weather_app.data.source.remote.OpenWeatherMapService
 import com.example.weather_app.util.formatToLocalTime
 import com.google.gson.annotations.SerializedName
 import java.util.*
 import kotlin.math.min
 
 data class ForecastWeatherResponse(
-        @SerializedName("cod")
-        val cod: String,
-        @SerializedName("message")
-        val message: Int,
-        @SerializedName("list")
-        val list: List<WeatherData>,
-        @SerializedName("city")
-        val city: City
+    @SerializedName("cod")
+    val cod: String,
+    @SerializedName("message")
+    val message: Int,
+    @SerializedName("list")
+    val list: List<WeatherData>,
+    @SerializedName("city")
+    val city: City
 )
 
-fun ForecastWeatherResponse.toHourlyWeatherData(timePattern: String, desiredSegmentCount: Int,
-                                                vararg extra: DisplayedWeatherItem
+fun ForecastWeatherResponse.toHourlyWeatherData(
+    timePattern: String, desiredSegmentCount: Int,
+    vararg extra: DisplayedWeatherItem
 ): HourlyWeatherData {
     val segmentCount = min(desiredSegmentCount, list.size)
     val values = mutableListOf<DisplayedWeatherItem>().apply {
@@ -30,8 +34,8 @@ fun ForecastWeatherResponse.toHourlyWeatherData(timePattern: String, desiredSegm
         for (i in 0..segmentCount) {
             val weatherData = list[i]
             val time = weatherData.dateUtc
-                    .formatToLocalTime(timePattern, city.timezone)
-                    .toLowerCase(Locale.getDefault())
+                .formatToLocalTime(timePattern, city.timezone)
+                .toLowerCase(Locale.getDefault())
             val temperature = weatherData.main.temp.toInt()
             add(DisplayedWeatherItem(time, temperature))
         }
@@ -39,8 +43,9 @@ fun ForecastWeatherResponse.toHourlyWeatherData(timePattern: String, desiredSegm
     return HourlyWeatherData(values)
 }
 
-fun ForecastWeatherResponse.toPrecipitationWeatherData(timePattern: String, desiredSegmentCount: Int,
-                                                       vararg extra: DisplayedWeatherItem
+fun ForecastWeatherResponse.toPrecipitationWeatherData(
+    timePattern: String, desiredSegmentCount: Int,
+    vararg extra: DisplayedWeatherItem
 ): PrecipitationWeatherData {
     val segmentCount = min(desiredSegmentCount, list.size)
     val values = mutableListOf<DisplayedWeatherItem>().apply {
@@ -50,8 +55,8 @@ fun ForecastWeatherResponse.toPrecipitationWeatherData(timePattern: String, desi
         for (i in 0..segmentCount) {
             val weatherData = list[i]
             val time = weatherData.dateUtc
-                    .formatToLocalTime(timePattern, city.timezone)
-                    .toLowerCase(Locale.getDefault())
+                .formatToLocalTime(timePattern, city.timezone)
+                .toLowerCase(Locale.getDefault())
             val precipitationValue = when {
                 weatherData.rain != null -> weatherData.rain.h.toInt()
                 weatherData.snow != null -> weatherData.snow.h.toInt()
@@ -63,8 +68,9 @@ fun ForecastWeatherResponse.toPrecipitationWeatherData(timePattern: String, desi
     return PrecipitationWeatherData(values)
 }
 
-//todo check this method
-fun ForecastWeatherResponse.toForecastWeatherData(): ForecastWeatherData {
+//todo needs refactoring
+@SuppressLint("DefaultLocale")
+fun ForecastWeatherResponse.toForecastWeatherData(timePattern: String): ForecastWeatherData {
     val values = mutableListOf<MainWeatherData>().apply {
         var tempMin = Int.MAX_VALUE
         var tempMax = Int.MIN_VALUE
@@ -90,16 +96,20 @@ fun ForecastWeatherResponse.toForecastWeatherData(): ForecastWeatherData {
                 false
             }
             if (nextWeatherDataIsNewDay || i == list.indices.last) {
-                add(MainWeatherData(
-                        temp = (tempMax + tempMin) / 2,
-                        tempMax = tempMax,
-                        tempMin = tempMin,
-                        tempUnitMain = "°C",
-                        weatherIconRes = 0,
-//                        weatherIconRes = conditions.maxBy { it.value }?.key?.toInt() ?: 0, //todo
-                        dayName = "", //todo
-                        weatherDescription = ""
-                ))
+                val item = MainWeatherData(
+                    temp = (tempMax + tempMin) / 2,
+                    tempMax = tempMax,
+                    tempMin = tempMin,
+                    tempUnitMain = "°C",
+                    weatherIconUrl = conditions.maxBy { it.value }?.key
+                        ?.owmIconNameToUrl(OpenWeatherMapService.ICON_EXTENSION),
+                    dayName = weatherData.dateUtc.formatToLocalTime(timePattern, city.timezone)
+                        .toLowerCase(Locale.getDefault())
+                        .capitalize(),
+                    weatherDescription = ""
+                )
+                add(item)
+                Log.d("Logoss", "${item.weatherIconUrl}")
                 tempMin = Int.MAX_VALUE
                 tempMax = Int.MIN_VALUE
                 conditions.clear()
@@ -109,22 +119,3 @@ fun ForecastWeatherResponse.toForecastWeatherData(): ForecastWeatherData {
     Log.d("Logos", "forecast size: ${values.size}, values = $values")
     return ForecastWeatherData(values)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

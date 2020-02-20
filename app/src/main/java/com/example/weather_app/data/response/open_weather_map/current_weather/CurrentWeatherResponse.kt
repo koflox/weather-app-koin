@@ -15,59 +15,60 @@ import java.util.*
 
 data class CurrentWeatherResponse(
     @SerializedName("coord")
-        val coord: Coord,
+    val coord: Coord,
     @SerializedName("weather")
-        val weather: List<Weather>,
+    val weather: List<Weather>,
     @SerializedName("base")
-        val base: String,
+    val base: String,
     @SerializedName("main")
-        val main: Main,
+    val main: Main,
     @SerializedName("visibility")
-        val visibility: Int,
+    val visibility: Int,
     @SerializedName("wind")
-        val wind: Wind,
+    val wind: Wind,
     @SerializedName("clouds")
-        val clouds: Clouds,
+    val clouds: Clouds,
     @SerializedName("dt")
-        val dt: Int,
+    val dt: Int,
     @SerializedName("sys")
-        val sys: Sys,
+    val sys: Sys,
     @SerializedName("timezone")
-        val timezone: Int,
+    val timezone: Int,
     @SerializedName("id")
-        val id: Int,
+    val id: Int,
     @SerializedName("name")
     val cityName: String,
     @SerializedName("cod")
-        val cod: Int,
+    val cod: Int,
     @SerializedName("rain")
-        val rain: Rain?,
+    val rain: Rain?,
     @SerializedName("snow")
-        val snow: Snow?
+    val snow: Snow?
 )
 
 @SuppressLint("DefaultLocale")
 fun CurrentWeatherResponse.toMainWeatherData(timePattern: String): MainWeatherData {
     val weather = weather.firstOrNull()
     return MainWeatherData(
-            main.temp.toInt(),
-            main.tempMin.toInt(),
-            main.tempMax.toInt(),
-            "°",
-            "°C",
-            weather?.id ?: R.drawable.ic_na,
-            weather?.main ?: "",
-            dt.formatToLocalTime(timePattern, timezone)
-                    .toLowerCase(Locale.getDefault())
-                    .capitalize())
+        main.temp.toInt(),
+        main.tempMin.toInt(),
+        main.tempMax.toInt(),
+        "°",
+        "°C",
+        weather?.icon,
+        weather?.main ?: "",
+        dt.formatToLocalTime(timePattern, timezone)
+            .toLowerCase(Locale.getDefault())
+            .capitalize()
+    )
 }
 
 //todo place to right package
 data class DetailsWeatherDataItem(
-        @DrawableRes val resourceId: Int,
-        val desc: String,
-        val value: String,
-        val unit: String = ""
+    @DrawableRes val resourceId: Int,
+    val desc: String,
+    val value: String,
+    val unit: String = ""
 )
 
 fun CurrentWeatherResponse.toDetailsWeatherData(): DetailsWeatherData {

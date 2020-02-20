@@ -17,15 +17,15 @@ sealed class WeatherData {
 }
 
 data class MainWeatherData(
-        val temp: Int,
-        val tempMin: Int,
-        val tempMax: Int,
-        val tempUnitMain: String,
-        val tempUnitExtra: String = "",
-        val weatherIconRes: Int,
-        val weatherDescription: String,
-        val dayName: String = "",
-        val chanceOfPrecipitation: String = ""
+    val temp: Int,
+    val tempMin: Int,
+    val tempMax: Int,
+    val tempUnitMain: String,
+    val tempUnitExtra: String = "",
+    val weatherIconUrl: String? = null,
+    val weatherDescription: String,
+    val dayName: String = "",
+    val chanceOfPrecipitation: String = ""
 ) : WeatherData() {
 
     override fun getDataType() = MAIN

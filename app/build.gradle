@@ -26,6 +26,7 @@ android {
         debug {
             buildConfigField 'String', 'API_KEY_OPEN_WEATHER_MAP', '"17b11ea333a65bd3b531a142a88a5400"'
             buildConfigField 'String', 'BASE_URL_OPEN_WEATHER_MAP', '"https://api.openweathermap.org/data/2.5/"'
+            buildConfigField 'String', 'BASE_URL_OPEN_WEATHER_MAP_FOR_ICONS', '"https://openweathermap.org/img/wn/"'
             buildConfigField 'String', 'API_KEY_PIXABAY', '"12790704-ea95191bf344688f4d355fce8"'
             buildConfigField 'String', 'BASE_URL_PIXABAY', '"https://pixabay.com/api/"'
         }

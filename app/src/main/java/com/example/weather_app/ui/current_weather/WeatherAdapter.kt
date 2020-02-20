@@ -10,6 +10,7 @@ import com.example.weather_app.data.displayed.*
 import com.example.weather_app.ui.view.GraphicView
 import com.example.weather_app.util.toView
 import kotlinx.android.synthetic.main.item_weather_data_details.view.*
+import kotlinx.android.synthetic.main.item_weather_data_forecast.view.*
 import kotlinx.android.synthetic.main.item_weather_data_hourly.view.*
 import kotlinx.android.synthetic.main.item_weather_data_precipitation.view.*
 
@@ -109,10 +110,17 @@ class PrecipitationWeatherDataVH(private val parent: View, private val v: View) 
 
 }
 
-class ForecastWeatherDataVH(v: View) : BaseWeatherDataVH(v) {
+class ForecastWeatherDataVH(private val v: View) : BaseWeatherDataVH(v) {
 
     override fun bind(data: WeatherData) {
         val forecastData = data as ForecastWeatherData
+
+        v.rvForecastsWeatherData.apply {
+            layoutManager = GridLayoutManager(context, forecastData.values.size)
+            adapter = ForecastWeatherDataAdapter().apply {
+                setData(forecastData.values)
+            }
+        }
     }
 
 }
