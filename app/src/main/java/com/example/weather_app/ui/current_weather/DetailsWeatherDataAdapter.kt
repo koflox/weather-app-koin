@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
-import com.example.weather_app.data.response.open_weather_map.current_weather.DetailsWeatherDataItem
+import com.example.weather_app.data.displayed.DetailsWeatherDataItem
 import com.example.weather_app.util.toSpannableString
 import com.example.weather_app.util.toView
 import kotlinx.android.synthetic.main.item_weather_data_details_item.view.*

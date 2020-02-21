@@ -45,12 +45,12 @@ class CurrentWeatherViewModel(
     private lateinit var cityFromSearch: FavoriteCity
 
     private val _weatherData = MutableLiveData<List<WeatherData>>()
-    private val _displayedCityName = MutableLiveData<String>()
+    private val _displayedToolbarInfo = MutableLiveData<Pair<String, String>>()
     private val _message = MutableLiveData<Event<String>>()
     private val _isCityAddedToFavorite = MutableLiveData<Event<Boolean>>()
 
     val weatherData: LiveData<List<WeatherData>> = _weatherData
-    val displayedCityName: LiveData<String> = _displayedCityName
+    val displayedToolbarInfo: LiveData<Pair<String, String>> = _displayedToolbarInfo
     val message: LiveData<Event<String>> = _message
     val isCityAddedToFavorite: LiveData<Event<Boolean>> = _isCityAddedToFavorite
 
@@ -71,7 +71,6 @@ class CurrentWeatherViewModel(
                         "City ids differ: ${currentWeatherResponse.data.id} != ${forecastResponse.data.city.id} "
                     }
                     displayWeather(currentWeatherResponse.data, forecastResponse.data)
-                    _displayedCityName.postValue(currentWeatherResponse.data.cityName)
 
                     cityFromSearch = currentWeatherResponse.data.toFavoriteCity().also {
                         checkFavoriteCity(it)
@@ -91,13 +90,15 @@ class CurrentWeatherViewModel(
     ) {
         //create current weather data
         val currentWeatherData = currentWeather.toMainWeatherData(TIME_PATTERN_MAIN_WEATHER_DATA)
+        _displayedToolbarInfo.postValue(Pair(currentWeather.cityName, currentWeatherData.dayName))
 
         //create hourly weather data
-        val currentHourWeatherData =
-            DisplayedWeatherItem(app.getString(R.string.text_time_now), currentWeather.main.temp.toInt())
+        val hourlyDataTitle = app.getString(R.string.title_hourly_weather_data)
+        val currentHourWeatherData = DisplayedWeatherItem(app.getString(R.string.text_time_now), currentWeather.main.temp.toInt())
         val hourlyWeatherData = forecast.toHourlyWeatherData(
             TIME_PATTERN_HOURLY_WEATHER_DATA,
             SEGMENT_COUNT_HOURLY_WEATHER_DATA,
+            hourlyDataTitle,
             currentHourWeatherData
         )
 

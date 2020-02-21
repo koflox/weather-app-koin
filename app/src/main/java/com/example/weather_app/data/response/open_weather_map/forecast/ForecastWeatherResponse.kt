@@ -4,8 +4,7 @@ package com.example.weather_app.data.response.open_weather_map.forecast
 import android.annotation.SuppressLint
 import android.util.Log
 import com.example.weather_app.data.displayed.*
-import com.example.weather_app.data.response.open_weather_map.common.owmIconNameToUrl
-import com.example.weather_app.data.source.remote.OpenWeatherMapService
+import com.example.weather_app.data.response.open_weather_map.common.toOpenWeatherMapIconNameToUrl
 import com.example.weather_app.util.formatToLocalTime
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -24,6 +23,7 @@ data class ForecastWeatherResponse(
 
 fun ForecastWeatherResponse.toHourlyWeatherData(
     timePattern: String, desiredSegmentCount: Int,
+    sectionTitle: String,
     vararg extra: DisplayedWeatherItem
 ): HourlyWeatherData {
     val segmentCount = min(desiredSegmentCount, list.size)
@@ -40,7 +40,7 @@ fun ForecastWeatherResponse.toHourlyWeatherData(
             add(DisplayedWeatherItem(time, temperature))
         }
     }
-    return HourlyWeatherData(values)
+    return HourlyWeatherData(sectionTitle, values)
 }
 
 fun ForecastWeatherResponse.toPrecipitationWeatherData(
@@ -103,7 +103,7 @@ fun ForecastWeatherResponse.toForecastWeatherData(timePattern: String, sectionTi
                     tempMin = tempMin,
                     tempUnitMain = "°C",
                     weatherIconUrl = conditions.maxBy { it.value }?.key
-                        ?.owmIconNameToUrl(OpenWeatherMapService.ICON_EXTENSION),
+                        ?.toOpenWeatherMapIconNameToUrl(),
                     dayName = weatherData.dateUtc.formatToLocalTime(timePattern, city.timezone)
                         .toLowerCase(Locale.getDefault())
                         .capitalize(),

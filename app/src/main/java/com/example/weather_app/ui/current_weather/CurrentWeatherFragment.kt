@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
 import com.example.weather_app.ui.base.BaseFragment
 import com.example.weather_app.util.EventObserver
-import com.example.weather_app.util.setSupportActionBarTitleTittle
+import com.example.weather_app.util.setSupportActionBarSubtitle
+import com.example.weather_app.util.setSupportActionBarTitle
 import com.example.weather_app.util.showToast
 import kotlinx.android.synthetic.main.fragment_weather.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,7 +32,7 @@ class CurrentWeatherFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        setSupportActionBarTitleTittle(R.string.text_loading)
+        setSupportActionBarTitle(R.string.text_loading)
         setHasOptionsMenu(true)
         rvWeatherData.apply {
             adapter = weatherAdapter
@@ -53,8 +54,9 @@ class CurrentWeatherFragment : BaseFragment() {
         viewModel.isCityAddedToFavorite.observe(this, EventObserver {
             activity?.invalidateOptionsMenu()
         })
-        viewModel.displayedCityName.observe(this, Observer { cityName ->
-            setSupportActionBarTitleTittle(cityName)
+        viewModel.displayedToolbarInfo.observe(this, Observer {
+            setSupportActionBarTitle(it.first)
+            setSupportActionBarSubtitle(it.second)
         })
     }
 

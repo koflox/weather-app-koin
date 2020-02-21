@@ -53,10 +53,7 @@
 
     <View
         android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/indent_atom_plus"
-        android:background="@android:color/white"
+        style="@style/WeatherDividerStyle"
         app:layout_constraintEnd_toEndOf="@+id/barrierTempEnd"
         app:layout_constraintStart_toStartOf="@+id/barrierTempStart"
         app:layout_constraintTop_toBottomOf="@+id/tvTempMax" />

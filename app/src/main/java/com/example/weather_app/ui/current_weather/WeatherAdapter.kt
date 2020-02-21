@@ -1,17 +1,19 @@
 package com.example.weather_app.ui.current_weather
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.*
 import com.example.weather_app.ui.view.GraphicView
+import com.example.weather_app.util.loadFromUrl
 import com.example.weather_app.util.toView
 import kotlinx.android.synthetic.main.item_weather_data_details.view.*
 import kotlinx.android.synthetic.main.item_weather_data_forecast.view.*
 import kotlinx.android.synthetic.main.item_weather_data_hourly.view.*
+import kotlinx.android.synthetic.main.item_weather_data_main.view.*
 import kotlinx.android.synthetic.main.item_weather_data_precipitation.view.*
 
 class WeatherAdapter : RecyclerView.Adapter<BaseWeatherDataVH>() {
@@ -68,13 +70,18 @@ abstract class BaseWeatherDataVH(v: View) : RecyclerView.ViewHolder(v) {
 
 class MainWeatherDataVH(private val parent: View, private val v: View) : BaseWeatherDataVH(v) {
 
+    @SuppressLint("SetTextI18n")
     override fun bind(data: WeatherData) {
         val mainWeatherData = data as MainWeatherData
-
-        val desiredHeight = parent.measuredHeight / 10 * 7
-        when (v) {
-            is ConstraintLayout -> v.minHeight = desiredHeight
-            else -> v.minimumHeight = desiredHeight
+        v.run {
+            tvTemp.text = when {
+                mainWeatherData.temp > 0 -> "+${mainWeatherData.temp}"
+                else -> mainWeatherData.temp.toString()
+            }
+            tvWeatherDesc.text = mainWeatherData.weatherDescription
+            ivWeatherIcon.loadFromUrl(mainWeatherData.weatherIconUrl)
+            tvTempMin.text = "${mainWeatherData.tempMin} ${mainWeatherData.tempUnitExtra}"
+            tvTempMax.text = "${mainWeatherData.tempMax} ${mainWeatherData.tempUnitExtra}"
         }
     }
 
@@ -85,6 +92,7 @@ class HourlyWeatherDataVH(private val parent: View, private val v: View) : BaseW
     override fun bind(data: WeatherData) {
         val hourlyWeatherData = data as HourlyWeatherData
         v.minimumHeight = parent.measuredHeight / 10 * 2
+        v.htvWeatherDataHourlyTitle.text = hourlyWeatherData.sectionTitle
         v.graphicViewHourlyData.dataType = GraphicView.DataType.HOURLY_TEMP
         v.graphicViewHourlyData.setData(hourlyWeatherData.values)
     }

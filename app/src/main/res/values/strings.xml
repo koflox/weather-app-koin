@@ -20,4 +20,5 @@
     <string name="title_details_weather_data">Details</string>
     <string name="title_precipitation_weather_data">Precipitation</string>
     <string name="title_forecast_weather_data">Forecast</string>
+    <string name="title_hourly_weather_data">Hourly weather</string>
 </resources>

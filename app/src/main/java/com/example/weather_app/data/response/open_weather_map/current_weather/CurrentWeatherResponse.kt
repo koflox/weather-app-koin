@@ -2,9 +2,9 @@ package com.example.weather_app.data.response.open_weather_map.current_weather
 
 
 import android.annotation.SuppressLint
-import androidx.annotation.DrawableRes
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.DetailsWeatherData
+import com.example.weather_app.data.displayed.DetailsWeatherDataItem
 import com.example.weather_app.data.displayed.MainWeatherData
 import com.example.weather_app.data.response.open_weather_map.common.*
 import com.example.weather_app.data.response.open_weather_map.forecast.Rain
@@ -55,21 +55,13 @@ fun CurrentWeatherResponse.toMainWeatherData(timePattern: String): MainWeatherDa
         main.tempMax.toInt(),
         "°",
         "°C",
-        weather?.icon,
+        weather?.icon?.toOpenWeatherMapIconNameToUrl(),
         weather?.main ?: "",
         dt.formatToLocalTime(timePattern, timezone)
             .toLowerCase(Locale.getDefault())
             .capitalize()
     )
 }
-
-//todo place to right package
-data class DetailsWeatherDataItem(
-    @DrawableRes val resourceId: Int,
-    val desc: String,
-    val value: String,
-    val unit: String = ""
-)
 
 fun CurrentWeatherResponse.toDetailsWeatherData(sectionTitle: String): DetailsWeatherData {
     val values = mutableListOf<DetailsWeatherDataItem>().apply {

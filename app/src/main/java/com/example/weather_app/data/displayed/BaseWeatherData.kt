@@ -1,6 +1,6 @@
 package com.example.weather_app.data.displayed
 
-import com.example.weather_app.data.response.open_weather_map.current_weather.DetailsWeatherDataItem
+import androidx.annotation.DrawableRes
 
 sealed class WeatherData {
 
@@ -33,7 +33,7 @@ data class MainWeatherData(
 }
 
 data class HourlyWeatherData(
-    // time : temp
+    val sectionTitle: String,
     val values: List<DisplayedWeatherItem>
 ) : WeatherData() {
 
@@ -52,7 +52,6 @@ data class DetailsWeatherData(
 
 data class PrecipitationWeatherData(
     val sectionTitle: String,
-    // time : amount of precipitation in mm for last 3 hours
     val values: List<DisplayedWeatherItem>
 ) : WeatherData() {
 
@@ -68,3 +67,10 @@ data class ForecastWeatherData(
     override fun getDataType() = FORECAST
 
 }
+
+data class DetailsWeatherDataItem(
+    @DrawableRes val resourceId: Int,
+    val desc: String,
+    val value: String,
+    val unit: String = ""
+)
