@@ -18,8 +18,10 @@
         android:id="@+id/graphicViewPrecipitationData"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="@dimen/indent_medium"
+        android:layout_marginEnd="@dimen/indent_medium"
         android:layout_weight="1"
-        app:colorData="@color/grayLight"
-        app:colorGraphic="@color/grayLight" />
+        app:colorData="@android:color/white"
+        app:colorGraphic="@android:color/white" />
 
 </LinearLayout>

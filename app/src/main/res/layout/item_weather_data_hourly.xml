@@ -4,6 +4,8 @@
     android:id="@+id/graphicViewHourlyData"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/indent_medium"
+    android:layout_marginEnd="@dimen/indent_medium"
     android:background="@color/colorPrimary"
-    app:colorData="@color/grayLight"
-    app:colorGraphic="@color/grayLight" />
+    app:colorData="@android:color/white"
+    app:colorGraphic="@android:color/white" />
