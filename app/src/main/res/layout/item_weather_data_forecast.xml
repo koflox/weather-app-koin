@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:background="@color/colorPrimary">
+
+    <com.example.weather_app.ui.view.HeaderTextView
+        android:id="@+id/htvWeatherDataForecastTitle"
+        style="@style/WeatherDataHeaderTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Forecast" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvForecastsWeatherData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/indent_medium" />
+        android:padding="@dimen/indent_medium"
+        android:paddingStart="@dimen/indent_medium"
+        android:paddingTop="@dimen/indent_small"
+        android:paddingEnd="@dimen/indent_medium"
+        android:paddingBottom="@dimen/indent_small" />
 </LinearLayout>

@@ -89,13 +89,10 @@ class CurrentWeatherViewModel(
         currentWeather: CurrentWeatherResponse,
         forecast: ForecastWeatherResponse
     ) {
-//        currentWeather.dt
-//            .formatToLocalTime(
-//                TIME_PATTERN_MAIN_WEATHER_DATA,
-//                currentWeather.timezone
-//            )
-//            .toLowerCase(Locale.getDefault())
-//            .capitalize()
+        //create current weather data
+        val currentWeatherData = currentWeather.toMainWeatherData(TIME_PATTERN_MAIN_WEATHER_DATA)
+
+        //create hourly weather data
         val currentHourWeatherData =
             DisplayedWeatherItem(app.getString(R.string.text_time_now), currentWeather.main.temp.toInt())
         val hourlyWeatherData = forecast.toHourlyWeatherData(
@@ -103,27 +100,38 @@ class CurrentWeatherViewModel(
             SEGMENT_COUNT_HOURLY_WEATHER_DATA,
             currentHourWeatherData
         )
+
+        //create details weather data
+        val detailsWeatherDataTitle = app.getString(R.string.title_details_weather_data)
+        val detailsWeatherData = currentWeather.toDetailsWeatherData(detailsWeatherDataTitle)
+
+        //create precipitation weather data
         val precipitationValue = when {
             currentWeather.rain != null -> currentWeather.rain.h.toInt()
             currentWeather.snow != null -> currentWeather.snow.h.toInt()
             else -> 0
         }
         val currentPrecipitationWeatherData = DisplayedWeatherItem(app.getString(R.string.text_time_now), precipitationValue)
+        val precipitationWeatherDataTitle = app.getString(R.string.title_precipitation_weather_data)
         val precipitationWeatherData = forecast.toPrecipitationWeatherData(
             TIME_PATTERN_PRECIPITATION_WEATHER_DATA,
             SEGMENT_COUNT_PRECIPITATION_WEATHER_DATA,
+            precipitationWeatherDataTitle,
             currentPrecipitationWeatherData
         )
-        Log.d("Logoss", forecast.toForecastWeatherData(TIME_PATTERN_FORECAST_DATA).toString())
-        _weatherData.postValue(
-            listOf(
-                currentWeather.toMainWeatherData(TIME_PATTERN_MAIN_WEATHER_DATA),
-                hourlyWeatherData,
-                currentWeather.toDetailsWeatherData(),
-                precipitationWeatherData,
-                forecast.toForecastWeatherData(TIME_PATTERN_FORECAST_DATA)
-            )
+
+        //create forecast data
+        val forecastDataTitle = app.getString(R.string.title_forecast_weather_data)
+        val forecastData = forecast.toForecastWeatherData(TIME_PATTERN_FORECAST_DATA, forecastDataTitle)
+
+        val displayedWeather = listOf(
+            currentWeatherData,
+            hourlyWeatherData,
+            detailsWeatherData,
+            precipitationWeatherData,
+            forecastData
         )
+        _weatherData.postValue(displayedWeather)
     }
 
     private fun checkFavoriteCity(favoriteCity: FavoriteCity) {

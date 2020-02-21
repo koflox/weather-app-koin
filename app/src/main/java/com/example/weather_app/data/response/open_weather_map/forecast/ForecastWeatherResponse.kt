@@ -45,6 +45,7 @@ fun ForecastWeatherResponse.toHourlyWeatherData(
 
 fun ForecastWeatherResponse.toPrecipitationWeatherData(
     timePattern: String, desiredSegmentCount: Int,
+    sectionTitle: String,
     vararg extra: DisplayedWeatherItem
 ): PrecipitationWeatherData {
     val segmentCount = min(desiredSegmentCount, list.size)
@@ -65,12 +66,12 @@ fun ForecastWeatherResponse.toPrecipitationWeatherData(
             add(DisplayedWeatherItem(time, precipitationValue))
         }
     }
-    return PrecipitationWeatherData(values)
+    return PrecipitationWeatherData(sectionTitle, values)
 }
 
 //todo needs refactoring
 @SuppressLint("DefaultLocale")
-fun ForecastWeatherResponse.toForecastWeatherData(timePattern: String): ForecastWeatherData {
+fun ForecastWeatherResponse.toForecastWeatherData(timePattern: String, sectionTitle: String): ForecastWeatherData {
     val values = mutableListOf<MainWeatherData>().apply {
         var tempMin = Int.MAX_VALUE
         var tempMax = Int.MIN_VALUE
@@ -109,7 +110,6 @@ fun ForecastWeatherResponse.toForecastWeatherData(timePattern: String): Forecast
                     weatherDescription = ""
                 )
                 add(item)
-                Log.d("Logoss", "${item.weatherIconUrl}")
                 tempMin = Int.MAX_VALUE
                 tempMax = Int.MIN_VALUE
                 conditions.clear()
@@ -117,5 +117,5 @@ fun ForecastWeatherResponse.toForecastWeatherData(timePattern: String): Forecast
         }
     }
     Log.d("Logos", "forecast size: ${values.size}, values = $values")
-    return ForecastWeatherData(values)
+    return ForecastWeatherData(sectionTitle, values)
 }

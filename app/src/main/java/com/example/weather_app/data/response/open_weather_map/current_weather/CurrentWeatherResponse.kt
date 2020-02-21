@@ -71,7 +71,7 @@ data class DetailsWeatherDataItem(
     val unit: String = ""
 )
 
-fun CurrentWeatherResponse.toDetailsWeatherData(): DetailsWeatherData {
+fun CurrentWeatherResponse.toDetailsWeatherData(sectionTitle: String): DetailsWeatherData {
     val values = mutableListOf<DetailsWeatherDataItem>().apply {
         add(DetailsWeatherDataItem(R.drawable.ic_thermometer, "Feels like", "N/A")) //todo calculate it
         add(DetailsWeatherDataItem(R.drawable.ic_wind, "Wind", wind.speed.toInt().toString(), "m/s"))
@@ -80,5 +80,5 @@ fun CurrentWeatherResponse.toDetailsWeatherData(): DetailsWeatherData {
         add(DetailsWeatherDataItem(0, "Visibility", "N/A"))
         add(DetailsWeatherDataItem(0, "Dew point", "N/A"))
     }
-    return DetailsWeatherData(values)
+    return DetailsWeatherData(sectionTitle, values)
 }

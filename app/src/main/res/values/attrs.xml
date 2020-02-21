@@ -4,4 +4,10 @@
         <attr name="colorGraphic" format="color" />
         <attr name="colorData" format="color" />
     </declare-styleable>
+    <declare-styleable name="HeaderTextView">
+        <attr name="strokeColor" format="color" />
+        <attr name="strokePaddingStart" format="dimension" />
+        <attr name="strokePaddingEnd" format="dimension" />
+        <attr name="strokeWidth" format="dimension" />
+    </declare-styleable>
 </resources>

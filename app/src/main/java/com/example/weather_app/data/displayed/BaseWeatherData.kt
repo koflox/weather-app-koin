@@ -33,7 +33,7 @@ data class MainWeatherData(
 }
 
 data class HourlyWeatherData(
-        // time : temp
+    // time : temp
     val values: List<DisplayedWeatherItem>
 ) : WeatherData() {
 
@@ -42,7 +42,8 @@ data class HourlyWeatherData(
 }
 
 data class DetailsWeatherData(
-        val values: List<DetailsWeatherDataItem>
+    val sectionTitle: String,
+    val values: List<DetailsWeatherDataItem>
 ) : WeatherData() {
 
     override fun getDataType() = DETAILS
@@ -50,7 +51,8 @@ data class DetailsWeatherData(
 }
 
 data class PrecipitationWeatherData(
-        // time : amount of precipitation in mm for last 3 hours
+    val sectionTitle: String,
+    // time : amount of precipitation in mm for last 3 hours
     val values: List<DisplayedWeatherItem>
 ) : WeatherData() {
 
@@ -59,7 +61,8 @@ data class PrecipitationWeatherData(
 }
 
 data class ForecastWeatherData(
-        val values: List<MainWeatherData>
+    val sectionTitle: String,
+    val values: List<MainWeatherData>
 ) : WeatherData() {
 
     override fun getDataType() = FORECAST

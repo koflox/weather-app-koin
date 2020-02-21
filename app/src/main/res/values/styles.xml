@@ -31,4 +31,15 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="WeatherDataHeaderTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingStart">@dimen/indent_medium</item>
+        <item name="android:layout_marginTop">@dimen/indent_medium</item>
+        <item name="strokeColor">@color/colorPrimaryDim</item>
+        <item name="strokePaddingStart">@dimen/indent_medium</item>
+        <item name="strokePaddingEnd">@dimen/indent_medium</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
 </resources>

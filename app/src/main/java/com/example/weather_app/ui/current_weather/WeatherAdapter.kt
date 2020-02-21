@@ -31,14 +31,24 @@ class WeatherAdapter : RecyclerView.Adapter<BaseWeatherDataVH>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseWeatherDataVH = when (viewType) {
-        WeatherData.MAIN -> MainWeatherDataVH(parent, toView(R.layout.item_weather_data_main, parent))
-        WeatherData.HOURLY -> HourlyWeatherDataVH(parent, toView(R.layout.item_weather_data_hourly, parent))
-        WeatherData.DETAILS -> DetailsWeatherDataVH(toView(R.layout.item_weather_data_details, parent))
+        WeatherData.MAIN -> MainWeatherDataVH(
+            parent,
+            toView(R.layout.item_weather_data_main, parent)
+        )
+        WeatherData.HOURLY -> HourlyWeatherDataVH(
+            parent,
+            toView(R.layout.item_weather_data_hourly, parent)
+        )
+        WeatherData.DETAILS -> DetailsWeatherDataVH(
+            toView(R.layout.item_weather_data_details, parent)
+        )
         WeatherData.PRECIPITATION -> PrecipitationWeatherDataVH(
             parent,
             toView(R.layout.item_weather_data_precipitation, parent)
         )
-        WeatherData.FORECAST -> ForecastWeatherDataVH(toView(R.layout.item_weather_data_forecast, parent))
+        WeatherData.FORECAST -> ForecastWeatherDataVH(
+            toView(R.layout.item_weather_data_forecast, parent)
+        )
         else -> throw IllegalArgumentException("Unsupported weather data type: $viewType")
     }
 
@@ -95,6 +105,7 @@ class DetailsWeatherDataVH(private val v: View) : BaseWeatherDataVH(v) {
                 setData(detailsWeatherData.values)
             }
         }
+        v.htvWeatherDataDetailsTitle.text = detailsWeatherData.sectionTitle
     }
 
 }
@@ -103,9 +114,11 @@ class PrecipitationWeatherDataVH(private val parent: View, private val v: View) 
 
     override fun bind(data: WeatherData) {
         val precipitationData = data as PrecipitationWeatherData
-        v.minimumHeight = parent.measuredHeight / 10 * 2
+        v.minimumHeight = (parent.measuredHeight / 10 * 2.5F).toInt()
         v.graphicViewPrecipitationData.dataType = GraphicView.DataType.PRECIPITATION
         v.graphicViewPrecipitationData.setData(precipitationData.values)
+
+        v.htvWeatherDataPrecipitationTitle.text = precipitationData.sectionTitle
     }
 
 }
@@ -121,6 +134,8 @@ class ForecastWeatherDataVH(private val v: View) : BaseWeatherDataVH(v) {
                 setData(forecastData.values)
             }
         }
+
+        v.htvWeatherDataForecastTitle.text = forecastData.sectionTitle
     }
 
 }

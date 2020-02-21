@@ -103,6 +103,8 @@ class GraphicView @JvmOverloads constructor(
             else -> max - min
         }
         val initialHeight = height.toFloat() - initialPadding * 2 - textSize * 2
+
+        //todo init steps after setting data
         stepVertical = when (rows) {
             1 -> initialHeight
             else -> initialHeight / rows
