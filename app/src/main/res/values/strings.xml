@@ -21,4 +21,7 @@
     <string name="title_precipitation_weather_data">Precipitation</string>
     <string name="title_forecast_weather_data">Forecast</string>
     <string name="title_hourly_weather_data">Hourly weather</string>
+    <string name="screen_title_search">Search</string>
+    <string name="screen_title_settings">Settings</string>
+    <string name="screen_title_favorite">Favorite</string>
 </resources>

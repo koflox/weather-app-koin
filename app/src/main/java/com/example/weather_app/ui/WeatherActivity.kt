@@ -36,6 +36,7 @@ class WeatherActivity : BaseActivity() {
             .build()
         setupActionBarWithNavController(navController, appBarConfiguration)
         navigationView.setupWithNavController(navController)
+        handleNavigation()
     }
 
     override fun onStart() {
@@ -51,6 +52,18 @@ class WeatherActivity : BaseActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    private fun handleNavigation() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            supportActionBar?.subtitle = ""
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            when (destination.id) {
+                R.id.currentWeatherFragment -> {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                }
+            }
+        }
     }
 
 }
