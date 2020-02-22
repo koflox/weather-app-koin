@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.entity.FavoriteCity
-import com.example.weather_app.util.loadFromUrl
 import kotlinx.android.synthetic.main.item_favorite_city.view.*
 
 class FavoriteCitiesAdapter(
@@ -49,7 +48,7 @@ class FavoriteCitiesAdapter(
             view.run {
                 tvCityInfo.text = "${city.cityName}, ${city.country}" //todo
                 ibCityOptions.setOnClickListener { listener.onOptionsClick(this, city) }
-                ivCityPicture.loadFromUrl(city.imageUrl)
+//                ivCityPicture.loadFromUrl(city.imageUrl)
             }
         }
 

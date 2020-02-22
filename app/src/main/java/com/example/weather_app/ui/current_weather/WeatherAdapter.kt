@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.*
+import com.example.weather_app.ui.base.UniversalItemDecorator
 import com.example.weather_app.ui.view.GraphicView
 import com.example.weather_app.util.loadFromUrl
 import com.example.weather_app.util.toView
@@ -104,10 +105,9 @@ class DetailsWeatherDataVH(private val v: View) : BaseWeatherDataVH(v) {
     override fun bind(data: WeatherData) {
         val detailsWeatherData = data as DetailsWeatherData
         v.rvDetailsWeatherData.apply {
-            val spacing = context.resources.getDimensionPixelSize(R.dimen.common_grid_spacing)
+            val spacing = context.resources.getDimensionPixelSize(R.dimen.common_list_spacing)
             val spanCount = context.resources.getInteger(R.integer.span_count_details_weather_data)
-
-            addItemDecoration(ItemDecorator(spacing, spanCount))
+            addItemDecoration(UniversalItemDecorator(spacing, UniversalItemDecorator.Type.GRID, spanCount))
             layoutManager = GridLayoutManager(context, spanCount)
             adapter = DetailsWeatherDataAdapter().apply {
                 setData(detailsWeatherData.values)

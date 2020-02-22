@@ -4,14 +4,13 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
 import com.example.weather_app.data.entity.FavoriteCity
 import com.example.weather_app.ui.base.BaseFragment
-import com.example.weather_app.ui.base.GridSpacingItemDecoration
+import com.example.weather_app.ui.base.UniversalItemDecorator
 import kotlinx.android.synthetic.main.fragment_favorite_cities.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class FavoritesCitiesFragment : BaseFragment(), PopupMenu.OnMenuItemClickListener {
 
@@ -37,11 +36,10 @@ class FavoritesCitiesFragment : BaseFragment(), PopupMenu.OnMenuItemClickListene
 
     override fun initViews() {
         rvFavoriteCities.apply {
-            val spanCount = resources.getInteger(R.integer.favorite_cities_span_count)
-            val itemsMargin = resources.getDimensionPixelSize(R.dimen.indent_medium)
-            layoutManager = GridLayoutManager(context, spanCount)
+            val spacing = resources.getDimensionPixelSize(R.dimen.indent_medium)
+            layoutManager = LinearLayoutManager(context)
             adapter = favoriteCitiesAdapter
-            addItemDecoration(GridSpacingItemDecoration(spanCount, itemsMargin))
+            addItemDecoration(UniversalItemDecorator(spacing, UniversalItemDecorator.Type.VERTICAL))
         }
     }
 
