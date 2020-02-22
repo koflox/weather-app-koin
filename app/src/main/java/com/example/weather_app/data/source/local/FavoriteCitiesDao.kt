@@ -16,7 +16,7 @@ interface FavoriteCitiesDao {
     @Query("SELECT * FROM favoriteCities WHERE id = :cityId")
     suspend fun getFavoriteCity(cityId: Int): FavoriteCity?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(city: FavoriteCity)
 
     @Update
