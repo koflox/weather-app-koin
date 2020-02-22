@@ -39,6 +39,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding{
+        enabled true
+    }
 }
 
 def nav_version_ktx = "2.1.0-alpha06"

@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
+import com.example.weather_app.databinding.FragmentWeatherBinding
 import com.example.weather_app.ui.base.BaseFragment
 import com.example.weather_app.util.EventObserver
 import com.example.weather_app.util.setSupportActionBarSubtitle
@@ -17,13 +17,13 @@ import com.example.weather_app.util.showToast
 import kotlinx.android.synthetic.main.fragment_weather.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CurrentWeatherFragment : BaseFragment() {
+class CurrentWeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
     private val args by navArgs<CurrentWeatherFragmentArgs>()
 
     private val viewModel by viewModel<CurrentWeatherViewModel>()
 
-    private val weatherAdapter = WeatherAdapter()
+    private lateinit var weatherAdapter: WeatherAdapter
 
     override fun getLayoutId() = R.layout.fragment_weather
 
@@ -33,6 +33,8 @@ class CurrentWeatherFragment : BaseFragment() {
     }
 
     override fun initViews() {
+        weatherAdapter = WeatherAdapter(viewModel)
+        dataBinding.viewModel = viewModel
         setSupportActionBarTitle(R.string.text_loading)
         setHasOptionsMenu(true)
         rvWeatherData.apply {
@@ -44,14 +46,8 @@ class CurrentWeatherFragment : BaseFragment() {
     }
 
     override fun addViewObservers() {
-        viewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
-            pbLoadingWeather.visibility = if (isLoading) View.VISIBLE else View.GONE
-        })
         viewModel.message.observe(viewLifecycleOwner, EventObserver { msg ->
             context?.showToast(msg)
-        })
-        viewModel.weatherData.observe(this, Observer { weatherData ->
-            weatherAdapter.setData(weatherData)
         })
         viewModel.isCityAddedToFavorite.observe(this, EventObserver {
             activity?.invalidateOptionsMenu()

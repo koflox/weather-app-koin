@@ -1,101 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/indent_medium"
-    tools:background="@color/colorPrimary"
-    tools:layout_height="wrap_content">
+<layout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineEndOfTemp"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.weather_app.ui.current_weather.CurrentWeatherViewModel" />
+
+        <variable
+            name="item"
+            type="com.example.weather_app.data.displayed.MainWeatherData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvWeatherDesc"
-        style="@style/WeatherDataTextStyle"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_medium"
-        app:layout_constraintEnd_toEndOf="@+id/guidelineEndOfTemp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Clear" />
+        android:padding="@dimen/indent_medium"
+        tools:background="@color/colorPrimary"
+        tools:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvTemp"
-        style="@style/WeatherDataTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/indent_medium"
-        android:textSize="60sp"
-        app:layout_constraintEnd_toEndOf="@+id/guidelineEndOfTemp"
-        app:layout_constraintTop_toBottomOf="@+id/tvWeatherDesc"
-        tools:ignore="RtlSymmetry"
-        tools:text="25" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEndOfTemp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivWeatherIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="@+id/tvWeatherDesc"
-        app:layout_constraintEnd_toEndOf="@+id/barrierTempEnd"
-        app:layout_constraintStart_toStartOf="@+id/barrierTempStart"
-        app:layout_constraintTop_toTopOf="@id/tvWeatherDesc" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvWeatherDesc"
+            style="@style/WeatherDataTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{item.weatherDescription}"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintEnd_toEndOf="@+id/guidelineEndOfTemp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Clear" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrierTempStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="start"
-        app:constraint_referenced_ids="tvTempMax,tvTempMin" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTemp"
+            style="@style/WeatherDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/indent_medium"
+            android:textSize="60sp"
+            app:layout_constraintEnd_toEndOf="@+id/guidelineEndOfTemp"
+            app:layout_constraintTop_toBottomOf="@+id/tvWeatherDesc"
+            app:temp="@{item.temp}"
+            tools:ignore="RtlSymmetry"
+            tools:text="25" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrierTempEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="end"
-        app:constraint_referenced_ids="tvTempMax,tvTempMin" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivWeatherIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/tvWeatherDesc"
+            app:layout_constraintEnd_toEndOf="@+id/barrierTempEnd"
+            app:layout_constraintStart_toStartOf="@+id/barrierTempStart"
+            app:layout_constraintTop_toTopOf="@id/tvWeatherDesc"
+            app:srcUrl="@{item.weatherIconUrl}" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvTempMax"
-        style="@style/WeatherDataTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/indent_medium"
-        android:gravity="center"
-        android:textSize="@dimen/text_size_small_plus"
-        app:layout_constraintBottom_toTopOf="@+id/viewTempDivider"
-        app:layout_constraintEnd_toEndOf="@+id/barrierTempEnd"
-        app:layout_constraintStart_toStartOf="@+id/guidelineEndOfTemp"
-        app:layout_constraintTop_toTopOf="@+id/tvTemp"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="8 C" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierTempStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="start"
+            app:constraint_referenced_ids="tvTempMax,tvTempMin" />
 
-    <View
-        android:id="@+id/viewTempDivider"
-        style="@style/WeatherDividerStyle"
-        android:layout_marginTop="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvTempMin"
-        app:layout_constraintEnd_toEndOf="@+id/barrierTempEnd"
-        app:layout_constraintStart_toStartOf="@+id/barrierTempStart"
-        app:layout_constraintTop_toBottomOf="@+id/tvTempMax" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierTempEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="tvTempMax,tvTempMin" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvTempMin"
-        style="@style/WeatherDataTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/indent_small"
-        android:gravity="center"
-        android:textSize="@dimen/text_size_small_plus"
-        app:layout_constraintBottom_toBottomOf="@+id/tvTemp"
-        app:layout_constraintEnd_toEndOf="@+id/barrierTempEnd"
-        app:layout_constraintTop_toBottomOf="@+id/viewTempDivider"
-        tools:text="27 C" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTempMax"
+            style="@style/WeatherDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/indent_medium"
+            android:gravity="center"
+            android:text="@{item.tempMin + item.tempUnitMain}"
+            android:textSize="@dimen/text_size_small_plus"
+            app:layout_constraintBottom_toTopOf="@+id/viewTempDivider"
+            app:layout_constraintEnd_toEndOf="@+id/barrierTempEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineEndOfTemp"
+            app:layout_constraintTop_toTopOf="@+id/tvTemp"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="8 C" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/viewTempDivider"
+            style="@style/WeatherDividerStyle"
+            android:layout_marginTop="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvTempMin"
+            app:layout_constraintEnd_toEndOf="@+id/barrierTempEnd"
+            app:layout_constraintStart_toStartOf="@+id/barrierTempStart"
+            app:layout_constraintTop_toBottomOf="@+id/tvTempMax" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTempMin"
+            style="@style/WeatherDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/indent_small"
+            android:gravity="center"
+            android:text="@{item.tempMax + item.tempUnitMain}"
+            android:textSize="@dimen/text_size_small_plus"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTemp"
+            app:layout_constraintEnd_toEndOf="@+id/barrierTempEnd"
+            app:layout_constraintTop_toBottomOf="@+id/viewTempDivider"
+            tools:text="27 C" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

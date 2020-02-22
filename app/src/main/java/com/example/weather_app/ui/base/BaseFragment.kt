@@ -5,9 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
+
+    protected lateinit var dataBinding: DB
 
     @LayoutRes
     abstract fun getLayoutId(): Int
@@ -18,7 +22,9 @@ abstract class BaseFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(getLayoutId(), container, false)
+        dataBinding = DataBindingUtil.inflate(layoutInflater, getLayoutId(), container, false)
+        dataBinding.lifecycleOwner = viewLifecycleOwner
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

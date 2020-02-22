@@ -1,27 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:background="@color/colorPrimary">
+<layout>
 
-    <com.example.weather_app.ui.view.HeaderTextView
-        android:id="@+id/htvWeatherDataPrecipitationTitle"
-        style="@style/WeatherDataHeaderTextStyle"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.weather_app.ui.current_weather.CurrentWeatherViewModel" />
+
+        <variable
+            name="item"
+            type="com.example.weather_app.data.displayed.PrecipitationWeatherData" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Precipitation" />
+        android:orientation="vertical"
+        tools:background="@color/colorPrimary">
 
-    <com.example.weather_app.ui.view.GraphicView
-        android:id="@+id/graphicViewPrecipitationData"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/indent_medium"
-        android:layout_marginEnd="@dimen/indent_medium"
-        android:layout_weight="1"
-        app:colorData="@android:color/white"
-        app:colorGraphic="@android:color/white" />
+        <com.example.weather_app.ui.view.HeaderTextView
+            android:id="@+id/htvWeatherDataPrecipitationTitle"
+            style="@style/WeatherDataHeaderTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{item.sectionTitle}"
+            tools:text="Precipitation" />
 
-</LinearLayout>
+        <com.example.weather_app.ui.view.GraphicView
+            android:id="@+id/graphicViewPrecipitationData"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/indent_medium"
+            android:layout_marginEnd="@dimen/indent_medium"
+            android:layout_weight="1"
+            app:colorData="@android:color/white"
+            app:colorGraphic="@android:color/white"
+            app:data="@{item.values}"
+            app:dataType="precipitation" />
+
+    </LinearLayout>
+</layout>

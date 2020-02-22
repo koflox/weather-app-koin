@@ -2,16 +2,15 @@ package com.example.weather_app.ui.favorites
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weather_app.R
 import com.example.weather_app.data.data.FavoriteCity
-import kotlinx.android.synthetic.main.item_favorite_city.view.*
+import com.example.weather_app.databinding.ItemFavoriteCityBinding
+import com.example.weather_app.ui.base.BindableAdapter
 
 class FavoriteCitiesAdapter(
-    private val listener: OnItemClickListener
-) : RecyclerView.Adapter<FavoriteCityViewHolder>() {
+    private val viewModel: FavoritesCitiesViewModel
+) : RecyclerView.Adapter<FavoriteCityViewHolder>(), BindableAdapter<FavoriteCity> {
 
     interface OnItemClickListener {
 
@@ -23,42 +22,39 @@ class FavoriteCitiesAdapter(
 
     val data = mutableListOf<FavoriteCity>()
 
-    fun setData(cities: List<FavoriteCity>) {
-        data.run {
+    override fun setData(data: List<FavoriteCity>) {
+        this.data.run {
             clear()
-            addAll(cities)
+            addAll(data)
         }
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteCityViewHolder {
+        val dataBinding = ItemFavoriteCityBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FavoriteCityViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_favorite_city, parent, false),
-            listener
+            dataBinding
         )
     }
 
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: FavoriteCityViewHolder, position: Int) {
-        holder.bind(data[position], position)
+        holder.bind(viewModel, data[position])
     }
 
 }
 
 class FavoriteCityViewHolder(
-    private val view: View,
-    private val listener: FavoriteCitiesAdapter.OnItemClickListener
-) : RecyclerView.ViewHolder(view) {
+    private val dataBinding: ItemFavoriteCityBinding
+) : RecyclerView.ViewHolder(dataBinding.root) {
 
     @SuppressLint("SetTextI18n")
-    fun bind(city: FavoriteCity, position: Int) {
-        view.run {
-            setOnClickListener {
-                listener.onCityClick(city, position)
-            }
-            tvCityInfo.text = "${city.cityName}, ${city.country}"
-            ibCityOptions.setOnClickListener { listener.onOptionsClick(city, position) }
+    fun bind(viewModel: FavoritesCitiesViewModel, city: FavoriteCity) {
+        dataBinding.apply {
+            this.viewModel = viewModel
+            item = city
+            executePendingBindings()
         }
     }
 

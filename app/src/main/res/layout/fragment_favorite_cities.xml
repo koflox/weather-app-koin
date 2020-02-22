@@ -1,25 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.favorites.FavoritesCitiesFragment">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.example.weather_app.ui.view.RecyclerViewEmptySupport
-        android:id="@+id/rvFavoriteCities"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.weather_app.ui.favorites.FavoritesCitiesViewModel" />
+
+        <variable
+            name="item"
+            type="com.example.weather_app.data.data.FavoriteCity" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:padding="@dimen/indent_medium" />
+        tools:context=".ui.favorites.FavoritesCitiesFragment">
 
-    <TextView
-        android:id="@+id/tvPlaceholderFavoriteCities"
-        style="@style/PlaceHolderTextStyle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/placeholder_text_favorite_cities"
-        android:textColor="@android:color/darker_gray"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        <com.example.weather_app.ui.view.RecyclerViewEmptySupport
+            android:id="@+id/rvFavoriteCities"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="@dimen/indent_medium"
+            app:data="@{viewModel.favoriteCities}" />
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/tvPlaceholderFavoriteCities"
+            style="@style/PlaceHolderTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/placeholder_text_favorite_cities"
+            android:textColor="@android:color/darker_gray"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </FrameLayout>
+</layout>

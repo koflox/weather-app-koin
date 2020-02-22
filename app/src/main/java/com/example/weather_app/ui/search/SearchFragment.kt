@@ -5,11 +5,12 @@ import android.view.MenuInflater
 import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
 import com.example.weather_app.R
+import com.example.weather_app.databinding.FragmentSearchBinding
 import com.example.weather_app.ui.base.BaseFragment
 import com.example.weather_app.util.EventObserver
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchFragment : BaseFragment() {
+class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     private val viewModel by viewModel<SearchViewModel>()
 

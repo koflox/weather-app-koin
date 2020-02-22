@@ -31,10 +31,6 @@ class FavoritesCitiesViewModel(
         }
     }
 
-    val showAddCityHint = Transformations.map(_favoriteCities) {
-        it is Result.Success && it.data.isEmpty()
-    }
-
     fun onActionRemove() {
         viewModelScope.launch {
             val (city, _) = selectedCity.value?.peekContent() ?: return@launch
@@ -42,8 +38,12 @@ class FavoritesCitiesViewModel(
         }
     }
 
-    fun onCitySelected(city: FavoriteCity, position: Int, showContextMenu: Boolean) {
-        _selectedCity.value = Event(Triple(city, position, showContextMenu))
+    fun onCitySelected(city: FavoriteCity, showContextMenu: Boolean) {
+        val position = favoriteCities.value?.indexOf(city) ?: return
+        when {
+            position != -1 -> _selectedCity.value = Event(Triple(city, 1, showContextMenu))
+            else -> return
+        }
     }
 
     fun onActionGetWeather() {

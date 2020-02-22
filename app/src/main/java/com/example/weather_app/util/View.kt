@@ -16,7 +16,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.weather_app.R
 
-fun ImageView.loadFromUrl(url: String?, @DrawableRes resIdOnError: Int = R.drawable.ic_city_placeholder) = when {
+fun ImageView.loadFromUrl(url: String?, @DrawableRes resIdOnError: Int = R.drawable.ic_na) = when {
     url.isNullOrBlank() -> loadFromResource(resIdOnError)
     else -> Glide.with(context)
             .applyDefaultRequestOptions(RequestOptions().error(resIdOnError))

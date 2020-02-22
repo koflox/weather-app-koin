@@ -1,16 +1,23 @@
 package com.example.weather_app.ui.current_weather
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.WeatherData
-import com.example.weather_app.util.toView
+import com.example.weather_app.ui.base.BindableAdapter
 
-class WeatherAdapter : RecyclerView.Adapter<BaseWeatherDataVH>() {
+class WeatherAdapter(
+    private val viewModel: CurrentWeatherViewModel
+) : RecyclerView.Adapter<BaseWeatherDataVH>(), BindableAdapter<WeatherData> {
 
     private val data = mutableListOf<WeatherData>()
 
-    fun setData(data: List<WeatherData>) {
+    private val adapterDetailsWeatherData = DetailsWeatherDataAdapter()
+    private val adapterForecastWeatherData = ForecastWeatherDataAdapter()
+
+    override fun setData(data: List<WeatherData>) {
         this.data.run {
             clear()
             addAll(data)
@@ -22,32 +29,36 @@ class WeatherAdapter : RecyclerView.Adapter<BaseWeatherDataVH>() {
         return data[position].getDataType()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseWeatherDataVH = when (viewType) {
-        WeatherData.MAIN -> MainWeatherDataVH(
-            parent,
-            toView(R.layout.item_weather_data_main, parent)
-        )
-        WeatherData.HOURLY -> HourlyWeatherDataVH(
-            parent,
-            toView(R.layout.item_weather_data_hourly, parent)
-        )
-        WeatherData.DETAILS -> DetailsWeatherDataVH(
-            toView(R.layout.item_weather_data_details, parent)
-        )
-        WeatherData.PRECIPITATION -> PrecipitationWeatherDataVH(
-            parent,
-            toView(R.layout.item_weather_data_precipitation, parent)
-        )
-        WeatherData.FORECAST -> ForecastWeatherDataVH(
-            toView(R.layout.item_weather_data_forecast, parent)
-        )
-        else -> throw IllegalArgumentException("Unsupported weather data type: $viewType")
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseWeatherDataVH {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            WeatherData.MAIN -> MainWeatherDataVH(
+                DataBindingUtil.inflate(inflater, R.layout.item_weather_data_main, parent, false)
+            )
+            WeatherData.HOURLY -> HourlyWeatherDataVH(
+                DataBindingUtil.inflate(inflater, R.layout.item_weather_data_hourly, parent, false),
+                parent
+            )
+            WeatherData.DETAILS -> DetailsWeatherDataVH(
+                DataBindingUtil.inflate(inflater, R.layout.item_weather_data_details, parent, false),
+                adapterDetailsWeatherData
+            )
+            WeatherData.PRECIPITATION -> PrecipitationWeatherDataVH(
+                DataBindingUtil.inflate(inflater, R.layout.item_weather_data_precipitation, parent, false),
+                parent
+            )
+            WeatherData.FORECAST -> ForecastWeatherDataVH(
+                DataBindingUtil.inflate(inflater, R.layout.item_weather_data_forecast, parent, false),
+                adapterForecastWeatherData
+            )
+            else -> throw IllegalArgumentException("Unsupported weather data type: $viewType")
+        }
     }
 
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holderWeather: BaseWeatherDataVH, position: Int) {
-        holderWeather.bind(data[position])
+        holderWeather.bind(viewModel, data[position])
     }
 
 }

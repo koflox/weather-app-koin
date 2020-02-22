@@ -3,36 +3,27 @@ package com.example.weather_app.ui.favorites
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
-import com.example.weather_app.data.data.FavoriteCity
+import com.example.weather_app.databinding.FragmentFavoriteCitiesBinding
 import com.example.weather_app.ui.base.BaseFragment
 import com.example.weather_app.ui.base.UniversalItemDecorator
 import com.example.weather_app.util.EventObserver
 import kotlinx.android.synthetic.main.fragment_favorite_cities.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoritesCitiesFragment : BaseFragment(), PopupMenu.OnMenuItemClickListener {
+class FavoritesCitiesFragment : BaseFragment<FragmentFavoriteCitiesBinding>(), PopupMenu.OnMenuItemClickListener {
 
     private val viewModel by viewModel<FavoritesCitiesViewModel>()
 
-    private val favoriteCityAdapterItemClickListener = object : FavoriteCitiesAdapter.OnItemClickListener {
-        override fun onCityClick(city: FavoriteCity, position: Int) {
-            viewModel.onCitySelected(city, position, showContextMenu = false)
-        }
-
-        override fun onOptionsClick(city: FavoriteCity, position: Int) {
-            viewModel.onCitySelected(city, position, showContextMenu = true)
-        }
-    }
-
-    private val favoriteCitiesAdapter = FavoriteCitiesAdapter(favoriteCityAdapterItemClickListener)
+    private lateinit var favoriteCitiesAdapter: FavoriteCitiesAdapter
 
     override fun getLayoutId() = R.layout.fragment_favorite_cities
 
     override fun initViews() {
+        favoriteCitiesAdapter = FavoriteCitiesAdapter(viewModel)
+        dataBinding.viewModel = viewModel
         rvFavoriteCities.apply {
             emptyView = tvPlaceholderFavoriteCities
             val spacing = resources.getDimensionPixelSize(R.dimen.indent_medium)
@@ -43,12 +34,6 @@ class FavoritesCitiesFragment : BaseFragment(), PopupMenu.OnMenuItemClickListene
     }
 
     override fun addViewObservers() {
-        viewModel.favoriteCities.observe(this, Observer {
-            favoriteCitiesAdapter.setData(it)
-        })
-        viewModel.showAddCityHint.observe(this, Observer {
-
-        })
         viewModel.selectedCity.observe(this, EventObserver {
             val (city, position, showContextMenu) = it
             when {

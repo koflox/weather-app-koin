@@ -3,6 +3,11 @@
     <declare-styleable name="GraphicView">
         <attr name="colorGraphic" format="color" />
         <attr name="colorData" format="color" />
+        <attr name="dataType" format="enum">
+            <enum name="none" value="0" />
+            <enum name="hourly_temp" value="1" />
+            <enum name="precipitation" value="2" />
+        </attr>
     </declare-styleable>
     <declare-styleable name="HeaderTextView">
         <attr name="strokeColor" format="color" />

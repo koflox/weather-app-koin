@@ -6,15 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.DetailsWeatherDataItem
+import com.example.weather_app.ui.base.BindableAdapter
 import com.example.weather_app.util.toSpannableString
 import com.example.weather_app.util.toView
 import kotlinx.android.synthetic.main.item_weather_data_details_item.view.*
 
-class DetailsWeatherDataAdapter : RecyclerView.Adapter<DetailsWeatherDataItemVH>() {
+class DetailsWeatherDataAdapter : RecyclerView.Adapter<DetailsWeatherDataItemVH>(), BindableAdapter<DetailsWeatherDataItem> {
 
     private val data = mutableListOf<DetailsWeatherDataItem>()
 
-    fun setData(data: List<DetailsWeatherDataItem>) {
+    override fun setData(data: List<DetailsWeatherDataItem>) {
         this.data.run {
             clear()
             addAll(data)

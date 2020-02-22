@@ -16,9 +16,9 @@ class GraphicView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     enum class DataType {
+        NONE,
         HOURLY_TEMP,
-        PRECIPITATION,
-        NONE
+        PRECIPITATION
     }
 
     var textSize: Float = context.resources.getDimensionPixelSize(R.dimen.text_size_small).toFloat()
@@ -69,6 +69,7 @@ class GraphicView @JvmOverloads constructor(
             try {
                 colorData = attributes.getColor(R.styleable.GraphicView_colorData, Color.BLACK)
                 colorGraphic = attributes.getColor(R.styleable.GraphicView_colorGraphic, Color.BLACK)
+                dataType = DataType.values()[attributes.getInt(R.styleable.GraphicView_dataType, 0)]
             } finally {
                 attributes.recycle()
             }
