@@ -34,6 +34,7 @@ class FavoritesCitiesFragment : BaseFragment(), PopupMenu.OnMenuItemClickListene
 
     override fun initViews() {
         rvFavoriteCities.apply {
+            emptyView = tvPlaceholderFavoriteCities
             val spacing = resources.getDimensionPixelSize(R.dimen.indent_medium)
             layoutManager = LinearLayoutManager(context)
             adapter = favoriteCitiesAdapter

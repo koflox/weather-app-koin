@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +36,7 @@ class CurrentWeatherFragment : BaseFragment() {
         setSupportActionBarTitle(R.string.text_loading)
         setHasOptionsMenu(true)
         rvWeatherData.apply {
+            emptyView = tvPlaceholderWeather
             adapter = weatherAdapter
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
@@ -43,7 +45,7 @@ class CurrentWeatherFragment : BaseFragment() {
 
     override fun addViewObservers() {
         viewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
-            //                weatherInfoSharedViewModel.loading.value = isLoading
+            pbLoadingWeather.visibility = if (isLoading) View.VISIBLE else View.GONE
         })
         viewModel.message.observe(viewLifecycleOwner, EventObserver { msg ->
             context?.showToast(msg)

@@ -1,7 +1,6 @@
 package com.example.weather_app.ui.current_weather
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -59,26 +58,20 @@ class CurrentWeatherViewModel(
         cityIdToSearch: Int = -1
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            loading.postValue(true)
+            _loading.postValue(true)
 
             var forecastResponse: Result<ForecastWeatherResponse>? = null
             var currentWeatherResponse: Result<CurrentWeatherResponse>? = null
             when {
                 searchQuery != null -> {
-                    Log.d("okhtt", "searchQuery: $searchQuery")
                     forecastResponse = dataRepository.getForecast(searchQuery, "metric")
                     currentWeatherResponse = dataRepository.getCurrentWeather(searchQuery, "metric")
                 }
                 cityIdToSearch != -1 -> {
-                    Log.d("okhtt", "cityIdToSearch: $cityIdToSearch")
                     forecastResponse = dataRepository.getForecast(cityIdToSearch, "metric")
                     currentWeatherResponse = dataRepository.getCurrentWeather(cityIdToSearch, "metric")
                 }
             }
-
-            Log.d("Logos", "forecastResponse:\n$forecastResponse")
-            Log.d("Logos", "currentWeatherResponse:\n$currentWeatherResponse")
-
             when {
                 forecastResponse is Result.Success && currentWeatherResponse is Result.Success -> {
                     displayWeather(currentWeatherResponse.data, forecastResponse.data)
@@ -86,11 +79,19 @@ class CurrentWeatherViewModel(
                         checkFavoriteCity(it)
                     }
                 }
-                forecastResponse is Result.Error -> _error.postValue(Event(forecastResponse.exception))
-                currentWeatherResponse is Result.Error -> _error.postValue(Event(currentWeatherResponse.exception))
+                forecastResponse is Result.Error -> {
+                    _error.postValue(Event(forecastResponse.exception))
+                    _displayedToolbarInfo.postValue(Pair(app.getString(R.string.text_common_error), ""))
+                    _loading.postValue(false)
+                    _weatherData.postValue(listOf())
+                }
+                currentWeatherResponse is Result.Error -> {
+                    _error.postValue(Event(currentWeatherResponse.exception))
+                    _displayedToolbarInfo.postValue(Pair(app.getString(R.string.text_common_error), ""))
+                    _loading.postValue(false)
+                    _weatherData.postValue(listOf())
+                }
             }
-
-            loading.postValue(false)
         }
     }
 
@@ -100,7 +101,6 @@ class CurrentWeatherViewModel(
     ) {
         //create current weather data
         val currentWeatherData = currentWeather.toMainWeatherData(TIME_PATTERN_MAIN_WEATHER_DATA)
-        _displayedToolbarInfo.postValue(Pair(currentWeather.cityName, currentWeatherData.dayName))
 
         //create hourly weather data
         val hourlyDataTitle = app.getString(R.string.title_hourly_weather_data)
@@ -143,7 +143,9 @@ class CurrentWeatherViewModel(
             precipitationWeatherData,
             forecastData
         )
+        _loading.postValue(false)
         _weatherData.postValue(displayedWeather)
+        _displayedToolbarInfo.postValue(Pair(currentWeather.cityName, currentWeatherData.dayName))
     }
 
     private fun checkFavoriteCity(favoriteCity: FavoriteCity) {

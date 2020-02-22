@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_favorite_city.view.*
 
 class FavoriteCitiesAdapter(
     private val listener: OnItemClickListener
-) : RecyclerView.Adapter<FavoriteCitiesAdapter.FavoriteCityViewHolder>() {
+) : RecyclerView.Adapter<FavoriteCityViewHolder>() {
 
     interface OnItemClickListener {
 
@@ -44,22 +44,22 @@ class FavoriteCitiesAdapter(
         holder.bind(data[position], position)
     }
 
-    class FavoriteCityViewHolder(
-        private val view: View,
-        private val listener: OnItemClickListener
-    ) : RecyclerView.ViewHolder(view) {
+}
 
-        @SuppressLint("SetTextI18n")
-        fun bind(city: FavoriteCity, position: Int) {
-            view.run {
-                setOnClickListener {
-                    listener.onCityClick(city, position)
-                }
-                tvCityInfo.text = "${city.cityName}, ${city.country}"
-                ibCityOptions.setOnClickListener { listener.onOptionsClick(city, position) }
+class FavoriteCityViewHolder(
+    private val view: View,
+    private val listener: FavoriteCitiesAdapter.OnItemClickListener
+) : RecyclerView.ViewHolder(view) {
+
+    @SuppressLint("SetTextI18n")
+    fun bind(city: FavoriteCity, position: Int) {
+        view.run {
+            setOnClickListener {
+                listener.onCityClick(city, position)
             }
+            tvCityInfo.text = "${city.cityName}, ${city.country}"
+            ibCityOptions.setOnClickListener { listener.onOptionsClick(city, position) }
         }
-
     }
 
 }

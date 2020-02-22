@@ -14,6 +14,7 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     val error: LiveData<Event<Exception>> = _error
 
     //todo add encapsulation
-    val loading = MutableLiveData<Boolean>()
+    protected val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
 
 }
