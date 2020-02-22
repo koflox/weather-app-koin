@@ -3,7 +3,7 @@ package com.example.weather_app.data.source.local
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.weather_app.data.Result
-import com.example.weather_app.data.entity.FavoriteCity
+import com.example.weather_app.data.data.FavoriteCity
 import com.example.weather_app.data.response.open_weather_map.current_weather.CurrentWeatherResponse
 import com.example.weather_app.data.response.open_weather_map.forecast.ForecastWeatherResponse
 import com.example.weather_app.data.source.DataSource

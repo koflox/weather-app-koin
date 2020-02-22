@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
-import com.example.weather_app.data.entity.FavoriteCity
+import com.example.weather_app.data.data.FavoriteCity
 import com.example.weather_app.ui.base.BaseFragment
 import com.example.weather_app.ui.base.UniversalItemDecorator
 import com.example.weather_app.util.EventObserver

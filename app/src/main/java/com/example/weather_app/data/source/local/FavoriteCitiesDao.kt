@@ -2,7 +2,7 @@ package com.example.weather_app.data.source.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.weather_app.data.entity.FavoriteCity
+import com.example.weather_app.data.data.FavoriteCity
 
 @Dao
 interface FavoriteCitiesDao {

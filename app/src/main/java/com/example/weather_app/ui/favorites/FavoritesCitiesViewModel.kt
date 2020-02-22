@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.data.Result
-import com.example.weather_app.data.entity.FavoriteCity
+import com.example.weather_app.data.data.FavoriteCity
 import com.example.weather_app.data.source.AppDataRepository
 import com.example.weather_app.ui.base.BaseViewModel
 import com.example.weather_app.util.Event

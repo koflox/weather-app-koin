@@ -6,9 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.R
 import com.example.weather_app.data.Result
+import com.example.weather_app.data.data.FavoriteCity
+import com.example.weather_app.data.data.Unit
 import com.example.weather_app.data.displayed.DisplayedWeatherItem
 import com.example.weather_app.data.displayed.WeatherData
-import com.example.weather_app.data.entity.FavoriteCity
 import com.example.weather_app.data.response.open_weather_map.current_weather.CurrentWeatherResponse
 import com.example.weather_app.data.response.open_weather_map.current_weather.toDetailsWeatherData
 import com.example.weather_app.data.response.open_weather_map.current_weather.toMainWeatherData
@@ -37,9 +38,9 @@ class CurrentWeatherViewModel(
         private const val SEGMENT_COUNT_HOURLY_WEATHER_DATA = 8
         private const val SEGMENT_COUNT_PRECIPITATION_WEATHER_DATA = 8
         private const val SEGMENT_COUNT_FORECAST_WEATHER_DATA = 5
-
-        private const val SEARCH_DELAY = 450L
     }
+
+    private val dataUnit = Unit.METRIC
 
     private lateinit var cityFromSearch: FavoriteCity
 
@@ -64,12 +65,12 @@ class CurrentWeatherViewModel(
             var currentWeatherResponse: Result<CurrentWeatherResponse>? = null
             when {
                 searchQuery != null -> {
-                    forecastResponse = dataRepository.getForecast(searchQuery, "metric")
-                    currentWeatherResponse = dataRepository.getCurrentWeather(searchQuery, "metric")
+                    forecastResponse = dataRepository.getForecast(searchQuery, dataUnit.value)
+                    currentWeatherResponse = dataRepository.getCurrentWeather(searchQuery, dataUnit.value)
                 }
                 cityIdToSearch != -1 -> {
-                    forecastResponse = dataRepository.getForecast(cityIdToSearch, "metric")
-                    currentWeatherResponse = dataRepository.getCurrentWeather(cityIdToSearch, "metric")
+                    forecastResponse = dataRepository.getForecast(cityIdToSearch, dataUnit.value)
+                    currentWeatherResponse = dataRepository.getCurrentWeather(cityIdToSearch, dataUnit.value)
                 }
             }
             when {
@@ -100,7 +101,7 @@ class CurrentWeatherViewModel(
         forecast: ForecastWeatherResponse
     ) {
         //create current weather data
-        val currentWeatherData = currentWeather.toMainWeatherData(TIME_PATTERN_MAIN_WEATHER_DATA)
+        val currentWeatherData = currentWeather.toMainWeatherData(TIME_PATTERN_MAIN_WEATHER_DATA, dataUnit)
 
         //create hourly weather data
         val hourlyDataTitle = app.getString(R.string.title_hourly_weather_data)
@@ -115,7 +116,7 @@ class CurrentWeatherViewModel(
 
         //create details weather data
         val detailsWeatherDataTitle = app.getString(R.string.title_details_weather_data)
-        val detailsWeatherData = currentWeather.toDetailsWeatherData(detailsWeatherDataTitle)
+        val detailsWeatherData = currentWeather.toDetailsWeatherData(detailsWeatherDataTitle, dataUnit)
 
         //create precipitation weather data
         val precipitationValue = when {

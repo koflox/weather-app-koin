@@ -2,7 +2,7 @@ package com.example.weather_app.data.source
 
 import androidx.lifecycle.LiveData
 import com.example.weather_app.data.Result
-import com.example.weather_app.data.entity.FavoriteCity
+import com.example.weather_app.data.data.FavoriteCity
 import com.example.weather_app.data.response.open_weather_map.current_weather.CurrentWeatherResponse
 import com.example.weather_app.data.response.open_weather_map.forecast.ForecastWeatherResponse
 import com.example.weather_app.data.source.remote.PixabayService

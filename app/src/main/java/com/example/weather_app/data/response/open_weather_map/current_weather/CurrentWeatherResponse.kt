@@ -3,6 +3,7 @@ package com.example.weather_app.data.response.open_weather_map.current_weather
 
 import android.annotation.SuppressLint
 import com.example.weather_app.R
+import com.example.weather_app.data.data.Unit
 import com.example.weather_app.data.displayed.DetailsWeatherData
 import com.example.weather_app.data.displayed.DetailsWeatherDataItem
 import com.example.weather_app.data.displayed.MainWeatherData
@@ -47,14 +48,22 @@ data class CurrentWeatherResponse(
 )
 
 @SuppressLint("DefaultLocale")
-fun CurrentWeatherResponse.toMainWeatherData(timePattern: String): MainWeatherData {
+fun CurrentWeatherResponse.toMainWeatherData(timePattern: String, unit: Unit): MainWeatherData {
     val weather = weather.firstOrNull()
+    val tempUnitMain = when (unit) {
+        Unit.METRIC -> "°C"
+        Unit.IMPERIAL -> "F"
+    }
+    val tempUnitExtra = when (unit) {
+        Unit.METRIC -> "°"
+        Unit.IMPERIAL -> "F"
+    }
     return MainWeatherData(
         main.temp.toInt(),
         main.tempMin.toInt(),
         main.tempMax.toInt(),
-        "°",
-        "°C",
+        tempUnitMain,
+        tempUnitExtra,
         weather?.icon?.toOpenWeatherMapIconNameToUrl(),
         weather?.main ?: "",
         dt.formatToLocalTime(timePattern, timezone)
@@ -63,14 +72,19 @@ fun CurrentWeatherResponse.toMainWeatherData(timePattern: String): MainWeatherDa
     )
 }
 
-fun CurrentWeatherResponse.toDetailsWeatherData(sectionTitle: String): DetailsWeatherData {
+//todo calculate "feels like", "visibility" and "dew point" values
+fun CurrentWeatherResponse.toDetailsWeatherData(sectionTitle: String, unit: Unit): DetailsWeatherData {
+    val windSpeedUnit = when (unit) {
+        Unit.METRIC -> "m/s"
+        Unit.IMPERIAL -> "m/h"
+    }
     val values = mutableListOf<DetailsWeatherDataItem>().apply {
-        add(DetailsWeatherDataItem(R.drawable.ic_thermometer, "Feels like", "N/A")) //todo calculate it
-        add(DetailsWeatherDataItem(R.drawable.ic_wind, "Wind", wind.speed.toInt().toString(), "m/s"))
+        add(DetailsWeatherDataItem(R.drawable.ic_thermometer, "Feels like", "N/A"))
+        add(DetailsWeatherDataItem(R.drawable.ic_wind, "Wind", wind.speed.toInt().toString(), windSpeedUnit))
         add(DetailsWeatherDataItem(R.drawable.ic_humidity, "Humidity", main.humidity.toString(), "%"))
         add(DetailsWeatherDataItem(R.drawable.ic_barometer, "Pressure", main.pressure.toString(), "hPa"))
-        add(DetailsWeatherDataItem(0, "Visibility", "N/A"))
-        add(DetailsWeatherDataItem(0, "Dew point", "N/A"))
+        add(DetailsWeatherDataItem(R.drawable.ic_na, "Visibility", "N/A"))
+        add(DetailsWeatherDataItem(R.drawable.ic_na, "Dew point", "N/A"))
     }
     return DetailsWeatherData(sectionTitle, values)
 }
