@@ -12,8 +12,6 @@ abstract class BaseFragment : Fragment() {
     @LayoutRes
     abstract fun getLayoutId(): Int
 
-    abstract fun initViews()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addObservers()
@@ -28,6 +26,8 @@ abstract class BaseFragment : Fragment() {
         initViews()
         addViewObservers()
     }
+
+    open fun initViews() {}
 
     open fun addObservers() {}
 
