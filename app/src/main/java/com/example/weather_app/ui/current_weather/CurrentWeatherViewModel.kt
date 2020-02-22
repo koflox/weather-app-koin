@@ -54,24 +54,34 @@ class CurrentWeatherViewModel(
     val message: LiveData<Event<String>> = _message
     val isCityAddedToFavorite: LiveData<Event<Boolean>> = _isCityAddedToFavorite
 
-    fun getCurrentWeather(searchQuery: String) {
+    fun getCurrentWeather(
+        searchQuery: String? = null,
+        cityIdToSearch: Int = -1
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             loading.postValue(true)
 
-            val forecastResponse = dataRepository.getForecast(searchQuery, "metric")
+            var forecastResponse: Result<ForecastWeatherResponse>? = null
+            var currentWeatherResponse: Result<CurrentWeatherResponse>? = null
+            when {
+                searchQuery != null -> {
+                    Log.d("okhtt", "searchQuery: $searchQuery")
+                    forecastResponse = dataRepository.getForecast(searchQuery, "metric")
+                    currentWeatherResponse = dataRepository.getCurrentWeather(searchQuery, "metric")
+                }
+                cityIdToSearch != -1 -> {
+                    Log.d("okhtt", "cityIdToSearch: $cityIdToSearch")
+                    forecastResponse = dataRepository.getForecast(cityIdToSearch, "metric")
+                    currentWeatherResponse = dataRepository.getCurrentWeather(cityIdToSearch, "metric")
+                }
+            }
+
             Log.d("Logos", "forecastResponse:\n$forecastResponse")
-            val currentWeatherResponse = dataRepository.getCurrentWeather(searchQuery, "metric")
             Log.d("Logos", "currentWeatherResponse:\n$currentWeatherResponse")
 
             when {
-                forecastResponse is Result.Success &&
-                        currentWeatherResponse is Result.Success -> {
-                    //todo delete this check
-                    require(currentWeatherResponse.data.id == forecastResponse.data.city.id) {
-                        "City ids differ: ${currentWeatherResponse.data.id} != ${forecastResponse.data.city.id} "
-                    }
+                forecastResponse is Result.Success && currentWeatherResponse is Result.Success -> {
                     displayWeather(currentWeatherResponse.data, forecastResponse.data)
-
                     cityFromSearch = currentWeatherResponse.data.toFavoriteCity().also {
                         checkFavoriteCity(it)
                     }
@@ -94,7 +104,8 @@ class CurrentWeatherViewModel(
 
         //create hourly weather data
         val hourlyDataTitle = app.getString(R.string.title_hourly_weather_data)
-        val currentHourWeatherData = DisplayedWeatherItem(app.getString(R.string.text_time_now), currentWeather.main.temp.toInt())
+        val currentHourWeatherData =
+            DisplayedWeatherItem(app.getString(R.string.text_time_now), currentWeather.main.temp.toInt())
         val hourlyWeatherData = forecast.toHourlyWeatherData(
             TIME_PATTERN_HOURLY_WEATHER_DATA,
             SEGMENT_COUNT_HOURLY_WEATHER_DATA,

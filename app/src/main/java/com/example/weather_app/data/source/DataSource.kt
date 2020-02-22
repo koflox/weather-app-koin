@@ -8,10 +8,13 @@ import com.example.weather_app.data.response.open_weather_map.forecast.ForecastW
 
 interface DataSource {
 
-    //todo change units to StringDef
     suspend fun getCurrentWeather(query: String, units: String): Result<CurrentWeatherResponse>
 
+    suspend fun getCurrentWeather(cityId: Int, units: String): Result<CurrentWeatherResponse>
+
     suspend fun getForecast(query: String, units: String): Result<ForecastWeatherResponse>
+
+    suspend fun getForecast(cityId: Int, units: String): Result<ForecastWeatherResponse>
 
     fun observeFavoriteCities(): LiveData<Result<List<FavoriteCity>>>
 

@@ -24,12 +24,21 @@ class AppDataRepository(
         return remoteDataSource.getCurrentWeather(query, units)
     }
 
+    override suspend fun getCurrentWeather(cityId: Int, units: String): Result<CurrentWeatherResponse> {
+        return remoteDataSource.getCurrentWeather(cityId, units)
+    }
+
     override suspend fun getForecast(
         query: String,
         units: String
     ): Result<ForecastWeatherResponse> {
         return remoteDataSource.getForecast(query, units)
     }
+
+    override suspend fun getForecast(cityId: Int, units: String): Result<ForecastWeatherResponse> {
+        return remoteDataSource.getForecast(cityId, units)
+    }
+
 
     override suspend fun getFavoriteCities(): Result<List<FavoriteCity>> {
         return localDataSource.getFavoriteCities()

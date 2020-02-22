@@ -19,9 +19,21 @@ interface OpenWeatherMapService {
         @Query("units") units: String
     ): Deferred<CurrentWeatherResponse>
 
+    @GET("weather")
+    fun getCurrentWeather(
+        @Query("id") cityId: Int,
+        @Query("units") units: String
+    ): Deferred<CurrentWeatherResponse>
+
     @GET("forecast")
     fun getForecast(
         @Query("q") query: String,
+        @Query("units") units: String
+    ): Deferred<ForecastWeatherResponse>
+
+    @GET("forecast")
+    fun getForecast(
+        @Query("id") cityId: Int,
         @Query("units") units: String
     ): Deferred<ForecastWeatherResponse>
 

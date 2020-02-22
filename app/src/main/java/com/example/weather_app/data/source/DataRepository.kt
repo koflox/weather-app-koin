@@ -10,7 +10,11 @@ interface DataRepository {
 
     suspend fun getCurrentWeather(query: String, units: String): Result<CurrentWeatherResponse>
 
+    suspend fun getCurrentWeather(cityId: Int, units: String): Result<CurrentWeatherResponse>
+
     suspend fun getForecast(query: String, units: String): Result<ForecastWeatherResponse>
+
+    suspend fun getForecast(cityId: Int, units: String): Result<ForecastWeatherResponse>
 
     fun observeFavoriteCities(): LiveData<Result<List<FavoriteCity>>>
 

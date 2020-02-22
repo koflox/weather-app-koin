@@ -1,5 +1,6 @@
 package com.example.weather_app.ui.favorites
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +10,15 @@ import com.example.weather_app.data.entity.FavoriteCity
 import kotlinx.android.synthetic.main.item_favorite_city.view.*
 
 class FavoriteCitiesAdapter(
-        private val listener: OnItemClickListener
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<FavoriteCitiesAdapter.FavoriteCityViewHolder>() {
 
     interface OnItemClickListener {
-        fun onOptionsClick(view: View, city: FavoriteCity)
+
+        fun onCityClick(city: FavoriteCity, position: Int)
+
+        fun onOptionsClick(city: FavoriteCity, position: Int)
+
     }
 
     val data = mutableListOf<FavoriteCity>()
@@ -28,27 +33,30 @@ class FavoriteCitiesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteCityViewHolder {
         return FavoriteCityViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_favorite_city, parent, false),
-                listener
+            LayoutInflater.from(parent.context).inflate(R.layout.item_favorite_city, parent, false),
+            listener
         )
     }
 
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: FavoriteCityViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data[position], position)
     }
 
     class FavoriteCityViewHolder(
-            private val view: View,
-            private val listener: OnItemClickListener
+        private val view: View,
+        private val listener: OnItemClickListener
     ) : RecyclerView.ViewHolder(view) {
 
-        fun bind(city: FavoriteCity) {
+        @SuppressLint("SetTextI18n")
+        fun bind(city: FavoriteCity, position: Int) {
             view.run {
-                tvCityInfo.text = "${city.cityName}, ${city.country}" //todo
-                ibCityOptions.setOnClickListener { listener.onOptionsClick(this, city) }
-//                ivCityPicture.loadFromUrl(city.imageUrl)
+                setOnClickListener {
+                    listener.onCityClick(city, position)
+                }
+                tvCityInfo.text = "${city.cityName}, ${city.country}"
+                ibCityOptions.setOnClickListener { listener.onOptionsClick(city, position) }
             }
         }
 

@@ -5,7 +5,7 @@
     <string name="menu_item_title_weather">Weather</string>
     <string name="search">Search</string>
 
-    <string name="action_forecast_title">Forecast</string>
+    <string name="action_weather_title">Get weather</string>
     <string name="action_history_title">History</string>
     <string name="action_delete_title">Delete</string>
     <string name="action_delete">Delete</string>

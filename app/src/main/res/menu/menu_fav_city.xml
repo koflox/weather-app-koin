@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/actionForecast"
-        android:title="@string/action_forecast_title" />
-    <item
-        android:id="@+id/actionHistory"
-        android:title="@string/action_history_title" />
+        android:id="@+id/actionWeather"
+        android:title="@string/action_weather_title" />
     <item
         android:id="@+id/actionRemove"
         android:title="@string/action_delete_title" />

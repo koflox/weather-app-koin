@@ -16,27 +16,41 @@ class RemoteDataSource(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : DataSource {
 
-    override suspend fun getCurrentWeather(
-        query: String,
-        units: String
-    ): Result<CurrentWeatherResponse> = withContext(ioDispatcher) {
-        return@withContext try {
-            Result.Success(openWeatherMapService.getCurrentWeather(query, units).await())
-        } catch (e: Exception) {
-            Result.Error(e)
+    override suspend fun getCurrentWeather(query: String, units: String): Result<CurrentWeatherResponse> =
+        withContext(ioDispatcher) {
+            return@withContext try {
+                Result.Success(openWeatherMapService.getCurrentWeather(query, units).await())
+            } catch (e: Exception) {
+                Result.Error(e)
+            }
         }
-    }
 
-    override suspend fun getForecast(
-        query: String,
-        units: String
-    ): Result<ForecastWeatherResponse> = withContext(ioDispatcher) {
-        return@withContext try {
-            Result.Success(openWeatherMapService.getForecast(query, units).await())
-        } catch (e: Exception) {
-            Result.Error(e)
+    override suspend fun getCurrentWeather(cityId: Int, units: String): Result<CurrentWeatherResponse> =
+        withContext(ioDispatcher) {
+            return@withContext try {
+                Result.Success(openWeatherMapService.getCurrentWeather(cityId, units).await())
+            } catch (e: Exception) {
+                Result.Error(e)
+            }
         }
-    }
+
+    override suspend fun getForecast(query: String, units: String): Result<ForecastWeatherResponse> =
+        withContext(ioDispatcher) {
+            return@withContext try {
+                Result.Success(openWeatherMapService.getForecast(query, units).await())
+            } catch (e: Exception) {
+                Result.Error(e)
+            }
+        }
+
+    override suspend fun getForecast(cityId: Int, units: String): Result<ForecastWeatherResponse> =
+        withContext(ioDispatcher) {
+            return@withContext try {
+                Result.Success(openWeatherMapService.getForecast(cityId, units).await())
+            } catch (e: Exception) {
+                Result.Error(e)
+            }
+        }
 
     override fun observeFavoriteCities(): LiveData<Result<List<FavoriteCity>>> {
         TODO("no-op")

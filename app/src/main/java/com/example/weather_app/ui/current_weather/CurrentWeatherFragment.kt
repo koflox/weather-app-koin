@@ -28,7 +28,7 @@ class CurrentWeatherFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getCurrentWeather(args.placeToSearch)
+        viewModel.getCurrentWeather(args.placeToSearch, args.cityIdToSearch)
     }
 
     override fun initViews() {

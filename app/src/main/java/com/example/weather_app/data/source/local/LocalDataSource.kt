@@ -17,19 +17,25 @@ class LocalDataSource(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : DataSource {
 
-    override suspend fun getCurrentWeather(
-        query: String,
-        units: String
-    ): Result<CurrentWeatherResponse> = withContext(ioDispatcher) {
-        TODO("no-op")
-    }
+    override suspend fun getCurrentWeather(query: String, units: String): Result<CurrentWeatherResponse> =
+        withContext(ioDispatcher) {
+            TODO("no-op")
+        }
 
-    override suspend fun getForecast(
-        query: String,
-        units: String
-    ): Result<ForecastWeatherResponse> = withContext(ioDispatcher) {
-        TODO("no-op")
-    }
+    override suspend fun getCurrentWeather(cityId: Int, units: String): Result<CurrentWeatherResponse> =
+        withContext(ioDispatcher) {
+            TODO("no-op")
+        }
+
+    override suspend fun getForecast(query: String, units: String): Result<ForecastWeatherResponse> =
+        withContext(ioDispatcher) {
+            TODO("no-op")
+        }
+
+    override suspend fun getForecast(cityId: Int, units: String): Result<ForecastWeatherResponse> =
+        withContext(ioDispatcher) {
+            TODO("no-op")
+        }
 
     override fun observeFavoriteCities(): LiveData<Result<List<FavoriteCity>>> {
         return favoriteCitiesDao.observeFavoriteCities().map {
