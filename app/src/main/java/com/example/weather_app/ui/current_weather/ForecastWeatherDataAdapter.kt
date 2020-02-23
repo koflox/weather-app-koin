@@ -1,17 +1,17 @@
 package com.example.weather_app.ui.current_weather
 
-import android.annotation.SuppressLint
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.MainWeatherData
+import com.example.weather_app.databinding.ItemWeatherDataForecastItemBinding
 import com.example.weather_app.ui.base.BindableAdapter
-import com.example.weather_app.util.loadFromUrl
-import com.example.weather_app.util.toView
-import kotlinx.android.synthetic.main.item_weather_data_forecast_item.view.*
 
-class ForecastWeatherDataAdapter : RecyclerView.Adapter<ForecastWeatherDataItemVH>(), BindableAdapter<MainWeatherData> {
+class ForecastWeatherDataAdapter(
+    private val viewModel: CurrentWeatherViewModel
+) : RecyclerView.Adapter<ForecastWeatherDataItemVH>(), BindableAdapter<MainWeatherData> {
 
     private val data = mutableListOf<MainWeatherData>()
 
@@ -24,26 +24,31 @@ class ForecastWeatherDataAdapter : RecyclerView.Adapter<ForecastWeatherDataItemV
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastWeatherDataItemVH {
-        return ForecastWeatherDataItemVH(toView(R.layout.item_weather_data_forecast_item, parent))
+        val inflater = LayoutInflater.from(parent.context)
+        val dataBinding = DataBindingUtil.inflate<ItemWeatherDataForecastItemBinding>(
+            inflater, R.layout.item_weather_data_forecast_item,
+            parent, false
+        )
+        return ForecastWeatherDataItemVH(dataBinding)
     }
 
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: ForecastWeatherDataItemVH, position: Int) {
-        holder.bind(data[position])
+        holder.bind(viewModel, data[position])
     }
 
 }
 
-class ForecastWeatherDataItemVH(private val v: View) : RecyclerView.ViewHolder(v) {
+class ForecastWeatherDataItemVH(
+    private val dataBinding: ItemWeatherDataForecastItemBinding
+) : RecyclerView.ViewHolder(dataBinding.root) {
 
-    @SuppressLint("SetTextI18n")
-    fun bind(item: MainWeatherData) {
-        v.run {
-            tvDayName.text = item.dayName
-            ivWeatherIcon.loadFromUrl(item.weatherIconUrl, R.drawable.ic_na)
-            tvTempMax.text = "${item.tempMax} ${item.tempUnitMain}"
-            tvTempMin.text = "${item.tempMin} ${item.tempUnitMain}"
+    fun bind(viewModel: CurrentWeatherViewModel, item: MainWeatherData) {
+        dataBinding.apply {
+            this.viewModel = viewModel
+            this.item = item
+            executePendingBindings()
         }
     }
 

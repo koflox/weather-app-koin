@@ -1,11 +1,13 @@
 package com.example.weather_app.ui.view
 
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.data.displayed.DisplayedWeatherItem
 import com.example.weather_app.ui.base.BindableAdapter
+import com.example.weather_app.util.loadFromResource
 import com.example.weather_app.util.loadFromUrl
 import com.example.weather_app.util.notNull
 
@@ -33,4 +35,9 @@ fun setTemp(textView: AppCompatTextView, temp: Int?) = temp?.run {
 @BindingAdapter("srcUrl")
 fun setSrcFromUrl(imageView: AppCompatImageView, url: String?) = url?.run {
     imageView.loadFromUrl(url)
+}
+
+@BindingAdapter("srcRes")
+fun setSrcFromUrl(imageView: AppCompatImageView, @DrawableRes resId: Int?) = resId?.run {
+    imageView.loadFromResource(resId)
 }

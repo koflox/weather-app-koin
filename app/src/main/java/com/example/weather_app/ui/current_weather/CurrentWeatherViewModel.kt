@@ -12,6 +12,7 @@ import com.example.weather_app.data.displayed.DisplayedWeatherItem
 import com.example.weather_app.data.displayed.WeatherData
 import com.example.weather_app.data.response.open_weather_map.current_weather.CurrentWeatherResponse
 import com.example.weather_app.data.response.open_weather_map.current_weather.toDetailsWeatherData
+import com.example.weather_app.data.response.open_weather_map.current_weather.toFavoriteCity
 import com.example.weather_app.data.response.open_weather_map.current_weather.toMainWeatherData
 import com.example.weather_app.data.response.open_weather_map.forecast.ForecastWeatherResponse
 import com.example.weather_app.data.response.open_weather_map.forecast.toForecastWeatherData
@@ -20,7 +21,6 @@ import com.example.weather_app.data.response.open_weather_map.forecast.toPrecipi
 import com.example.weather_app.data.source.AppDataRepository
 import com.example.weather_app.ui.base.BaseViewModel
 import com.example.weather_app.util.Event
-import com.example.weather_app.util.toFavoriteCity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -80,19 +80,21 @@ class CurrentWeatherViewModel(
                         checkFavoriteCity(it)
                     }
                 }
-                forecastResponse is Result.Error -> {
-                    _error.postValue(Event(forecastResponse.exception))
-                    _displayedToolbarInfo.postValue(Pair(app.getString(R.string.text_common_error), ""))
-                    _loading.postValue(false)
-                    _weatherData.postValue(listOf())
-                }
-                currentWeatherResponse is Result.Error -> {
-                    _error.postValue(Event(currentWeatherResponse.exception))
-                    _displayedToolbarInfo.postValue(Pair(app.getString(R.string.text_common_error), ""))
-                    _loading.postValue(false)
-                    _weatherData.postValue(listOf())
-                }
+                forecastResponse is Result.Error -> displayError(forecastResponse.exception)
+                currentWeatherResponse is Result.Error -> displayError(currentWeatherResponse.exception)
+                forecastResponse == null || currentWeatherResponse == null -> displayError()
             }
+        }
+    }
+
+    fun onAddDeleteOptionClick() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val isCityAdded = dataRepository.isCityAdded(cityFromSearch.id)
+            when {
+                isCityAdded -> dataRepository.delete(cityFromSearch)
+                else -> dataRepository.insert(cityFromSearch)
+            }
+            _isCityAddedToFavorite.postValue(Event(!isCityAdded))
         }
     }
 
@@ -156,15 +158,11 @@ class CurrentWeatherViewModel(
         }
     }
 
-    fun onAddDeleteOptionClick() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val isCityAdded = dataRepository.isCityAdded(cityFromSearch.id)
-            when {
-                isCityAdded -> dataRepository.delete(cityFromSearch)
-                else -> dataRepository.insert(cityFromSearch)
-            }
-            _isCityAddedToFavorite.postValue(Event(!isCityAdded))
-        }
+    private fun displayError(ex: Exception? = null) {
+        ex?.run { _error.postValue(Event(this)) }
+        _displayedToolbarInfo.postValue(Pair(app.getString(R.string.text_common_error), ""))
+        _loading.postValue(false)
+        _weatherData.postValue(listOf())
     }
 
 }

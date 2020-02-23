@@ -20,10 +20,12 @@ interface PixabayService {
      * @param isSafeSearch - true to get images suitable for all ages, false otherwise
      */
     @GET(".")
-    fun getPhotos(@Query("q") query: String,
-                  @Query("page") page: Int = 1,
-                  @Query("per_page") itemPerPage: Int = PIXABAY_MIN_ITEMS_PER_PAGE,
-                  @Query("category") category: String = "places",
-                  @Query("safesearch") isSafeSearch: Boolean = true): Deferred<PhotoListResponse>
+    fun getPhotos(
+        @Query("q") query: String,
+        @Query("page") page: Int = 1,
+        @Query("per_page") itemPerPage: Int = PIXABAY_MIN_ITEMS_PER_PAGE,
+        @Query("category") category: String = "places",
+        @Query("safesearch") isSafeSearch: Boolean = true
+    ): Deferred<PhotoListResponse>
 
 }

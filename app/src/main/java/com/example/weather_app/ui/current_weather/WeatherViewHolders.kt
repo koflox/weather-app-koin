@@ -1,12 +1,14 @@
 package com.example.weather_app.ui.current_weather
 
-import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.*
-import com.example.weather_app.databinding.*
+import com.example.weather_app.databinding.ItemWeatherDataDetailsBinding
+import com.example.weather_app.databinding.ItemWeatherDataForecastBinding
+import com.example.weather_app.databinding.ItemWeatherDataMainBinding
+import com.example.weather_app.databinding.ItemWeatherDataPrecipitationBinding
 import com.example.weather_app.ui.base.UniversalItemDecorator
 import kotlinx.android.synthetic.main.item_weather_data_details.view.*
 import kotlinx.android.synthetic.main.item_weather_data_forecast.view.*
@@ -19,7 +21,6 @@ abstract class BaseWeatherDataVH(v: View) : RecyclerView.ViewHolder(v) {
 
 class MainWeatherDataVH(private val dataBinding: ItemWeatherDataMainBinding) : BaseWeatherDataVH(dataBinding.root) {
 
-    @SuppressLint("SetTextI18n")
     override fun bind(viewModel: CurrentWeatherViewModel, data: WeatherData) {
         dataBinding.apply {
             this.viewModel = viewModel

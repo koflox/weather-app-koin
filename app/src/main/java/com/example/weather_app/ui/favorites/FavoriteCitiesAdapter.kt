@@ -1,6 +1,5 @@
 package com.example.weather_app.ui.favorites
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,14 +10,6 @@ import com.example.weather_app.ui.base.BindableAdapter
 class FavoriteCitiesAdapter(
     private val viewModel: FavoritesCitiesViewModel
 ) : RecyclerView.Adapter<FavoriteCityViewHolder>(), BindableAdapter<FavoriteCity> {
-
-    interface OnItemClickListener {
-
-        fun onCityClick(city: FavoriteCity, position: Int)
-
-        fun onOptionsClick(city: FavoriteCity, position: Int)
-
-    }
 
     val data = mutableListOf<FavoriteCity>()
 
@@ -49,7 +40,6 @@ class FavoriteCityViewHolder(
     private val dataBinding: ItemFavoriteCityBinding
 ) : RecyclerView.ViewHolder(dataBinding.root) {
 
-    @SuppressLint("SetTextI18n")
     fun bind(viewModel: FavoritesCitiesViewModel, city: FavoriteCity) {
         dataBinding.apply {
             this.viewModel = viewModel

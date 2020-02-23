@@ -14,8 +14,8 @@ class WeatherAdapter(
 
     private val data = mutableListOf<WeatherData>()
 
-    private val adapterDetailsWeatherData = DetailsWeatherDataAdapter()
-    private val adapterForecastWeatherData = ForecastWeatherDataAdapter()
+    private val adapterDetailsWeatherData = DetailsWeatherDataAdapter(viewModel)
+    private val adapterForecastWeatherData = ForecastWeatherDataAdapter(viewModel)
 
     override fun setData(data: List<WeatherData>) {
         this.data.run {

@@ -8,8 +8,4 @@ class SettingsFragment : BaseFragment<FragmentSearchBinding>() {
 
     override fun getLayoutId() = R.layout.fragment_settings
 
-    override fun initViews() {
-
-    }
-
 }

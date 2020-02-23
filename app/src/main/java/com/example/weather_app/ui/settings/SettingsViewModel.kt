@@ -1,7 +1,8 @@
 package com.example.weather_app.ui.settings
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application
+import com.example.weather_app.ui.base.BaseViewModel
 
-class SettingsViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+class SettingsViewModel(app: Application) : BaseViewModel(app) {
+
 }

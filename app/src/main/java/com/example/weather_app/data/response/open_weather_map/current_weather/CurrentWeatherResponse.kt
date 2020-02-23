@@ -3,6 +3,7 @@ package com.example.weather_app.data.response.open_weather_map.current_weather
 
 import android.annotation.SuppressLint
 import com.example.weather_app.R
+import com.example.weather_app.data.data.FavoriteCity
 import com.example.weather_app.data.data.Unit
 import com.example.weather_app.data.displayed.DetailsWeatherData
 import com.example.weather_app.data.displayed.DetailsWeatherDataItem
@@ -45,6 +46,15 @@ data class CurrentWeatherResponse(
     val rain: Rain?,
     @SerializedName("snow")
     val snow: Snow?
+)
+
+fun CurrentWeatherResponse.toFavoriteCity() = FavoriteCity(
+    id,
+    cityName,
+    sys.country,
+    coord.lat,
+    coord.lon,
+    System.currentTimeMillis()
 )
 
 @SuppressLint("DefaultLocale")

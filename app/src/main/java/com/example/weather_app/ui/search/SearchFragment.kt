@@ -36,7 +36,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     viewModel.onQueryTextSubmit(query)
-                    //todo hide keyboard
                     return false
                 }
 
