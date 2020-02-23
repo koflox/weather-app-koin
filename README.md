@@ -1,11 +1,11 @@
 # Weather application
 
-Just a sample of client server application designed for the weather search.
+Just a sample of client server application designed for weather search.
  
 This Android app is based on MVVM architecture and written in Kotlin via Android SDK.
 
 There are two options to try this app:
- - build it on your own, you will need to past the missing API keys, 
+ - build it on your own, you will need to past the missing API keys into related field in the app module's build type variable, 
       one for a weather data - [OpenWeatherMap API](https://openweathermap.org/api)
       and another one for a city icons (not used at the moment) - [Pixabay API](https://pixabay.com/api/docs/)
  - install apk from the [sample folder](/sample)
