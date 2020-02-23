@@ -1,4 +1,4 @@
-package com.example.weather_app.ui.current_weather
+package com.example.weather_app.ui.weather
 
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,13 +12,13 @@ import kotlinx.android.synthetic.main.item_weather_data_forecast.view.*
 
 abstract class BaseWeatherDataVH(v: View) : RecyclerView.ViewHolder(v) {
 
-    abstract fun bind(viewModel: CurrentWeatherViewModel, data: WeatherData)
+    abstract fun bind(viewModel: WeatherViewModel, data: WeatherData)
 
 }
 
 class MainWeatherDataVH(private val dataBinding: ItemWeatherDataMainBinding) : BaseWeatherDataVH(dataBinding.root) {
 
-    override fun bind(viewModel: CurrentWeatherViewModel, data: WeatherData) {
+    override fun bind(viewModel: WeatherViewModel, data: WeatherData) {
         dataBinding.apply {
             this.viewModel = viewModel
             item = data as MainWeatherData
@@ -33,7 +33,7 @@ class HourlyWeatherDataVH(
     private val parent: View
 ) : BaseWeatherDataVH(dataBinding.root) {
 
-    override fun bind(viewModel: CurrentWeatherViewModel, data: WeatherData) {
+    override fun bind(viewModel: WeatherViewModel, data: WeatherData) {
         dataBinding.root.minimumHeight = parent.measuredHeight / 10 * 2
         dataBinding.apply {
             this.viewModel = viewModel
@@ -49,7 +49,7 @@ class DetailsWeatherDataVH(
     private val adapterDetailsWeatherData: DetailsWeatherDataAdapter
 ) : BaseWeatherDataVH(dataBinding.root) {
 
-    override fun bind(viewModel: CurrentWeatherViewModel, data: WeatherData) {
+    override fun bind(viewModel: WeatherViewModel, data: WeatherData) {
         dataBinding.root.rvDetailsWeatherData.apply {
             val spacing = context.resources.getDimensionPixelSize(R.dimen.common_list_spacing)
             val spanCount = context.resources.getInteger(R.integer.span_count_details_weather_data)
@@ -70,7 +70,7 @@ class PrecipitationWeatherDataVH(
     private val dataBinding: ItemWeatherDataPrecipitationBinding,
     private val parent: View
 ) : BaseWeatherDataVH(dataBinding.root) {
-    override fun bind(viewModel: CurrentWeatherViewModel, data: WeatherData) {
+    override fun bind(viewModel: WeatherViewModel, data: WeatherData) {
         dataBinding.root.minimumHeight = (parent.measuredHeight / 10 * 2.5F).toInt()
         dataBinding.apply {
             this.viewModel = viewModel
@@ -86,7 +86,7 @@ class ForecastWeatherDataVH(
     private val adapterForecastWeatherData: ForecastWeatherDataAdapter
 ) : BaseWeatherDataVH(dataBinding.root) {
 
-    override fun bind(viewModel: CurrentWeatherViewModel, data: WeatherData) {
+    override fun bind(viewModel: WeatherViewModel, data: WeatherData) {
         data as ForecastWeatherData
         dataBinding.root.rvForecastsWeatherData.apply {
             layoutManager = GridLayoutManager(context, data.values.size)

@@ -1,4 +1,4 @@
-package com.example.weather_app.ui.current_weather
+package com.example.weather_app.ui.weather
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -24,7 +24,7 @@ import com.example.weather_app.util.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CurrentWeatherViewModel(
+class WeatherViewModel(
     private val app: Application,
     private val dataRepository: AppDataRepository
 ) : BaseViewModel(app) {

@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.weather_app.ui.current_weather.CurrentWeatherViewModel" />
+            type="com.example.weather_app.ui.weather.WeatherViewModel" />
 
     </data>
 
@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         android:background="@color/colorPrimary"
-        tools:context=".ui.current_weather.CurrentWeatherFragment">
+        tools:context=".ui.weather.WeatherFragment">
 
         <com.example.weather_app.ui.view.RecyclerViewEmptySupport
             android:id="@+id/rvWeatherData"

@@ -1,4 +1,4 @@
-package com.example.weather_app.ui.current_weather
+package com.example.weather_app.ui.weather
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import com.example.weather_app.ui.base.BindableAdapter
 import com.example.weather_app.util.toSpannableString
 
 class DetailsWeatherDataAdapter(
-    private val viewModel: CurrentWeatherViewModel
+    private val viewModel: WeatherViewModel
 ) : RecyclerView.Adapter<DetailsWeatherDataItemVH>(), BindableAdapter<DetailsWeatherDataItem> {
 
     private val data = mutableListOf<DetailsWeatherDataItem>()
@@ -46,7 +46,7 @@ class DetailsWeatherDataItemVH(
     private val dataBinding: ItemWeatherDataDetailsItemBinding
 ) : RecyclerView.ViewHolder(dataBinding.root) {
 
-    fun bind(viewModel: CurrentWeatherViewModel, item: DetailsWeatherDataItem) {
+    fun bind(viewModel: WeatherViewModel, item: DetailsWeatherDataItem) {
         dataBinding.apply {
             this.viewModel = viewModel
             this.item = item

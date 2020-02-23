@@ -1,4 +1,4 @@
-package com.example.weather_app.ui.current_weather
+package com.example.weather_app.ui.weather
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import com.example.weather_app.data.displayed.WeatherData
 import com.example.weather_app.ui.base.BindableAdapter
 
 class WeatherAdapter(
-    private val viewModel: CurrentWeatherViewModel
+    private val viewModel: WeatherViewModel
 ) : RecyclerView.Adapter<BaseWeatherDataVH>(), BindableAdapter<WeatherData> {
 
     private val data = mutableListOf<WeatherData>()

@@ -1,4 +1,4 @@
-package com.example.weather_app.ui.current_weather
+package com.example.weather_app.ui.weather
 
 import android.os.Bundle
 import android.view.Menu
@@ -17,11 +17,11 @@ import com.example.weather_app.util.showToast
 import kotlinx.android.synthetic.main.fragment_weather.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CurrentWeatherFragment : BaseFragment<FragmentWeatherBinding>() {
+class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
-    private val args by navArgs<CurrentWeatherFragmentArgs>()
+    private val args by navArgs<WeatherFragmentArgs>()
 
-    private val viewModel by viewModel<CurrentWeatherViewModel>()
+    private val viewModel by viewModel<WeatherViewModel>()
 
     private lateinit var weatherAdapter: WeatherAdapter
 
