@@ -15,9 +15,9 @@ ext {
     def versionKotlinCoroutines = '1.1.3'
 
     dependenciesCore = [
-            lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${versionLifecycle}",
-            lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${versionLifecycle}",
-            lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:${versionLifecycle}",
+            lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$versionLifecycle",
+            lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$versionLifecycle",
+            lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:$versionLifecycle",
             kotlinStandertLibrary = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versionKotlin",
             appCompat = "androidx.appcompat:appcompat:$versionAppCompat",
             androidXCore = "androidx.core:core-ktx:$versionAndroidXCore",
@@ -26,16 +26,16 @@ ext {
     ]
 
     dependenciesNavigation = [
-            navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${versionNavigation}",
-            navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${versionNavigation}",
+            navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:$versionNavigation",
+            navigationUiKtx = "androidx.navigation:navigation-ui-ktx:$versionNavigation",
     ]
 
     dependenciesNetwork = [
-            retrofit = "com.squareup.retrofit2:retrofit:${versionRetrofit}",
-            retrofitGsonConverter = "com.squareup.retrofit2:converter-gson:${versionRetrofit}",
+            retrofit = "com.squareup.retrofit2:retrofit:$versionRetrofit",
+            retrofitGsonConverter = "com.squareup.retrofit2:converter-gson:$versionRetrofit",
             retrofitKotlinCorouitnesAdapter = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${versionRetrofitKotlinCoroutinesAdapter}",
-            okHttp = "com.squareup.okhttp3:okhttp:${versionOkHttp}",
-            okHttpInterceptor = "com.squareup.okhttp3:logging-interceptor:${versionOkHttp}",
+            okHttp = "com.squareup.okhttp3:okhttp:$versionOkHttp",
+            okHttpInterceptor = "com.squareup.okhttp3:logging-interceptor:$versionOkHttp",
     ]
 
     dependenciesDatabase = [
