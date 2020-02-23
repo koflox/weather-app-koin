@@ -28,7 +28,7 @@ There are two options to try this app:
   - review databinding implementation, extract base view holder class or use third-party databinding library like https://github.com/evant/binding-collection-adapter
   - add scrolling to GraphicView, handle resize events etc.
  
- ### Ui todo list
+ ### UI todo list
   - add places suggestions
   - implement custom SearchView
   - calculate missing weather data values, e.g. feels-like temp, visibility etc.
