@@ -5,10 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.*
-import com.example.weather_app.databinding.ItemWeatherDataDetailsBinding
-import com.example.weather_app.databinding.ItemWeatherDataForecastBinding
-import com.example.weather_app.databinding.ItemWeatherDataMainBinding
-import com.example.weather_app.databinding.ItemWeatherDataPrecipitationBinding
+import com.example.weather_app.databinding.*
 import com.example.weather_app.ui.base.UniversalItemDecorator
 import kotlinx.android.synthetic.main.item_weather_data_details.view.*
 import kotlinx.android.synthetic.main.item_weather_data_forecast.view.*
