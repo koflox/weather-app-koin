@@ -41,7 +41,7 @@ class FavoritesCitiesViewModel(
     fun onCitySelected(city: FavoriteCity, showContextMenu: Boolean) {
         val position = favoriteCities.value?.indexOf(city) ?: return
         when {
-            position != -1 -> _selectedCity.value = Event(Triple(city, 1, showContextMenu))
+            position != -1 -> _selectedCity.value = Event(Triple(city, position, showContextMenu))
             else -> return
         }
     }
