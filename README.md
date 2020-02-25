@@ -24,7 +24,6 @@ There are two options to try this app:
   - implement weather auto update for favorite places
  
  ### Code todo list
-  - review gradle configuration, some library version declaratinos duplicated
   - review databinding implementation, extract base view holder class or use third-party databinding library like [this](https://github.com/evant/binding-collection-adapter)
   - add scrolling to GraphicView, handle resize events etc.
  
