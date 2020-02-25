@@ -12,7 +12,7 @@ There are two options to try this app:
  
 ### Technologies used
   - Android Architecture Components: ViewModel, LiveData, DataBinding, NavigationComponent etc.
-  - Retrofit + OkHttp for network comunication
+  - Retrofit + OkHttp for network communication
   - Room for storing data in the local storage
   - Glide as image loader library
   - Koin as dependency injection framework
