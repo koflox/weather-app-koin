@@ -46,10 +46,6 @@ android {
     }
 }
 
-//todo get versions from dependencies.gradle for kapt
-def versionRoom = '2.2.3'
-def versionGlide = '4.9.0'
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
@@ -62,7 +58,7 @@ dependencies {
     implementation dependenciesDi
 
     implementation dependenciesDatabase
-    kapt "androidx.room:room-compiler:${versionRoom}"
+    kapt "androidx.room:room-compiler:$versionRoom"
 
     implementation dependenciesImageLoaders
     kapt "com.github.bumptech.glide:compiler:$versionGlide"
