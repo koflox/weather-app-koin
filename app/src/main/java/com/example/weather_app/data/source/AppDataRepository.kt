@@ -10,7 +10,7 @@ import com.example.weather_app.data.source.remote.PixabayService
 class AppDataRepository(
     private val remoteDataSource: DataSource,
     private val localDataSource: DataSource,
-    private val pixabayService: PixabayService
+    private val pixabayService: PixabayService,
 ) : DataRepository {
 
     val favoriteCities: LiveData<Result<List<FavoriteCity>>> by lazy(LazyThreadSafetyMode.NONE) {
@@ -58,7 +58,7 @@ class AppDataRepository(
         city.run {
             try {
                 val cityToSearch = "${cityName.replace(" ", "+")}+${country.replace(" ", "+")}"
-                imageUrl = pixabayService.getPhotos(cityToSearch).await().hits.first().largeImageURL
+                imageUrl = pixabayService.getPhotos(cityToSearch).hits.first().largeImageURL
             } catch (e: Exception) {
                 e.printStackTrace()
             }

@@ -19,7 +19,7 @@ class RemoteDataSource(
     override suspend fun getCurrentWeather(query: String, units: String): Result<CurrentWeatherResponse> =
         withContext(ioDispatcher) {
             return@withContext try {
-                Result.Success(openWeatherMapService.getCurrentWeather(query, units).await())
+                Result.Success(openWeatherMapService.getCurrentWeather(query, units))
             } catch (e: Exception) {
                 Result.Error(e)
             }
@@ -28,7 +28,7 @@ class RemoteDataSource(
     override suspend fun getCurrentWeather(cityId: Int, units: String): Result<CurrentWeatherResponse> =
         withContext(ioDispatcher) {
             return@withContext try {
-                Result.Success(openWeatherMapService.getCurrentWeather(cityId, units).await())
+                Result.Success(openWeatherMapService.getCurrentWeather(cityId, units))
             } catch (e: Exception) {
                 Result.Error(e)
             }
@@ -37,7 +37,7 @@ class RemoteDataSource(
     override suspend fun getForecast(query: String, units: String): Result<ForecastWeatherResponse> =
         withContext(ioDispatcher) {
             return@withContext try {
-                Result.Success(openWeatherMapService.getForecast(query, units).await())
+                Result.Success(openWeatherMapService.getForecast(query, units))
             } catch (e: Exception) {
                 Result.Error(e)
             }
@@ -46,7 +46,7 @@ class RemoteDataSource(
     override suspend fun getForecast(cityId: Int, units: String): Result<ForecastWeatherResponse> =
         withContext(ioDispatcher) {
             return@withContext try {
-                Result.Success(openWeatherMapService.getForecast(cityId, units).await())
+                Result.Success(openWeatherMapService.getForecast(cityId, units))
             } catch (e: Exception) {
                 Result.Error(e)
             }

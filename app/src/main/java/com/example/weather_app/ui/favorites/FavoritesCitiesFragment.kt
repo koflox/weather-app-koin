@@ -10,7 +10,6 @@ import com.example.weather_app.databinding.FragmentFavoriteCitiesBinding
 import com.example.weather_app.ui.base.BaseFragment
 import com.example.weather_app.ui.base.UniversalItemDecorator
 import com.example.weather_app.util.EventObserver
-import kotlinx.android.synthetic.main.fragment_favorite_cities.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesCitiesFragment : BaseFragment<FragmentFavoriteCitiesBinding>(), PopupMenu.OnMenuItemClickListener {
@@ -24,8 +23,8 @@ class FavoritesCitiesFragment : BaseFragment<FragmentFavoriteCitiesBinding>(), P
     override fun initViews() {
         favoriteCitiesAdapter = FavoriteCitiesAdapter(viewModel)
         dataBinding.viewModel = viewModel
-        rvFavoriteCities.apply {
-            emptyView = tvPlaceholderFavoriteCities
+        dataBinding.rvFavoriteCities.apply {
+            emptyView = dataBinding.tvPlaceholderFavoriteCities
             val spacing = resources.getDimensionPixelSize(R.dimen.indent_medium)
             layoutManager = LinearLayoutManager(context)
             adapter = favoriteCitiesAdapter
@@ -38,9 +37,10 @@ class FavoritesCitiesFragment : BaseFragment<FragmentFavoriteCitiesBinding>(), P
             val (city, position, showContextMenu) = it
             when {
                 showContextMenu -> {
-                    val itemView = rvFavoriteCities.layoutManager?.getChildAt(position) ?: return@EventObserver
+                    val itemView = dataBinding.rvFavoriteCities.layoutManager?.getChildAt(position) ?: return@EventObserver
                     showFavoriteCityContextMenu(itemView)
                 }
+
                 else -> navigateToWeather(city.id)
             }
         })
@@ -55,10 +55,12 @@ class FavoritesCitiesFragment : BaseFragment<FragmentFavoriteCitiesBinding>(), P
                 viewModel.onActionGetWeather()
                 true
             }
+
             R.id.actionRemove -> {
                 viewModel.onActionRemove()
                 true
             }
+
             else -> false
         }
     }

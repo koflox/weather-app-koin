@@ -1,7 +1,6 @@
 package com.example.weather_app.data.source.remote
 
 import com.example.weather_app.data.response.photos.PhotoListResponse
-import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -20,12 +19,12 @@ interface PixabayService {
      * @param isSafeSearch - true to get images suitable for all ages, false otherwise
      */
     @GET(".")
-    fun getPhotos(
+    suspend fun getPhotos(
         @Query("q") query: String,
         @Query("page") page: Int = 1,
         @Query("per_page") itemPerPage: Int = PIXABAY_MIN_ITEMS_PER_PAGE,
         @Query("category") category: String = "places",
         @Query("safesearch") isSafeSearch: Boolean = true
-    ): Deferred<PhotoListResponse>
+    ): PhotoListResponse
 
 }

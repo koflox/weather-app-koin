@@ -10,7 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.weather_app.R
 import com.example.weather_app.ui.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.android.material.navigation.NavigationView
 
 class WeatherActivity : BaseActivity() {
 
@@ -27,40 +27,40 @@ class WeatherActivity : BaseActivity() {
     override fun getLayoutId() = R.layout.activity_main
 
     override fun initViews() {
-        setSupportActionBar(toolbar)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         val topLevelDestinations = setOf(R.id.searchFragment, R.id.favoritesCitiesFragment, R.id.settingsFragment)
         navController = findNavController(R.id.fragmentHost)
         appBarConfiguration = AppBarConfiguration.Builder(topLevelDestinations)
-            .setDrawerLayout(drawerLayout)
+            .setDrawerLayout(findViewById(R.id.drawerLayout))
             .build()
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navigationView.setupWithNavController(navController)
+        findViewById<NavigationView>(R.id.navigationView).setupWithNavController(navController)
         handleNavigation()
     }
 
     override fun onStart() {
         super.onStart()
-        drawerLayout.addDrawerListener(drawerListener)
+        findViewById<DrawerLayout>(R.id.drawerLayout).addDrawerListener(drawerListener)
     }
 
     override fun onStop() {
         super.onStop()
-        drawerLayout.removeDrawerListener(drawerListener)
+        findViewById<DrawerLayout>(R.id.drawerLayout).removeDrawerListener(drawerListener)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+            || super.onSupportNavigateUp()
     }
 
     private fun handleNavigation() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             supportActionBar?.subtitle = ""
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            findViewById<DrawerLayout>(R.id.drawerLayout).setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             when (destination.id) {
                 R.id.currentWeatherFragment -> {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    findViewById<DrawerLayout>(R.id.drawerLayout).setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 }
             }
         }

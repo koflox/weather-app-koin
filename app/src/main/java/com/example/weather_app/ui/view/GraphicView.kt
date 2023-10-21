@@ -76,11 +76,9 @@ class GraphicView @JvmOverloads constructor(
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas?.run {
-            drawGraphic(this)
-        }
+        drawGraphic(canvas)
     }
 
     fun setData(data: List<DisplayedWeatherItem>) {

@@ -3,6 +3,7 @@ package com.example.weather_app.di
 import android.content.Context
 import androidx.room.Room
 import com.example.weather_app.data.source.AppDataRepository
+import com.example.weather_app.data.source.DataSource
 import com.example.weather_app.data.source.local.LocalDataSource
 import com.example.weather_app.data.source.local.WeatherDatabase
 import com.example.weather_app.data.source.remote.RemoteDataSource
@@ -10,12 +11,12 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val dataModule = module {
-    single { createWeatherDatabase(get()) }
+    factory { createWeatherDatabase(get()) }
 
-    single(named("remoteDataSource")) {
+    factory<DataSource>(named("remoteDataSource")) {
         RemoteDataSource(get())
     }
-    single(named("localDataSource")) {
+    factory<DataSource>(named("localDataSource")) {
         LocalDataSource(get<WeatherDatabase>().favoriteCitiesDao)
     }
 

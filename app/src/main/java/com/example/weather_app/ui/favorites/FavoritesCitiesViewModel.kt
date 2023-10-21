@@ -3,7 +3,7 @@ package com.example.weather_app.ui.favorites
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.data.Result
 import com.example.weather_app.data.data.FavoriteCity
@@ -24,7 +24,7 @@ class FavoritesCitiesViewModel(
     val onGetWeather: LiveData<Event<Int>> = _onGetWeather
 
     private val _favoriteCities = dataRepository.favoriteCities
-    val favoriteCities = Transformations.map(_favoriteCities) {
+    val favoriteCities = _favoriteCities.map {
         when (it) {
             is Result.Success -> it.data
             else -> emptyList()

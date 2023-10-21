@@ -8,7 +8,12 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { WeatherViewModel(get(), get()) }
-    viewModel { FavoritesCitiesViewModel(get(), get()) }
+    viewModel {
+        FavoritesCitiesViewModel(
+            app = get(),
+            dataRepository = get(),
+        )
+    }
     viewModel { SearchViewModel(get()) }
 }
 

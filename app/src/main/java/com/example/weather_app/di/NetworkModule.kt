@@ -4,7 +4,7 @@ import com.example.weather_app.BuildConfig
 import com.example.weather_app.data.source.remote.AuthInterceptor
 import com.example.weather_app.data.source.remote.OpenWeatherMapService
 import com.example.weather_app.data.source.remote.PixabayService
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
@@ -13,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val networkModule = module {
-    single { createLoggingInterceptor() }
+    factory<Interceptor> { createLoggingInterceptor() }
 
     val apiKeyParamPixabay = "key"
     val apiKeyParamOpenWeatherMap = "appid"
@@ -24,49 +24,49 @@ val networkModule = module {
     val httpClientPixabay = "httpClientPixabay"
     val httpClientOpenWeatherMap = "httpClientOpenWeatherMap"
 
-    single(named(authInterceptorPixabay)) {
+    factory<Interceptor>(named(authInterceptorPixabay)) {
         createAuthInterceptor(
-                apiKeyParamPixabay,
-                BuildConfig.API_KEY_PIXABAY
+            apiKeyParamPixabay,
+            BuildConfig.API_KEY_PIXABAY
         )
     }
-    single(named(authInterceptorOpenWeatherMap)) {
+    factory<Interceptor>(named(authInterceptorOpenWeatherMap)) {
         createAuthInterceptor(
-                apiKeyParamOpenWeatherMap,
-                BuildConfig.API_KEY_OPEN_WEATHER_MAP
+            apiKeyParamOpenWeatherMap,
+            BuildConfig.API_KEY_OPEN_WEATHER_MAP
         )
     }
 
-    single(named(httpClientPixabay)) {
+    factory<OkHttpClient>(named(httpClientPixabay)) {
         createOkHttpClient(
-                get(),
-                get(named(authInterceptorPixabay))
+            get(),
+            get(named(authInterceptorPixabay))
         )
     }
-    single(named(httpClientOpenWeatherMap)) {
+    factory<OkHttpClient>(named(httpClientOpenWeatherMap)) {
         createOkHttpClient(
-                get(),
-                get(named(authInterceptorOpenWeatherMap))
+            httpLoggingInterceptor = get(),
+            authInterceptor = get(named(authInterceptorOpenWeatherMap)),
         )
     }
 
-    single {
+    factory<PixabayService> {
         createWebService<PixabayService>(
-                get(named(httpClientPixabay)),
-                BuildConfig.BASE_URL_PIXABAY
+            get(named(httpClientPixabay)),
+            BuildConfig.BASE_URL_PIXABAY
         )
     }
-    single {
+    factory<OpenWeatherMapService> {
         createWebService<OpenWeatherMapService>(
-                get(named(httpClientOpenWeatherMap)),
-                BuildConfig.BASE_URL_OPEN_WEATHER_MAP
+            get(named(httpClientOpenWeatherMap)),
+            BuildConfig.BASE_URL_OPEN_WEATHER_MAP
         )
     }
 }
 
 private fun createOkHttpClient(
-    httpLoggingInterceptor: HttpLoggingInterceptor,
-    authInterceptor: AuthInterceptor
+    httpLoggingInterceptor: Interceptor,
+    authInterceptor: Interceptor,
 ): OkHttpClient = OkHttpClient.Builder()
     .addInterceptor(httpLoggingInterceptor)
     .addInterceptor(authInterceptor)
@@ -84,6 +84,6 @@ private inline fun <reified T> createWebService(okHttpClient: OkHttpClient, url:
         .baseUrl(url)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(CoroutineCallAdapterFactory()).build()
+        .build()
     return retrofit.create(T::class.java)
 }

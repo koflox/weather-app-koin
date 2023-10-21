@@ -16,8 +16,8 @@ abstract class BaseActivity : AppCompatActivity() {
         addObservers()
     }
 
-    abstract fun initViews()
+    open fun initViews() = Unit
 
-    open fun addObservers() {}
+    open fun addObservers() = Unit
 
 }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
@@ -14,7 +13,6 @@ import com.example.weather_app.util.EventObserver
 import com.example.weather_app.util.setSupportActionBarSubtitle
 import com.example.weather_app.util.setSupportActionBarTitle
 import com.example.weather_app.util.showToast
-import kotlinx.android.synthetic.main.fragment_weather.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
@@ -37,8 +35,8 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
         dataBinding.viewModel = viewModel
         setSupportActionBarTitle(R.string.text_loading)
         setHasOptionsMenu(true)
-        rvWeatherData.apply {
-            emptyView = tvPlaceholderWeather
+        dataBinding.rvWeatherData.apply {
+            emptyView = dataBinding.tvPlaceholderWeather
             adapter = weatherAdapter
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
@@ -52,10 +50,10 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
         viewModel.isCityAddedToFavorite.observe(this, EventObserver {
             activity?.invalidateOptionsMenu()
         })
-        viewModel.displayedToolbarInfo.observe(this, Observer {
+        viewModel.displayedToolbarInfo.observe(this) {
             setSupportActionBarTitle(it.first)
             setSupportActionBarSubtitle(it.second)
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -74,6 +72,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
                 viewModel.onAddDeleteOptionClick()
                 true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }

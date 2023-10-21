@@ -2,7 +2,6 @@ package com.example.weather_app.data.source.remote
 
 import com.example.weather_app.data.response.open_weather_map.current_weather.CurrentWeatherResponse
 import com.example.weather_app.data.response.open_weather_map.forecast.ForecastWeatherResponse
-import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -14,27 +13,27 @@ interface OpenWeatherMapService {
     }
 
     @GET("weather")
-    fun getCurrentWeather(
+    suspend fun getCurrentWeather(
         @Query("q") query: String,
         @Query("units") units: String
-    ): Deferred<CurrentWeatherResponse>
+    ): CurrentWeatherResponse
 
     @GET("weather")
-    fun getCurrentWeather(
+    suspend fun getCurrentWeather(
         @Query("id") cityId: Int,
         @Query("units") units: String
-    ): Deferred<CurrentWeatherResponse>
+    ): CurrentWeatherResponse
 
     @GET("forecast")
-    fun getForecast(
+    suspend fun getForecast(
         @Query("q") query: String,
         @Query("units") units: String
-    ): Deferred<ForecastWeatherResponse>
+    ): ForecastWeatherResponse
 
     @GET("forecast")
-    fun getForecast(
+    suspend fun getForecast(
         @Query("id") cityId: Int,
         @Query("units") units: String
-    ): Deferred<ForecastWeatherResponse>
+    ): ForecastWeatherResponse
 
 }

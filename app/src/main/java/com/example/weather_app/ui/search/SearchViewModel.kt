@@ -2,6 +2,7 @@ package com.example.weather_app.ui.search
 
 import android.app.Application
 import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.weather_app.ui.base.BaseViewModel
@@ -17,7 +18,7 @@ class SearchViewModel(app: Application) : BaseViewModel(app) {
     val showWeather: LiveData<Event<String>> = _showWeather
 
     private lateinit var searchQuery: String
-    private val searchHandler = Handler()
+    private val searchHandler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable {
         //todo getPlaces()
     }

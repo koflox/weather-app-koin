@@ -54,11 +54,9 @@ class HeaderTextView @JvmOverloads constructor(
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas?.run {
-            drawStroke(this)
-        }
+        drawStroke(canvas)
     }
 
     private fun drawStroke(canvas: Canvas) {
