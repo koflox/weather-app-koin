@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import androidx.annotation.ColorRes
+import androidx.annotation.ColorInt
 import com.example.weather_app.R
 import com.example.weather_app.data.displayed.DisplayedWeatherItem
 import java.util.*
@@ -21,20 +21,22 @@ class GraphicView @JvmOverloads constructor(
         PRECIPITATION
     }
 
-    var textSize: Float = context.resources.getDimensionPixelSize(R.dimen.text_size_small).toFloat()
+    private var textSize: Float = context.resources.getDimensionPixelSize(R.dimen.text_size_small).toFloat()
         set(value) {
             field = value
             textBottomPadding = value / 4
         }
-    var dataType: DataType = DataType.NONE
-    @ColorRes
-    var colorGraphic: Int = android.R.color.black
+    private var dataType: DataType = DataType.NONE
+
+    @ColorInt
+    var colorGraphic: Int = Color.BLACK
         set(value) {
             field = value
             paintGraphic.color = value
         }
-    @ColorRes
-    var colorData: Int = android.R.color.black
+
+    @ColorInt
+    var colorData: Int = Color.BLACK
         set(value) {
             field = value
             paintData.color = value
@@ -95,8 +97,8 @@ class GraphicView @JvmOverloads constructor(
 
         //init step of vertical/horizontal segments for graphic
         if (data.isEmpty() || dataType == DataType.NONE) return
-        val max = data.maxBy(DisplayedWeatherItem::value)?.value ?: return
-        val min = data.minBy(DisplayedWeatherItem::value)?.value ?: return
+        val max = data.maxBy(DisplayedWeatherItem::value).value
+        val min = data.minBy(DisplayedWeatherItem::value).value
         val rows = when {
             max == min -> 1
             else -> max - min
@@ -117,6 +119,7 @@ class GraphicView @JvmOverloads constructor(
                 DataType.PRECIPITATION -> stepVertical
                 DataType.NONE -> return
             }
+
             else -> max * stepVertical - data.first().value * stepVertical
         }
         graphicPathCurrentY = initialPadding + textSize + firstItemHeight
@@ -135,27 +138,25 @@ class GraphicView @JvmOverloads constructor(
 
         graphicPath.moveTo(graphicPathCurrentX, graphicPathCurrentY)
         data.forEachIndexed { index, weatherItem ->
-            try {
-                //draw horizontal line
-                graphicPathCurrentX += stepHorizontal
-                graphicPath.lineTo(graphicPathCurrentX, graphicPathCurrentY)
+            //draw horizontal line
+            graphicPathCurrentX += stepHorizontal
+            graphicPath.lineTo(graphicPathCurrentX, graphicPathCurrentY)
 
-                //draw vertical line
-                val segmentHeightDiff = (weatherItem.value - data[index + 1].value) * stepVertical
-                graphicPathCurrentY += segmentHeightDiff
-                graphicPath.lineTo(graphicPathCurrentX, graphicPathCurrentY)
+            if (index + 1 >= data.size) return@forEachIndexed
+            //draw vertical line
+            val segmentHeightDiff = (weatherItem.value - data[index + 1].value) * stepVertical
+            graphicPathCurrentY += segmentHeightDiff
+            graphicPath.lineTo(graphicPathCurrentX, graphicPathCurrentY)
 
-                //draw time/temp for next item
-                drawTextInCenter(
-                    canvas, formatText(data[index + 1].value), graphicPathCurrentX, graphicPathCurrentY,
-                    textBottomPadding
-                )
-                drawTextInCenter(
-                    canvas, data[index + 1].time,
-                    graphicPathCurrentX, height.toFloat(), textBottomPadding
-                )
-            } catch (e: Exception) {
-            }
+            //draw time/temp for next item
+            drawTextInCenter(
+                canvas, formatText(data[index + 1].value), graphicPathCurrentX, graphicPathCurrentY,
+                textBottomPadding
+            )
+            drawTextInCenter(
+                canvas, data[index + 1].time,
+                graphicPathCurrentX, height.toFloat(), textBottomPadding
+            )
         }
         canvas.drawPath(graphicPath, paintGraphic)
     }
@@ -164,7 +165,7 @@ class GraphicView @JvmOverloads constructor(
         canvas: Canvas, text: String,
         xStart: Float, yBottom: Float, bottomExtraPadding: Float = 0F
     ) {
-        paintData.getTextBounds(text.toUpperCase(Locale.getDefault()), 0, text.length, tempTextBoundingRect)
+        paintData.getTextBounds(text.uppercase(Locale.getDefault()), 0, text.length, tempTextBoundingRect)
         val x = stepHorizontal / 2F - tempTextBoundingRect.width() / 2F - tempTextBoundingRect.left
         val y = textSize / 2F - tempTextBoundingRect.height() / 2F
         canvas.drawText(text, xStart + x, yBottom - y - bottomExtraPadding, paintData)
@@ -175,6 +176,7 @@ class GraphicView @JvmOverloads constructor(
             value > 0 -> "+$value"
             else -> value.toString()
         }
+
         DataType.PRECIPITATION -> context.getString(R.string.precipitation_unit_mm, value)
         DataType.NONE -> ""
     }
