@@ -11,7 +11,7 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.example.weather_app"
-        minSdk = 21
+        minSdk = 24
         compileSdk = 34
         targetSdk = 34
         versionCode = 1
@@ -31,17 +31,11 @@ android {
         val keyPixabeyApi = ""
         debug {
             buildConfigField("String", "API_KEY_OPEN_WEATHER_MAP", "\"$keyOpenWeatherApi\"")
-            buildConfigField("String", "BASE_URL_OPEN_WEATHER_MAP", "\"https://api.openweathermap.org/data/2.5/\"")
-            buildConfigField("String", "BASE_URL_OPEN_WEATHER_MAP_FOR_ICONS", "\"https://openweathermap.org/img/wn/\"")
             buildConfigField("String", "API_KEY_PIXABAY", "\"$keyPixabeyApi\"")
-            buildConfigField("String", "BASE_URL_PIXABAY", "\"https://pixabay.com/api/\"")
         }
         release {
             buildConfigField("String", "API_KEY_OPEN_WEATHER_MAP", "\"$keyOpenWeatherApi\"")
-            buildConfigField("String", "BASE_URL_OPEN_WEATHER_MAP", "\"https://api.openweathermap.org/data/2.5/\"")
-            buildConfigField("String", "BASE_URL_OPEN_WEATHER_MAP_FOR_ICONS", "\"https://openweathermap.org/img/wn/\"")
             buildConfigField("String", "API_KEY_PIXABAY", "\"$keyPixabeyApi\"")
-            buildConfigField("String", "BASE_URL_PIXABAY", "\"https://pixabay.com/api/\"")
             isMinifyEnabled = false
             setProguardFiles(listOf("proguard-android-optimize.txt", "proguard-rules.pro"))
         }
@@ -53,12 +47,16 @@ android {
 }
 
 dependencies {
-    implementation(libs.android.lifecycle.viewmodel.ktx)
+    implementation(project(":common-ui"))
+    implementation(project(":common-android-res"))
+    implementation(project(":common-jvm-util"))
+    implementation(project(":weather"))
+    implementation(project(":cities"))
+    implementation(project(":settings"))
+
     implementation(libs.android.core.ktx)
-    implementation(libs.livedata.ktx)
     implementation(libs.app.compat)
     implementation(libs.constraint.layout)
-    implementation(libs.kotlin.coroutines)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
 
@@ -69,14 +67,7 @@ dependencies {
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
-
-    implementation(libs.glide)
 
     implementation(libs.koin)
     implementation(libs.koin.android)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.android)
-    androidTestImplementation(libs.espresso)
 }

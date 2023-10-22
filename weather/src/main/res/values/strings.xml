@@ -1,0 +1,9 @@
+<resources>
+    <string name="placeholder_text_weather">No data, please try another search and check your internet connection</string>
+    <string name="precipitation_unit_mm">%1$d mm</string>
+    <string name="text_time_now">NOW</string>
+    <string name="title_details_weather_data">Details</string>
+    <string name="title_precipitation_weather_data">Precipitation</string>
+    <string name="title_forecast_weather_data">Forecast</string>
+    <string name="title_hourly_weather_data">Hourly weather</string>
+</resources>

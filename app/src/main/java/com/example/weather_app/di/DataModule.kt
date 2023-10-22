@@ -2,35 +2,49 @@ package com.example.weather_app.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.weather_app.data.source.AppDataRepository
-import com.example.weather_app.data.source.DataSource
-import com.example.weather_app.data.source.local.LocalDataSource
-import com.example.weather_app.data.source.local.WeatherDatabase
-import com.example.weather_app.data.source.remote.RemoteDataSource
-import org.koin.core.qualifier.named
+import com.koflox.cities.data.source.CityLocalDataSource
+import com.koflox.cities.data.source.CityRepository
+import com.koflox.cities.data.source.CityRepositoryImpl
+import com.koflox.cities.data.source.local.CityDatabase
+import com.koflox.cities.data.source.local.CityLocalDataSourceImpl
+import com.koflox.weather.data.source.WeatherRemoteDataSource
+import com.koflox.weather.data.source.WeatherRepository
+import com.koflox.weather.data.source.WeatherRepositoryImpl
+import com.koflox.weather.data.source.remote.WeatherRemoteDataSourceImpl
+import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
 
 val dataModule = module {
-    factory { createWeatherDatabase(get()) }
-
-    factory<DataSource>(named("remoteDataSource")) {
-        RemoteDataSource(get())
+    factory { createCityDatabase(get()) }
+    factory<WeatherRemoteDataSource> {
+        WeatherRemoteDataSourceImpl(
+            openWeatherMapService = get(),
+            ioDispatcher = Dispatchers.IO,
+        )
     }
-    factory<DataSource>(named("localDataSource")) {
-        LocalDataSource(get<WeatherDatabase>().favoriteCitiesDao)
+    factory {
+        get<CityDatabase>().favoriteCitiesDao
     }
-
-    single {
-        AppDataRepository(
-            remoteDataSource = get(named("remoteDataSource")),
-            localDataSource = get(named("localDataSource")),
-            pixabayService = get()
+    factory<CityLocalDataSource> {
+        CityLocalDataSourceImpl(
+            favoriteCitiesDao = get(),
+            ioDispatcher = Dispatchers.IO,
+        )
+    }
+    single<WeatherRepository> {
+        WeatherRepositoryImpl(
+            remoteDataSource = get(),
+        )
+    }
+    single<CityRepository> {
+        CityRepositoryImpl(
+            localDataSource = get(),
         )
     }
 }
 
-fun createWeatherDatabase(context: Context): WeatherDatabase = Room.databaseBuilder(
+fun createCityDatabase(context: Context): CityDatabase = Room.databaseBuilder(
     context.applicationContext,
-    WeatherDatabase::class.java,
-    "weather_db"
+    CityDatabase::class.java,
+    "city_db"
 ).fallbackToDestructiveMigration().build()

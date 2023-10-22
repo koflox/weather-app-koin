@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.koflox.cities.favorites.FavoritesCitiesViewModel" />
+
+        <variable
+            name="item"
+            type="com.koflox.cities.data.data.FavoriteCity" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_ripple_rounded"
+        android:backgroundTint="@color/grayLight"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{() -> viewModel.onCitySelected(item, false)}"
+        android:orientation="horizontal"
+        android:padding="@dimen/indent_small"
+        tools:ignore="UseCompoundDrawables">
+
+        <TextView
+            android:id="@+id/tvCityInfo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/indent_small"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:text="@{item.cityName + `, ` + item.country}"
+            tools:text="Moscow, Russia" />
+
+        <ImageView
+            android:id="@+id/ibCityOptions"
+            style="?android:attr/actionOverflowButtonStyle"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.onCitySelected(item, true)}"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+</layout>

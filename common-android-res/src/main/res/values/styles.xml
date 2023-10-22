@@ -1,0 +1,10 @@
+<resources>
+
+    <style name="PlaceHolderTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:padding">@dimen/indent_medium</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

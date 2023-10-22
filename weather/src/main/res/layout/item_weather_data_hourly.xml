@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.koflox.weather.weather.WeatherViewModel" />
+
+        <variable
+            name="item"
+            type="com.koflox.weather.displayed.HourlyWeatherData" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:background="@color/colorPrimary">
+
+        <com.koflox.weather.view.HeaderTextView
+            android:id="@+id/htvWeatherDataHourlyTitle"
+            style="@style/WeatherDataHeaderTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{item.sectionTitle}"
+            android:visibility="gone"
+            tools:text="Hourly weather" />
+
+        <com.koflox.weather.view.GraphicView
+            android:id="@+id/graphicViewHourlyData"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/indent_medium"
+            android:layout_marginEnd="@dimen/indent_medium"
+            android:layout_weight="1"
+            app:colorData="@android:color/white"
+            app:colorGraphic="@android:color/white"
+            app:data="@{item.values}"
+            app:dataType="hourly_temp" />
+
+    </LinearLayout>
+</layout>

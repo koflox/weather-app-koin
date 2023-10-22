@@ -7,45 +7,21 @@
 
     <fragment
         android:id="@+id/currentWeatherFragment"
-        android:name="com.example.weather_app.ui.weather.WeatherFragment"
-        tools:layout="@layout/fragment_weather">
-        <argument
-            android:name="place_to_search"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="city_id_to_search"
-            app:argType="integer" />
-    </fragment>
+        android:name="com.koflox.weather.weather.WeatherFragment"
+        tools:layout="@layout/fragment_weather" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.weather_app.ui.search.SearchFragment"
+        android:name="com.koflox.cities.search.SearchFragment"
         android:label="@string/screen_title_search"
-        tools:layout="@layout/fragment_search">
-        <action
-            android:id="@+id/action_searchFragment_to_currentWeatherFragment"
-            app:destination="@id/currentWeatherFragment">
-            <argument
-                android:name="city_id_to_search"
-                android:defaultValue="-1" />
-        </action>
-    </fragment>
+        tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.weather_app.ui.settings.SettingsFragment"
+        android:name="com.koflox.settings.ui.SettingsFragment"
         android:label="@string/screen_title_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/favoritesCitiesFragment"
-        android:name="com.example.weather_app.ui.favorites.FavoritesCitiesFragment"
+        android:name="com.koflox.cities.favorites.FavoritesCitiesFragment"
         android:label="@string/screen_title_favorite"
-        tools:layout="@layout/fragment_favorite_cities">
-        <action
-            android:id="@+id/action_favoritesCitiesFragment_to_currentWeatherFragment"
-            app:destination="@id/currentWeatherFragment">
-            <argument
-                android:name="place_to_search"
-                android:defaultValue="@null" />
-        </action>
-    </fragment>
+        tools:layout="@layout/fragment_favorite_cities" />
 </navigation>

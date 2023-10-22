@@ -15,3 +15,10 @@ dependencyResolutionManagement {
 }
 
 include(":app")
+include(":weather")
+include(":common-ui")
+include(":common-android-res")
+include(":common-jvm-util")
+include(":cities")
+include(":settings")
+include(":photos")

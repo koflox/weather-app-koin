@@ -9,8 +9,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.weather_app.R
-import com.example.weather_app.ui.base.BaseActivity
 import com.google.android.material.navigation.NavigationView
+import com.koflox.common_ui.base.BaseActivity
 
 class WeatherActivity : BaseActivity() {
 

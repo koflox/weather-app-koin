@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="WeatherDataTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_size_small_plus</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="WeatherDataHeaderTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingStart">@dimen/indent_medium</item>
+        <item name="android:layout_marginTop">@dimen/indent_medium</item>
+        <item name="strokeColor">@android:color/white</item>
+        <item name="strokePaddingStart">@dimen/indent_medium</item>
+        <item name="strokePaddingEnd">@dimen/indent_medium</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="WeatherDividerStyle">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_marginTop">@dimen/indent_atom_plus</item>
+    </style>
+</resources>

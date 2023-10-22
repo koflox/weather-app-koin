@@ -1,9 +1,8 @@
 package com.example.weather_app.di
 
 import com.example.weather_app.BuildConfig
-import com.example.weather_app.data.source.remote.AuthInterceptor
-import com.example.weather_app.data.source.remote.OpenWeatherMapService
-import com.example.weather_app.data.source.remote.PixabayService
+import com.koflox.weather.data.source.remote.AuthInterceptor
+import com.koflox.weather.data.source.remote.OpenWeatherMapService
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -50,16 +49,16 @@ val networkModule = module {
         )
     }
 
-    factory<PixabayService> {
-        createWebService<PixabayService>(
-            get(named(httpClientPixabay)),
-            BuildConfig.BASE_URL_PIXABAY
-        )
-    }
+//    factory<com.koflox.photos.data.source.remote.PixabayService> {
+//        createWebService<com.koflox.photos.data.source.remote.PixabayService>(
+//            get(named(httpClientPixabay)),
+//            "https://pixabay.com/api/"
+//        )
+//    }
     factory<OpenWeatherMapService> {
         createWebService<OpenWeatherMapService>(
             get(named(httpClientOpenWeatherMap)),
-            BuildConfig.BASE_URL_OPEN_WEATHER_MAP
+            "https://api.openweathermap.org/data/2.5/",
         )
     }
 }
