@@ -5,11 +5,11 @@
 
         <variable
             name="viewModel"
-            type="com.koflox.weather.weather.WeatherViewModel" />
+            type="com.koflox.weather.ui.weather.WeatherViewModel" />
 
         <variable
             name="item"
-            type="com.koflox.weather.displayed.DetailsWeatherData" />
+            type="com.koflox.weather.ui.displayed.DetailsWeatherData" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,7 +19,7 @@
         android:orientation="vertical"
         tools:background="@color/colorPrimary">
 
-        <com.koflox.weather.view.HeaderTextView
+        <com.koflox.weather.ui.view.custom.HeaderTextView
             android:id="@+id/htvWeatherDataDetailsTitle"
             style="@style/WeatherDataHeaderTextStyle"
             android:layout_width="match_parent"

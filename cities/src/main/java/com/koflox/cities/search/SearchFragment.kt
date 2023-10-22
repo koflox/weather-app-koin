@@ -27,7 +27,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
             citiesNavigator.goToWeatherDetails(
                 fragment = this,
                 placeName = placeToGetWeather,
-                cityId = -1,
+                cityId = null,
             )
         })
     }

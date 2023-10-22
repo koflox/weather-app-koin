@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.koflox.weather.weather.WeatherViewModel" />
+            type="com.koflox.weather.ui.weather.WeatherViewModel" />
 
     </data>
 
@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         android:background="@color/colorPrimary"
-        tools:context="com.koflox.weather.weather.WeatherFragment">
+        tools:context="com.koflox.weather.ui.weather.WeatherFragment">
 
         <com.koflox.common_ui.RecyclerViewEmptySupport
             android:id="@+id/rvWeatherData"

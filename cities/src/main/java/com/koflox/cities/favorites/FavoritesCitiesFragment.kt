@@ -81,8 +81,8 @@ class FavoritesCitiesFragment : BaseFragment<FragmentFavoriteCitiesBinding>(), P
     private fun navigateToWeather(cityId: Int) {
         citiesNavigator.goToWeatherDetails(
             fragment = this,
-            placeName = "",
-            cityId = cityId,
+            placeName = null,
+            cityId = cityId.toString(),
         )
 
     }

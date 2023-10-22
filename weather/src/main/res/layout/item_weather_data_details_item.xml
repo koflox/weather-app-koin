@@ -5,11 +5,11 @@
 
         <variable
             name="viewModel"
-            type="com.koflox.weather.weather.WeatherViewModel" />
+            type="com.koflox.weather.ui.weather.WeatherViewModel" />
 
         <variable
             name="item"
-            type="com.koflox.weather.displayed.DetailsWeatherDataItem" />
+            type="com.koflox.weather.ui.displayed.DetailsWeatherDataItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

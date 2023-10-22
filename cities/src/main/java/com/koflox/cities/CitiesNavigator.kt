@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 interface CitiesNavigator {
     fun goToWeatherDetails(
         fragment: Fragment,
-        placeName: String,
-        cityId: Int,
+        placeName: String?,
+        cityId: String?,
     )
 }

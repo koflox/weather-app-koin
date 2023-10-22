@@ -1,3 +1,5 @@
+import java.util.*
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     id(libs.plugins.android.library.get().pluginId)
@@ -6,6 +8,17 @@ plugins {
     id(libs.plugins.ksp.get().pluginId)
     id(libs.plugins.android.navigation.safeargs.get().pluginId)
 }
+
+fun String.toProperties() = Properties().apply {
+    rootProject.file(this@toProperties).run {
+        if (exists())
+            load(inputStream())
+        else
+            println("Warning: ${this@toProperties} file is absent")
+    }
+}
+
+val apiKeys = "api_key.properties".toProperties()
 
 android {
     namespace = "com.koflox.weather"
@@ -16,10 +29,22 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        val keyOpenWeatherApi = apiKeys["openWeatherApiKey"] ?: throw IllegalArgumentException("Missing openWeatherApiKey")
+//        val keyPixabayApi = apiKeys["pixelbayApiKey"] ?: throw IllegalArgumentException("Missing openWeatherApiKey")
+        debug {
+            buildConfigField("String", "API_KEY_OPEN_WEATHER_MAP", "$keyOpenWeatherApi")
+//            buildConfigField("String", "API_KEY_PIXABAY", "$keyPixabayApi")
         }
+        release {
+            buildConfigField("String", "API_KEY_OPEN_WEATHER_MAP", "$keyOpenWeatherApi")
+//            buildConfigField("String", "API_KEY_PIXABAY", "$keyPixabayApi")
+//            isMinifyEnabled = false
+//            setProguardFiles(listOf("proguard-android-optimize.txt", "proguard-rules.pro"))
+        }
+//        release {
+//            isMinifyEnabled = false
+//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+//        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

@@ -3,7 +3,7 @@ package com.koflox.weather.data.source.remote
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AuthInterceptor(
+internal class AuthInterceptor(
     private val apiKeyParam: String,
     private val apiKeyValue: String
 ) : Interceptor {

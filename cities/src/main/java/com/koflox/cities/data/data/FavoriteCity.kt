@@ -11,7 +11,5 @@ data class FavoriteCity(
     val id: Int,
     val cityName: String,
     val country: String,
-    val latitude: Double,
-    val longitude: Double,
     val timeAdded: Long,
 )

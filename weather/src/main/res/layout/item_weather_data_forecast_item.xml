@@ -5,11 +5,11 @@
 
         <variable
             name="viewModel"
-            type="com.koflox.weather.weather.WeatherViewModel" />
+            type="com.koflox.weather.ui.weather.WeatherViewModel" />
 
         <variable
             name="item"
-            type="com.koflox.weather.displayed.MainWeatherData" />
+            type="com.koflox.weather.ui.displayed.MainWeatherData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{item.dayName}"
+            android:textAllCaps="true"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Mon" />
 

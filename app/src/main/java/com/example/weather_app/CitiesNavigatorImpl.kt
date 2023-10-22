@@ -8,8 +8,8 @@ import com.koflox.cities.CitiesNavigator
 class CitiesNavigatorImpl : CitiesNavigator {
     override fun goToWeatherDetails(
         fragment: Fragment,
-        placeName: String,
-        cityId: Int,
+        placeName: String?,
+        cityId: String?,
     ) {
         fragment.findNavController()
             .navigate(
