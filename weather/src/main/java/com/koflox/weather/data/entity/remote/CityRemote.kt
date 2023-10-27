@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 internal data class CityResponse(
     @SerializedName("id")
-    val id: Int,
+    val id: String,
     @SerializedName("name")
     val name: String,
     @SerializedName("coord")

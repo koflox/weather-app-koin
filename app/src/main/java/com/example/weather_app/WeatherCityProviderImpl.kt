@@ -8,7 +8,7 @@ import com.koflox.weather.domain.entity.City
 class WeatherCityProviderImpl(
     private val cityRepository: CityRepository,
 ) : WeatherCityProvider {
-    override suspend fun isCityAdded(id: Int): Result<Boolean> {
+    override suspend fun isCityAdded(id: String): Result<Boolean> {
         return runCatching {
             cityRepository.isCityAdded(id)
         }
@@ -27,7 +27,7 @@ class WeatherCityProviderImpl(
         }
     }
 
-    override suspend fun deleteCity(id: Int): Result<Unit> {
+    override suspend fun deleteCity(id: String): Result<Unit> {
         return runCatching {
             cityRepository.delete(id)
         }

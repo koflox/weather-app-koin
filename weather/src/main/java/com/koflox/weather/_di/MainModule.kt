@@ -7,8 +7,10 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val viewModelModule = module {
-    viewModel {
+    viewModel { (searchQuery: String?, cityIdToSearch: String?) ->
         WeatherViewModel(
+            searchQuery = searchQuery,
+            cityIdToSearch = cityIdToSearch,
             app = get(),
             weatherInfoUseCase = get(),
             cityUseCase = get(),

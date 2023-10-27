@@ -14,14 +14,11 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel {
         FavoritesCitiesViewModel(
-            app = get(),
             dataRepository = get(),
         )
     }
     viewModel {
-        SearchViewModel(
-            app = get(),
-        )
+        SearchViewModel()
     }
 }
 

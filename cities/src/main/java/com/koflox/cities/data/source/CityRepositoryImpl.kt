@@ -17,7 +17,7 @@ class CityRepositoryImpl(
     }
 
     override suspend fun getFavoriteCity(
-        cityId: Int
+        cityId: String,
     ): Result<FavoriteCity> {
         return localDataSource.getFavoriteCity(cityId)
     }
@@ -30,7 +30,7 @@ class CityRepositoryImpl(
         localDataSource.update(city)
     }
 
-    override suspend fun delete(cityId: Int) {
+    override suspend fun delete(cityId: String) {
         localDataSource.delete(cityId)
     }
 
@@ -39,7 +39,7 @@ class CityRepositoryImpl(
     }
 
     override suspend fun isCityAdded(
-        cityId: Int
+        cityId: String,
     ): Boolean = localDataSource.getFavoriteCity(cityId) is Result.Success
 
 }

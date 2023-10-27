@@ -1,4 +1,4 @@
-package com.koflox.weather.ui.displayed
+package com.koflox.weather.ui.weather.displayed
 
 import com.koflox.common_jvm_util.formatToLocalTime
 import com.koflox.weather.R
@@ -7,7 +7,7 @@ import com.koflox.weather.domain.entity.SystemOfMeasurement
 import java.util.*
 import com.koflox.common_android_res.R as commonResR
 
-internal fun CurrentWeather.toMainWeatherData(timePattern: String, unit: SystemOfMeasurement): MainWeatherData {
+internal fun CurrentWeather.toMainWeatherUiModel(timePattern: String, unit: SystemOfMeasurement): MainWeatherUiModel {
     val weather = weather.firstOrNull()
     val tempUnitMain = when (unit) {
         SystemOfMeasurement.METRIC -> "°C"
@@ -17,7 +17,7 @@ internal fun CurrentWeather.toMainWeatherData(timePattern: String, unit: SystemO
         SystemOfMeasurement.METRIC -> "°"
         SystemOfMeasurement.IMPERIAL -> "F"
     }
-    return MainWeatherData(
+    return MainWeatherUiModel(
         main.temp.toInt(),
         main.tempMin.toInt(),
         main.tempMax.toInt(),
@@ -30,7 +30,7 @@ internal fun CurrentWeather.toMainWeatherData(timePattern: String, unit: SystemO
     )
 }
 
-internal fun CurrentWeather.toDetailsWeatherData(sectionTitle: String, unit: SystemOfMeasurement): DetailsWeatherData {
+internal fun CurrentWeather.toDetailsWeatherData(sectionTitle: String, unit: SystemOfMeasurement): DetailsWeatherUiModel {
     val windSpeedUnit = when (unit) {
         SystemOfMeasurement.METRIC -> "m/s"
         SystemOfMeasurement.IMPERIAL -> "m/h"
@@ -43,5 +43,5 @@ internal fun CurrentWeather.toDetailsWeatherData(sectionTitle: String, unit: Sys
         add(DetailsWeatherDataItem(commonResR.drawable.ic_na, "Visibility", "N/A"))
         add(DetailsWeatherDataItem(commonResR.drawable.ic_na, "Dew point", "N/A"))
     }
-    return DetailsWeatherData(sectionTitle, values)
+    return DetailsWeatherUiModel(sectionTitle, values)
 }

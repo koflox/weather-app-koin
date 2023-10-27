@@ -1,8 +1,8 @@
-package com.koflox.weather.ui.displayed
+package com.koflox.weather.ui.weather.displayed
 
 import androidx.annotation.DrawableRes
 
-internal sealed class WeatherData {
+internal sealed class WeatherUiModel {
 
     companion object {
         const val MAIN = 0
@@ -16,7 +16,7 @@ internal sealed class WeatherData {
 
 }
 
-internal data class MainWeatherData(
+internal data class MainWeatherUiModel(
     val temp: Int,
     val tempMin: Int,
     val tempMax: Int,
@@ -26,43 +26,43 @@ internal data class MainWeatherData(
     val weatherDescription: String,
     val dayName: String = "",
     val chanceOfPrecipitation: String = ""
-) : WeatherData() {
+) : WeatherUiModel() {
 
     override fun getDataType() = MAIN
 
 }
 
-internal data class HourlyWeatherData(
+internal data class HourlyWeatherUiModel(
     val sectionTitle: String,
     val values: List<DisplayedWeatherItem>
-) : WeatherData() {
+) : WeatherUiModel() {
 
     override fun getDataType() = HOURLY
 
 }
 
-internal data class DetailsWeatherData(
+internal data class DetailsWeatherUiModel(
     val sectionTitle: String,
     val values: List<DetailsWeatherDataItem>
-) : WeatherData() {
+) : WeatherUiModel() {
 
     override fun getDataType() = DETAILS
 
 }
 
-internal data class PrecipitationWeatherData(
+internal data class PrecipitationWeatherUiModel(
     val sectionTitle: String,
     val values: List<DisplayedWeatherItem>
-) : WeatherData() {
+) : WeatherUiModel() {
 
     override fun getDataType() = PRECIPITATION
 
 }
 
-internal data class ForecastWeatherData(
+internal data class ForecastWeatherUiModel(
     val sectionTitle: String,
-    val values: List<MainWeatherData>
-) : WeatherData() {
+    val values: List<MainWeatherUiModel>
+) : WeatherUiModel() {
 
     override fun getDataType() = FORECAST
 

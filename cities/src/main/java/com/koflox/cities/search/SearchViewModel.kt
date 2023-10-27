@@ -1,14 +1,13 @@
 package com.koflox.cities.search
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.koflox.common_ui.Event
-import com.koflox.common_ui.base.BaseViewModel
 
-class SearchViewModel(app: Application) : BaseViewModel(app) {
+class SearchViewModel : ViewModel() {
 
     companion object {
         private const val SEARCH_DELAY = 350L

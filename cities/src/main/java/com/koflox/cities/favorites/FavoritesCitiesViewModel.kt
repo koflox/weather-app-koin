@@ -1,27 +1,25 @@
 package com.koflox.cities.favorites
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.koflox.cities.data.data.FavoriteCity
 import com.koflox.cities.data.source.CityRepository
 import com.koflox.common_jvm_util.Result
 import com.koflox.common_ui.Event
-import com.koflox.common_ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 class FavoritesCitiesViewModel(
-    app: Application,
     private val dataRepository: CityRepository,
-) : BaseViewModel(app) {
+) : ViewModel() {
 
     private val _selectedCity = MutableLiveData<Event<Triple<FavoriteCity, Int, Boolean>>>()
     val selectedCity: LiveData<Event<Triple<FavoriteCity, Int, Boolean>>> = _selectedCity
 
-    private val _onGetWeather = MutableLiveData<Event<Int>>()
-    val onGetWeather: LiveData<Event<Int>> = _onGetWeather
+    private val _onGetWeather = MutableLiveData<Event<String>>()
+    val onGetWeather: LiveData<Event<String>> = _onGetWeather
 
     val favoriteCities = dataRepository.observeFavoriteCities().map {
         when (it) {

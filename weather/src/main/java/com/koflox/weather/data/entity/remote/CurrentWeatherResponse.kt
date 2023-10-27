@@ -24,7 +24,7 @@ internal data class CurrentWeatherResponse(
     @SerializedName("timezone")
     val timezone: Int,
     @SerializedName("id")
-    val id: Int,
+    val id: String,
     @SerializedName("name")
     val cityName: String,
     @SerializedName("cod")

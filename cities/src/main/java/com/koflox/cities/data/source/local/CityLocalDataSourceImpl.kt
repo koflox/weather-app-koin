@@ -28,7 +28,7 @@ class CityLocalDataSourceImpl(
             }
         }
 
-    override suspend fun getFavoriteCity(cityId: Int): Result<FavoriteCity> = withContext(ioDispatcher) {
+    override suspend fun getFavoriteCity(cityId: String): Result<FavoriteCity> = withContext(ioDispatcher) {
         val city = favoriteCitiesDao.getFavoriteCity(cityId)
         return@withContext when {
             city != null -> Result.Success(city)
@@ -44,7 +44,7 @@ class CityLocalDataSourceImpl(
         favoriteCitiesDao.update(city)
     }
 
-    override suspend fun delete(cityId: Int) = withContext(ioDispatcher) {
+    override suspend fun delete(cityId: String) = withContext(ioDispatcher) {
         favoriteCitiesDao.delete(cityId)
     }
 

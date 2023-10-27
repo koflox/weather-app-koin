@@ -14,7 +14,7 @@ interface CityDao {
     suspend fun getFavoriteCities(): List<FavoriteCity>
 
     @Query("SELECT * FROM favoriteCities WHERE id = :cityId")
-    suspend fun getFavoriteCity(cityId: Int): FavoriteCity?
+    suspend fun getFavoriteCity(cityId: String): FavoriteCity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(city: FavoriteCity)
@@ -23,7 +23,7 @@ interface CityDao {
     suspend fun update(city: FavoriteCity)
 
     @Query("DELETE FROM favoriteCities where id = :cityId")
-    suspend fun delete(cityId: Int)
+    suspend fun delete(cityId: String)
 
     @Query("DELETE FROM favoriteCities")
     suspend fun deleteFavoriteCities()

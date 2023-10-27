@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import com.koflox.weather.R
-import com.koflox.weather.ui.displayed.DisplayedWeatherItem
+import com.koflox.weather.ui.weather.displayed.DisplayedWeatherItem
 import java.util.*
 import com.koflox.common_android_res.R as commonResR
 
@@ -27,7 +27,7 @@ internal class GraphicView @JvmOverloads constructor(
             field = value
             textBottomPadding = value / 4
         }
-    private var dataType: DataType = DataType.NONE
+    var dataType: DataType = DataType.NONE
 
     @ColorInt
     var colorGraphic: Int = Color.BLACK

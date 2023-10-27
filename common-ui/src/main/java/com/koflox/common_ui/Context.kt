@@ -12,7 +12,7 @@ fun Context.showToast(message: String) {
 
 fun Context.showToast(@StringRes resId: Int) = showToast(getString(resId))
 
-fun Fragment.setSupportActionBarTitle(title: String) {
+fun Fragment.setSupportActionBarTitle(title: String?) {
     (activity as? AppCompatActivity)?.supportActionBar?.title = title
 }
 
@@ -20,7 +20,7 @@ fun Fragment.setSupportActionBarTitle(@StringRes stringRes: Int) {
     setSupportActionBarTitle(getString(stringRes))
 }
 
-fun Fragment.setSupportActionBarSubtitle(title: String) {
+fun Fragment.setSupportActionBarSubtitle(title: String?) {
     (activity as? AppCompatActivity)?.supportActionBar?.subtitle = title
 }
 

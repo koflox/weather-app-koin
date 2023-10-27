@@ -1,6 +1,5 @@
-package com.koflox.weather.ui.displayed
+package com.koflox.weather.ui.weather.displayed
 
-import android.util.Log
 import com.koflox.common_jvm_util.formatToLocalTime
 import com.koflox.weather.R
 import com.koflox.weather.domain.entity.Forecast
@@ -11,7 +10,7 @@ internal fun Forecast.toHourlyWeatherData(
     timePattern: String, desiredSegmentCount: Int,
     sectionTitle: String,
     vararg extra: DisplayedWeatherItem
-): HourlyWeatherData {
+): HourlyWeatherUiModel {
     val segmentCount = min(desiredSegmentCount, list.size)
     val values = mutableListOf<DisplayedWeatherItem>().apply {
         extra.forEach {
@@ -26,14 +25,14 @@ internal fun Forecast.toHourlyWeatherData(
             add(DisplayedWeatherItem(time, temperature))
         }
     }
-    return HourlyWeatherData(sectionTitle, values)
+    return HourlyWeatherUiModel(sectionTitle, values)
 }
 
 internal fun Forecast.toPrecipitationWeatherData(
     timePattern: String, desiredSegmentCount: Int,
     sectionTitle: String,
     vararg extra: DisplayedWeatherItem
-): PrecipitationWeatherData {
+): PrecipitationWeatherUiModel {
     val segmentCount = min(desiredSegmentCount, list.size)
     val values = mutableListOf<DisplayedWeatherItem>().apply {
         extra.forEach {
@@ -52,11 +51,11 @@ internal fun Forecast.toPrecipitationWeatherData(
             add(DisplayedWeatherItem(time, precipitationValue))
         }
     }
-    return PrecipitationWeatherData(sectionTitle, values)
+    return PrecipitationWeatherUiModel(sectionTitle, values)
 }
 
-internal fun Forecast.toForecastWeatherData(timePattern: String, sectionTitle: String): ForecastWeatherData {
-    val values = mutableListOf<MainWeatherData>().apply {
+internal fun Forecast.toForecastWeatherData(timePattern: String, sectionTitle: String): ForecastWeatherUiModel {
+    val values = mutableListOf<MainWeatherUiModel>().apply {
         var tempMin = Int.MAX_VALUE
         var tempMax = Int.MIN_VALUE
         val conditions = mutableMapOf<String, Int>()
@@ -67,21 +66,19 @@ internal fun Forecast.toForecastWeatherData(timePattern: String, sectionTitle: S
             weatherData.weatherDescriptions.firstOrNull()?.weatherIconUrl?.let { iconCode ->
                 conditions[iconCode]?.run {
                     conditions[iconCode] = this + 1
-                } ?: kotlin.run {
+                } ?: run {
                     conditions[iconCode] = 1
                 }
             }
 
-            val nextWeatherDataIsNewDay = try {
+            val isNextWeatherDataANewDay: Boolean = run {
+                if (i + 1 >= list.size) return@run false
                 val nextWeatherData = list[i + 1]
                 val time = nextWeatherData.dateUtc
                 time % 86400 == 0
-            } catch (e: Exception) {
-                Log.d("Logos", "e: Exception")
-                false
             }
-            if (nextWeatherDataIsNewDay || i == list.indices.last) {
-                val item = MainWeatherData(
+            if (isNextWeatherDataANewDay || i == list.indices.last) {
+                val item = MainWeatherUiModel(
                     temp = (tempMax + tempMin) / 2,
                     tempMax = tempMax,
                     tempMin = tempMin,
@@ -98,7 +95,7 @@ internal fun Forecast.toForecastWeatherData(timePattern: String, sectionTitle: S
             }
         }
     }
-    return ForecastWeatherData(sectionTitle, values)
+    return ForecastWeatherUiModel(sectionTitle, values)
 }
 
 internal fun Int.toWeatherIcon(): Int = when (this) {

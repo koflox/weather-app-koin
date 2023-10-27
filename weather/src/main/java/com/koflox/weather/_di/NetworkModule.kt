@@ -11,28 +11,29 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-internal val networkModule = module {
-    val apiKeyParamOpenWeatherMap = "appid"
-    val loggingInterceptorOpenWeatherMap = "loggingInterceptorOpenWeatherMap"
-    val authInterceptorOpenWeatherMap = "authInterceptorOpenWeatherMap"
-    val httpClientOpenWeatherMap = "httpClientOpenWeatherMap"
+private const val QUALIFIER_LOGGING_INTERCEPTOR = "QUALIFIER_LOGGING_INTERCEPTOR"
+private const val QUALIFIER_AUTH_INTERCEPTOR = "QUALIFIER_AUTH_INTERCEPTOR"
+private const val QUALIFIER_OKHTTP_CLIENT = "QUALIFIER_OKHTTP_CLIENT"
 
-    factory<Interceptor>(named(loggingInterceptorOpenWeatherMap)) { createLoggingInterceptor() }
-    factory<Interceptor>(named(authInterceptorOpenWeatherMap)) {
+internal val networkModule = module {
+    factory<Interceptor>(named(QUALIFIER_LOGGING_INTERCEPTOR)) {
+        createLoggingInterceptor()
+    }
+    factory<Interceptor>(named(QUALIFIER_AUTH_INTERCEPTOR)) {
         AuthInterceptor(
-            apiKeyParam = apiKeyParamOpenWeatherMap,
+            apiKeyParam = "appid",
             apiKeyValue = BuildConfig.API_KEY_OPEN_WEATHER_MAP,
         )
     }
-    factory(named(httpClientOpenWeatherMap)) {
+    factory(named(QUALIFIER_OKHTTP_CLIENT)) {
         createOkHttpClient(
-            httpLoggingInterceptor = get(named(loggingInterceptorOpenWeatherMap)),
-            authInterceptor = get(named(authInterceptorOpenWeatherMap)),
+            httpLoggingInterceptor = get(named(QUALIFIER_LOGGING_INTERCEPTOR)),
+            authInterceptor = get(named(QUALIFIER_AUTH_INTERCEPTOR)),
         )
     }
     factory<OpenWeatherMapService> {
         createWebService(
-            okHttpClient = get(named(httpClientOpenWeatherMap)),
+            okHttpClient = get(named(QUALIFIER_OKHTTP_CLIENT)),
             url = OpenWeatherMapService.BASE_URL_API,
         )
     }

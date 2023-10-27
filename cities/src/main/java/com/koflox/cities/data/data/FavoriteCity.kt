@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 )
 data class FavoriteCity(
     @PrimaryKey
-    val id: Int,
+    val id: String,
     val cityName: String,
     val country: String,
     val timeAdded: Long,

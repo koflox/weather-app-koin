@@ -1,4 +1,4 @@
-import java.util.*
+import java.util.Properties
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
@@ -30,21 +30,14 @@ android {
     }
     buildTypes {
         val keyOpenWeatherApi = apiKeys["openWeatherApiKey"] ?: throw IllegalArgumentException("Missing openWeatherApiKey")
-//        val keyPixabayApi = apiKeys["pixelbayApiKey"] ?: throw IllegalArgumentException("Missing openWeatherApiKey")
         debug {
             buildConfigField("String", "API_KEY_OPEN_WEATHER_MAP", "$keyOpenWeatherApi")
-//            buildConfigField("String", "API_KEY_PIXABAY", "$keyPixabayApi")
         }
         release {
             buildConfigField("String", "API_KEY_OPEN_WEATHER_MAP", "$keyOpenWeatherApi")
-//            buildConfigField("String", "API_KEY_PIXABAY", "$keyPixabayApi")
-//            isMinifyEnabled = false
-//            setProguardFiles(listOf("proguard-android-optimize.txt", "proguard-rules.pro"))
+            isMinifyEnabled = false
+            setProguardFiles(listOf("proguard-android-optimize.txt", "proguard-rules.pro"))
         }
-//        release {
-//            isMinifyEnabled = false
-//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-//        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -55,6 +48,12 @@ android {
     }
     dataBinding {
         enable = true
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
 }
 
@@ -78,4 +77,12 @@ dependencies {
     implementation(libs.koin)
     implementation(libs.koin.android)
     implementation(libs.glide)
+
+    val composeBom = platform("androidx.compose:compose-bom:2023.10.01")
+    implementation(composeBom)
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 }

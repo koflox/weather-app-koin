@@ -10,13 +10,13 @@ interface CityLocalDataSource {
 
     suspend fun getFavoriteCities(): Result<List<FavoriteCity>>
 
-    suspend fun getFavoriteCity(cityId: Int): Result<FavoriteCity>
+    suspend fun getFavoriteCity(cityId: String): Result<FavoriteCity>
 
     suspend fun insert(city: FavoriteCity)
 
     suspend fun update(city: FavoriteCity)
 
-    suspend fun delete(cityId: Int)
+    suspend fun delete(cityId: String)
 
     suspend fun deleteFavoriteCities()
 
