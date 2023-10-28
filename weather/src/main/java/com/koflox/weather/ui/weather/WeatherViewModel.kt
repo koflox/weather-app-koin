@@ -23,6 +23,7 @@ import com.koflox.weather.ui.weather.displayed.toForecastWeatherData
 import com.koflox.weather.ui.weather.displayed.toHourlyWeatherData
 import com.koflox.weather.ui.weather.displayed.toMainWeatherUiModel
 import com.koflox.weather.ui.weather.displayed.toPrecipitationWeatherData
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +34,7 @@ import com.koflox.common_android_res.R as commonResR
 internal class WeatherViewModel(
     searchQuery: String? = null,
     cityIdToSearch: String? = null,
+    private val dispatcherDefault: CoroutineDispatcher,
     private val app: Application,
     private val weatherInfoUseCase: WeatherInfoUseCase,
     private val cityUseCase: WeatherCityProvider,
@@ -69,7 +71,7 @@ internal class WeatherViewModel(
         searchQuery: String? = null,
         cityIdToSearch: String? = null,
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcherDefault) {
             val param: WeatherQueryParam = when {
                 !searchQuery.isNullOrBlank() -> WeatherQueryParam.Place(searchQuery)
                 !cityIdToSearch.isNullOrBlank() -> WeatherQueryParam.City(cityIdToSearch)
@@ -94,7 +96,7 @@ internal class WeatherViewModel(
     }
 
     fun onAddDeleteOptionClick() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcherDefault) {
             val (isFavoriteCity, isFavoriteCityOptionVisible) = isFavoriteCity(city.id)
             if (isFavoriteCityOptionVisible.not()) return@launch
             val result = if (isFavoriteCity) {
@@ -200,7 +202,7 @@ internal class WeatherViewModel(
     }
 
     private fun displayError() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcherDefault) {
             _weatherUiState.emit(
                 WeatherUiState.Error(
                     titleResId = commonResR.string.text_common_error,
