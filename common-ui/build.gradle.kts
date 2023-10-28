@@ -43,4 +43,6 @@ dependencies {
     implementation(libs.navigation.ui.ktx)
     implementation(libs.databinding.runtime)
     implementation(libs.glide)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material3)
 }

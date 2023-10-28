@@ -15,18 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
-import com.koflox.common_ui.base.BaseFragment
+import com.koflox.common_ui.base.BaseComposeFragment
 import com.koflox.common_ui.setSupportActionBarSubtitle
 import com.koflox.common_ui.setSupportActionBarTitle
 import com.koflox.weather.R
-import com.koflox.weather.databinding.FragmentWeatherBinding
 import com.koflox.weather.ui.weather.displayed.DetailsWeatherUiModel
 import com.koflox.weather.ui.weather.displayed.ForecastWeatherUiModel
 import com.koflox.weather.ui.weather.displayed.HourlyWeatherUiModel
@@ -43,7 +41,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
+class WeatherFragment : BaseComposeFragment() {
 
     private val args by navArgs<WeatherFragmentArgs>()
 
@@ -54,13 +52,9 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
         )
     }
 
-    override fun getLayoutId() = R.layout.fragment_weather
-
     override fun initViews() {
         setHasOptionsMenu(true)
-        dataBinding.composeRoot.apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-        }
+        view.setBackgroundColor(resources.getColor(com.koflox.common_android_res.R.color.colorPrimary, null))
     }
 
     override fun addViewObservers() {
@@ -99,7 +93,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
                 setSupportActionBarTitle(state.title)
                 setSupportActionBarSubtitle(state.subtitle)
                 requireActivity().invalidateOptionsMenu()
-                dataBinding.composeRoot.apply {
+                view.apply {
                     setContent {
                         WeatherDataUi(weatherUiModels = state.weatherUiModels)
                     }
@@ -108,7 +102,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
             is WeatherUiState.Loading -> {
                 setSupportActionBarTitle(state.titleResId)
-                dataBinding.composeRoot.apply {
+                view.apply {
                     setContent {
                         WeatherLoadingUi()
                     }
@@ -118,7 +112,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
             is WeatherUiState.Error -> {
                 setSupportActionBarTitle(state.titleResId)
                 setSupportActionBarSubtitle(null)
-                dataBinding.composeRoot.apply {
+                view.apply {
                     setContent {
                         WeatherErrorUi()
                     }

@@ -1,10 +1,9 @@
-import java.util.Properties
+import java.util.*
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     id(libs.plugins.android.library.get().pluginId)
     alias(libs.plugins.kotlin.android)
-    id(libs.plugins.kapt.get().pluginId)
     id(libs.plugins.ksp.get().pluginId)
     id(libs.plugins.android.navigation.safeargs.get().pluginId)
 }
@@ -46,14 +45,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    dataBinding {
-        enable = true
-    }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompilerExtension.get()
     }
 }
 
@@ -69,7 +65,6 @@ dependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
-    implementation(libs.databinding.runtime)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson.converter)
     implementation(libs.okhttp)
@@ -78,11 +73,10 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.glide)
 
-    val composeBom = platform("androidx.compose:compose-bom:2023.10.01")
-    implementation(composeBom)
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    implementation("io.coil-kt:coil-compose:2.4.0")
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material3)
+    implementation(libs.compose.tooling.preview)
+    implementation(libs.compose.constraintlayout)
+    implementation(libs.coil.compose)
+    debugImplementation(libs.compose.tooling)
 }
