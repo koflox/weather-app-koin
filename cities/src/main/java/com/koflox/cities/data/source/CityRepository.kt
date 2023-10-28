@@ -1,12 +1,12 @@
 package com.koflox.cities.data.source
 
-import androidx.lifecycle.LiveData
 import com.koflox.cities.data.data.FavoriteCity
 import com.koflox.common_jvm_util.Result
+import kotlinx.coroutines.flow.Flow
 
 interface CityRepository {
 
-    fun observeFavoriteCities(): LiveData<Result<List<FavoriteCity>>>
+    fun observeCities(): Flow<List<FavoriteCity>>
 
     suspend fun getFavoriteCities(): Result<List<FavoriteCity>>
 

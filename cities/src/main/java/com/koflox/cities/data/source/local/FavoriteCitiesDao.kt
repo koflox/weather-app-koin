@@ -1,14 +1,14 @@
 package com.koflox.cities.data.source.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.koflox.cities.data.data.FavoriteCity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CityDao {
 
     @Query("SELECT * FROM favoriteCities")
-    fun observeFavoriteCities(): LiveData<List<FavoriteCity>>
+    fun observeCities(): Flow<List<FavoriteCity>>
 
     @Query("SELECT * FROM favoriteCities")
     suspend fun getFavoriteCities(): List<FavoriteCity>

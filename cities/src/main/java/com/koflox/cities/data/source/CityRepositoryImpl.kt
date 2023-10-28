@@ -1,8 +1,8 @@
 package com.koflox.cities.data.source
 
-import androidx.lifecycle.LiveData
 import com.koflox.cities.data.data.FavoriteCity
 import com.koflox.common_jvm_util.Result
+import kotlinx.coroutines.flow.Flow
 
 class CityRepositoryImpl(
     private val localDataSource: CityLocalDataSource,
@@ -12,7 +12,7 @@ class CityRepositoryImpl(
         return localDataSource.getFavoriteCities()
     }
 
-    override fun observeFavoriteCities(): LiveData<Result<List<FavoriteCity>>> {
+    override fun observeCities(): Flow<List<FavoriteCity>> {
         return localDataSource.observeFavoriteCities()
     }
 

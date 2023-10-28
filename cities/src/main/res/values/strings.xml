@@ -4,4 +4,5 @@
     <string name="menu_item_title_search">Search</string>
     <string name="placeholder_text_search">City suggestions will be displayed here</string>
     <string name="placeholder_text_favorite_cities">It\'s empty so far, you can add city to favorites on weather screen</string>
+    <string name="title_saved_cities">Saved cities</string>
 </resources>

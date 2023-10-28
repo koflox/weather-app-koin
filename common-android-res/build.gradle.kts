@@ -30,4 +30,6 @@ android {
 
 dependencies {
     implementation(libs.app.compat)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material3)
 }

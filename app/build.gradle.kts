@@ -10,17 +10,6 @@ plugins {
     id(libs.plugins.ksp.get().pluginId)
 }
 
-fun String.toProperties() = Properties().apply {
-    rootProject.file(this@toProperties).run {
-        if (exists())
-            load(inputStream())
-        else
-            println("Warning: ${this@toProperties} file is absent")
-    }
-}
-
-val apiKeys = "api_key.properties".toProperties()
-
 android {
     defaultConfig {
         applicationId = "com.example.weather_app"
@@ -40,21 +29,22 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     buildTypes {
-        val keyOpenWeatherApi = apiKeys["openWeatherApiKey"] ?: throw IllegalArgumentException("Missing openWeatherApiKey")
-        val keyPixabayApi = apiKeys["pixelbayApiKey"] ?: throw IllegalArgumentException("Missing openWeatherApiKey")
         debug {
-            buildConfigField("String", "API_KEY_OPEN_WEATHER_MAP", "$keyOpenWeatherApi")
-            buildConfigField("String", "API_KEY_PIXABAY", "$keyPixabayApi")
+
         }
         release {
-            buildConfigField("String", "API_KEY_OPEN_WEATHER_MAP", "$keyOpenWeatherApi")
-            buildConfigField("String", "API_KEY_PIXABAY", "$keyPixabayApi")
             isMinifyEnabled = false
             setProguardFiles(listOf("proguard-android-optimize.txt", "proguard-rules.pro"))
         }
     }
     dataBinding {
         enable = true
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompilerExtension.get()
     }
     namespace = "com.example.weather_app"
 }
@@ -65,7 +55,6 @@ dependencies {
     implementation(project(":common-jvm-util"))
     implementation(project(":weather"))
     implementation(project(":cities"))
-    implementation(project(":settings"))
 
     implementation(libs.android.core.ktx)
     implementation(libs.app.compat)
@@ -83,4 +72,8 @@ dependencies {
 
     implementation(libs.koin)
     implementation(libs.koin.android)
+
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material3)
+    implementation(libs.compose.activity)
 }

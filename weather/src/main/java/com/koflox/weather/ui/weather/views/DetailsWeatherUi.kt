@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.koflox.weather.ui.colorPrimaryDark
+import com.koflox.common_android_res.colorPrimaryDark
 import com.koflox.weather.ui.weather.displayed.DetailsWeatherUiModel
 
 @Composable

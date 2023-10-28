@@ -93,29 +93,23 @@ class WeatherFragment : BaseComposeFragment() {
                 setSupportActionBarTitle(state.title)
                 setSupportActionBarSubtitle(state.subtitle)
                 requireActivity().invalidateOptionsMenu()
-                view.apply {
-                    setContent {
-                        WeatherDataUi(weatherUiModels = state.weatherUiModels)
-                    }
+                view.setContent {
+                    WeatherDataUi(weatherUiModels = state.weatherUiModels)
                 }
             }
 
             is WeatherUiState.Loading -> {
                 setSupportActionBarTitle(state.titleResId)
-                view.apply {
-                    setContent {
-                        WeatherLoadingUi()
-                    }
+                view.setContent {
+                    WeatherLoadingUi()
                 }
             }
 
             is WeatherUiState.Error -> {
                 setSupportActionBarTitle(state.titleResId)
                 setSupportActionBarSubtitle(null)
-                view.apply {
-                    setContent {
-                        WeatherErrorUi()
-                    }
+                view.setContent {
+                    WeatherErrorUi()
                 }
             }
         }

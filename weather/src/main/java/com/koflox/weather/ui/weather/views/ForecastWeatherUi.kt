@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.koflox.weather.ui.colorPrimaryDark
+import com.koflox.common_android_res.colorPrimaryDark
 import com.koflox.weather.ui.weather.displayed.ForecastWeatherUiModel
 
 @Composable

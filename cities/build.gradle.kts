@@ -2,7 +2,6 @@
 plugins {
     id(libs.plugins.android.library.get().pluginId)
     alias(libs.plugins.kotlin.android)
-    id(libs.plugins.kapt.get().pluginId)
     id(libs.plugins.ksp.get().pluginId)
 }
 
@@ -27,8 +26,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    dataBinding {
-        enable = true
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompilerExtension.get()
     }
 }
 
@@ -52,4 +54,7 @@ dependencies {
 
     implementation(libs.koin)
     implementation(libs.koin.android)
+
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material3)
 }
